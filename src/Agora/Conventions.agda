@@ -1,58 +1,33 @@
 
 module Agora.Conventions where
 
-open import Agda.Primitive public
-open import Agda.Builtin.Equality public
-open import Data.Product renaming (proj₁ to fst ; proj₂ to snd) public
-open import Data.Sum using () renaming (_⊎_ to _+_ ; inj₁ to left ; inj₂ to right) public
-
-open import Data.Nat using (zero ; suc) renaming (ℕ to Nat ; _+_ to _+-ℕ_) public
-open import Data.Bool public
-open import Data.Unit using (tt) renaming (⊤ to Unit) public
-open import Data.Fin using (Fin) public
-
-open import Function.Base using (_∘_) public
+open import Agora.Conventions.Prelude hiding (𝑖 ; 𝑗 ; 𝑘 ; 𝑙 ; ′_′) public
+open import Agora.Conventions.Postprelude public
+open import Agora.Conventions.Meta public
+open import Agora.Conventions.Meta2.Macros public
+open import Agora.Conventions.Meta2.Structure public
 
 variable
-  𝑖 𝑗 𝑘 : Level
-
-∑_ : ∀ {A : Set 𝑖} → (A → Set 𝑗) → Set (𝑖 ⊔ 𝑗)
-∑_ = Σ _
-
-∏_ : ∀ {A : Set 𝑖} → (A → Set 𝑗) → Set (𝑖 ⊔ 𝑗)
-∏_ = λ F -> ∀ x -> F x
-
-
--- _∘_ : ∀{A : Set 𝑖} {B : Set 𝑗} {C : Set 𝑘} -> (B -> C) -> (A -> B) -> (A -> C)
--- f ∘ g = λ x -> f (g x)
-
-𝒫 : Set 𝑖 -> Set (lsuc 𝑖)
-𝒫 X = X -> Set _
-
-singl : {X : Set 𝑖} -> X -> 𝒫 X
-singl x = λ y -> x ≡ y
-
-_∩-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> 𝒫 X
-_∩-𝒫_ A B x = A x × B x
-
-_∪-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> 𝒫 X
-_∪-𝒫_ A B x = A x + B x
-
-_≤-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> Set _
-_≤-𝒫_ A B = ∀ x -> A x -> B x
-
-isFinite : (A : Set 𝑖) -> Set 𝑖
-isFinite A = ∑ λ (n : Nat) -> {!!}
-
--- isFinite-𝒫 : 
-
-
-record Eval (A : Set 𝑖) (B : Set 𝑗) : Set (𝑖 ⊔ 𝑗) where
-  field ⟦_⟧ : A -> B
-
-open Eval {{...}} public
-
-module _ {V : Set 𝑖} (E : V -> V -> Set 𝑗) where
-  data Path : V -> V -> Set (𝑖 ⊔ 𝑗) where
-    [] : ∀{v} -> Path v v
-    _∷_ : ∀{a b c} -> E a b -> Path b c -> Path a c
+  n-𝑖𝑖 n-𝑗𝑗 n-𝑘𝑘 n-𝑙𝑙 : ℕ
+  n-𝑖𝑖₂ n-𝑗𝑗₂ n-𝑘𝑘₂ n-𝑙𝑙₂ : ℕ
+  n-𝑖𝑖₁ n-𝑗𝑗₁ n-𝑘𝑘₁ n-𝑙𝑙₁ : ℕ
+  n-𝑖𝑖₀ n-𝑗𝑗₀ n-𝑘𝑘₀ n-𝑙𝑙₀ : ℕ
+  𝑖 : 𝔏 ^-𝒰 n-𝑖𝑖
+  𝑗 : 𝔏 ^-𝒰 (n-𝑗𝑗)
+  𝑘 : 𝔏 ^-𝒰 (n-𝑘𝑘)
+  𝑙 : 𝔏 ^-𝒰 (n-𝑙𝑙)
+  𝑖₂ : 𝔏 ^-𝒰 n-𝑖𝑖₂
+  𝑗₂ : 𝔏 ^-𝒰 n-𝑗𝑗₂
+  𝑘₂ : 𝔏 ^-𝒰 n-𝑘𝑘₂
+  𝑙₂ : 𝔏 ^-𝒰 n-𝑙𝑙₂
+  𝑖₁ : 𝔏 ^-𝒰 n-𝑖𝑖₁
+  𝑗₁ : 𝔏 ^-𝒰 n-𝑗𝑗₁
+  𝑘₁ : 𝔏 ^-𝒰 n-𝑘𝑘₁
+  𝑙₁ : 𝔏 ^-𝒰 n-𝑙𝑙₁
+  𝑖₀ : 𝔏 ^-𝒰 n-𝑖𝑖₀
+  𝑗₀ : 𝔏 ^-𝒰 n-𝑗𝑗₀
+  𝑘₀ : 𝔏 ^-𝒰 n-𝑘𝑘₀
+  𝑙₀ : 𝔏 ^-𝒰 n-𝑙𝑙₀
+  -- 𝑚 : 𝔏 ^-𝒰 (n-𝑚)
+  -- 𝑛 : 𝔏 ^-𝒰 (n-𝑛)
+  -- 𝑜 : 𝔏 ^-𝒰 (n-𝑜)

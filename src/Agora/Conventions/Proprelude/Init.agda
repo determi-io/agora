@@ -1,0 +1,223 @@
+
+-- {-# OPTIONS --cubical --no-import-sorts #-}
+
+module Agora.Conventions.Proprelude.Init where
+
+open import Agora.Conventions.Proprelude.Imports
+-- open import Agora.Conventions.Proprelude.Equality.Strict
+-- open import Agora.Conventions.Proprelude.CubicalConventions
+
+--------------------------------------------------------------------------------
+-- Universe levels
+ℓ₀ = lzero
+ℓ₁ = ℓ₀ ⁺
+ℓ₂ = ℓ₁ ⁺
+
+module PrimitiveUniverseNotation where
+  -- variables for multilevels
+  variable
+    ℓ ℓ' 𝑖 𝑗 𝑘 𝑙 𝑚 : 𝔏
+
+  open import Agda.Primitive public using () renaming (Set to 𝒰)
+  -- renaming
+  -- (Level to 𝔏; lsuc to _⁺ ; Setω to 𝒰ω ; Set to 𝒰' ; Prop to CompProp ; _⊔_ to join-𝔏
+  -- )
+
+  -- 𝒰 : (l : 𝔏) -> 𝒰' (l ⁺)
+  -- 𝒰 l = 𝒰' l
+
+open PrimitiveUniverseNotation
+
+-- introducing the syntax
+record IJoinable (X : 𝒰 𝑖) : 𝒰 (𝑖 ⁺) where
+  field _⊔_ : X -> X -> X
+  infixl 6 _⊔_
+open IJoinable {{...}} public
+
+-- instance for universe levels
+instance
+  IJoinable:𝔏 : IJoinable 𝔏
+  IJoinable._⊔_ IJoinable:𝔏 = join-𝔏
+
+--------------------------------------------------------------------------------
+-- Preparing extended syntax
+
+∆ : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} -> (b : B) -> A -> B
+∆ b _ = b
+
+const : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} -> B -> A -> B
+const b _ = b
+
+
+∏_ : ∀{A : 𝒰 ℓ} -> (B : A -> 𝒰 ℓ') -> 𝒰 (ℓ ⊔ ℓ')
+∏_ {A = A} B = (∀ (a : A) -> B a)
+
+∑_ : ∀{A : 𝒰 ℓ} -> (B : A -> 𝒰 ℓ') -> 𝒰 (ℓ ⊔ ℓ')
+∑_ {A = A} B = Σ A B
+
+-- infixr 30 _×-𝒰_
+-- _×-𝒰_ : 𝒰 ℓ -> 𝒰 ℓ' -> 𝒰 (ℓ ⊔ ℓ')
+-- A ×-𝒰 B = ∑ λ (a : A) -> B
+
+
+module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} where
+  λ₋ : (A -> B -> C) -> (A ×-𝒰 B -> C)
+  λ₋ f (a , b) = f a b
+
+  λ₊ : (A ×-𝒰 B -> C) -> (A -> B -> C)
+  λ₊ f a b = f (a , b)
+
+-- instance
+--   IIndexable:^2 : ∀{X : 𝒰 𝑖} -> IIndexable (X ^ 2) 𝟚 (∆ X)
+--   (IIndexable:^2 IIndexable.⌄ x) ₀ = x .fst
+--   (IIndexable:^2 IIndexable.⌄ x) ₁ = x .snd
+
+--   IIndexable:^3 : ∀{X : 𝒰 𝑖} -> IIndexable (X ^ 3) 𝟛 (∆ X)
+--   (IIndexable:^3 IIndexable.⌄ x) ₀ = x .fst
+--   (IIndexable:^3 IIndexable.⌄ x) ₁ = x .snd .fst
+--   (IIndexable:^3 IIndexable.⌄ x) ₂ = x .snd .snd
+
+-- variable
+--   𝑖𝑖 𝑗𝑗 𝑘𝑘 : 𝔏 ^ (suc (suc zero))
+--   𝑖𝑖𝑖 𝑗𝑗𝑗 𝑘𝑘𝑘 : 𝔏 ^ (suc (suc (suc zero)))
+
+
+--------------------------------------------------------------------------------
+-- Extended syntax
+
+
+
+-- instance
+--   IMultiJoinable:𝟚-Family : ∀{X : 𝒰 𝑖} {{_ : IJoinable X}} -> IMultiJoinable (X ^ 2) X
+--   IMultiJoinable.⨆ IMultiJoinable:𝟚-Family x = x ⌄ ₀ ⊔ x ⌄ ₁
+
+--   IMultiJoinable:𝟛-Family : ∀{X : 𝒰 𝑖} {{_ : IJoinable X}} -> IMultiJoinable (X ^ 3) X
+--   IMultiJoinable.⨆ IMultiJoinable:𝟛-Family x = x ⌄ ₀ ⊔ x ⌄ ₁ ⊔ x ⌄ ₂
+
+
+-- joinL : 𝔏 ^ 3 -> 𝔏 ^ 3 -> 𝔏 ^ 3
+-- joinL I J = let x = ⨆ I ⊔ ⨆ J
+--             in x , x , x
+
+-- zipL : 𝔏 ^ 3 -> 𝔏 ^ 3 -> 𝔏 ^ 3
+-- zipL 𝑖𝑖𝑖 𝑗𝑗𝑗 = 𝑖𝑖𝑖 ⌄ ₀ ⊔ 𝑗𝑗𝑗 ⌄ ₀ , 𝑖𝑖𝑖 ⌄ ₁ ⊔ 𝑗𝑗𝑗 ⌄ ₁ , 𝑖𝑖𝑖 ⌄ ₂ ⊔ 𝑗𝑗𝑗 ⌄ ₂
+
+
+
+--------------------------------------------------------------------------------
+-- alternative set syntax
+
+
+
+
+
+
+
+
+
+
+-------------------------
+-- special functions
+
+
+record Lift {j i} (A : 𝒰 i) : 𝒰 (i ⊔ j) where
+  constructor lift
+  field
+    lower : A
+open Lift public
+
+pattern ↥ x = lift x
+
+-- ↧ = lower
+
+it : ∀{A : 𝒰 𝑖} -> {{a : A}} -> A
+it {{a}} = a
+
+-- const : ∀{A : 𝒰 ℓ} {B : 𝒰 ℓ'} -> B -> A -> B
+-- const b _ = b
+
+-- _∘_ : {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘}
+--       -> (B -> C) -> (A -> B)
+--       -> A -> C
+-- f ∘ g = λ a -> f (g a)
+
+infixr -20 _$_
+_$_ : ∀{A : 𝒰 ℓ} {B : 𝒰 ℓ'} -> (A -> B) -> A -> B
+f $ a = f a
+
+module TypeNotation where
+  infixr 30 _×_
+  _×_ = _×-𝒰_
+
+
+-- 𝒫 : (A : 𝒰 𝑖) -> 𝒰 (𝑖 ⁺)
+-- 𝒫 {𝑖} A = A -> 𝒰 𝑖
+
+-- record ⦋_⦌ {U : 𝒰 𝑖} (P : U -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) where
+--   constructor _∈_
+--   field ⟨_⟩ : U
+--   field Proof : P ⟨_⟩
+-- open ⦋_⦌ public
+
+  -- _∈_ : (a : U) -> P a -> ⦋ P ⦌
+
+data ⊥-𝒰 {𝑖} : 𝒰 𝑖 where
+data ⊤-𝒰 {𝑖} : 𝒰 𝑖 where
+  instance tt : ⊤-𝒰
+
+{-# FOREIGN GHC type AgdaTop i = () #-}
+{-# COMPILE GHC ⊤-𝒰 = data AgdaTop (()) #-}
+
+data _+-𝒰_ (A : 𝒰 ℓ)(B : 𝒰 ℓ') : 𝒰 (ℓ ⊔ ℓ') where
+  left : A → A +-𝒰 B
+  right : B → A +-𝒰 B
+
+{-# FOREIGN GHC type AgdaEither a b = (Either) #-}
+{-# COMPILE GHC _+-𝒰_ = data AgdaEither (Left | Right) #-}
+
+
+
+case_of : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} (a : A +-𝒰 B) -> (A -> C) -> (B -> C) -> C
+case left x of f g = f x
+case right x of f g = g x
+
+-- _⊆_ : ∀{A : 𝒰 𝑖} -> (P Q : A -> 𝒰 𝑗) -> 𝒰 _
+-- _⊆_ P Q = ∀ {a} -> P a -> Q a
+
+-- _⫗_ : ∀{A : 𝒰 𝑖} -> (P Q : A -> 𝒰 𝑗) -> 𝒰 _
+-- _⫗_ P Q = P ⊆ Q ×-𝒰 Q ⊆ P
+
+-- infix 40 _⊆_ _⫗_
+
+
+
+
+-- bottom
+data 𝟘-𝒰 : 𝒰₀ where
+
+𝟘-rec : ∀ {ℓ} {A : 𝒰 ℓ} → 𝟘-𝒰 → A
+𝟘-rec ()
+
+𝟘-elim : ∀ {ℓ} {A : 𝟘-𝒰 → 𝒰 ℓ} → (x : 𝟘-𝒰) → A x
+𝟘-elim ()
+
+-- top
+
+open import Agda.Builtin.Unit public
+  renaming ( ⊤ to 𝟙-𝒰 )
+
+
+-- Negation
+infix 3 ¬_
+
+¬_ : 𝒰 ℓ → 𝒰 ℓ
+¬ A = A → 𝟘-𝒰
+
+-- Decidable types (inspired by standard library)
+data Decision (P : 𝒰 ℓ) : 𝒰 ℓ where
+  yes : ( p :   P) → Decision P
+  no  : (¬p : ¬ P) → Decision P
+
+
+
+
