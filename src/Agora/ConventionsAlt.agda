@@ -25,20 +25,6 @@ variable
 -- _∘_ : ∀{A : Set 𝑖} {B : Set 𝑗} {C : Set 𝑘} -> (B -> C) -> (A -> B) -> (A -> C)
 -- f ∘ g = λ x -> f (g x)
 
-𝒫 : Set 𝑖 -> Set (lsuc 𝑖)
-𝒫 X = X -> Set _
-
-singl : {X : Set 𝑖} -> X -> 𝒫 X
-singl x = λ y -> x ≡ y
-
-_∩-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> 𝒫 X
-_∩-𝒫_ A B x = A x × B x
-
-_∪-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> 𝒫 X
-_∪-𝒫_ A B x = A x + B x
-
-_≤-𝒫_ : ∀{X : Set 𝑖} -> 𝒫 X -> 𝒫 X -> Set _
-_≤-𝒫_ A B = ∀ x -> A x -> B x
 
 isFinite : (A : Set 𝑖) -> Set 𝑖
 isFinite A = ∑ λ (n : Nat) -> {!!}
