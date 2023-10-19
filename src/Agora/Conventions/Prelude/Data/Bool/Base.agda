@@ -74,12 +74,12 @@ if true  then x else y = x
 if false then x else y = y
 
 _≟_ : Discrete Bool
-false ≟ false = yes refl
-false ≟ true  = no λ ()
+false ≟ false = right refl
+false ≟ true  = left λ ()
 -- λ p →  (λ b → if b then 𝟘-𝒰 else Bool) p true
-true  ≟ false = no λ ()
+true  ≟ false = left λ ()
 -- λ p → subst (λ b → if b then Bool else 𝟘-𝒰) p true
-true  ≟ true  = yes refl
+true  ≟ true  = right refl
 
 Dec→Bool : Decision A → Bool
 Dec→Bool (yes p) = true

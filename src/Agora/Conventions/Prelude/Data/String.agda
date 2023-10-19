@@ -26,12 +26,12 @@ instance
   isDiscrete:String : isDiscrete Text
   isDiscrete:String = record { _≟-Str_ = lem-1 }
     where
-      lem-1 : (a b : Text) → Decision (StrId a b)
+      lem-1 : (a b : Text) → isDecidable (StrId a b)
       lem-1 a b with a ≟ b
-      ... | false = no λ x → bot
+      ... | false = left λ x → bot
         where
           postulate bot : 𝟘-𝒰
-      ... | true = yes eq
+      ... | true = right eq
         where
           postulate eq : a ≣ b
 

@@ -52,12 +52,12 @@ injSuc : suc m ≣ suc n → m ≣ n
 injSuc p = cong-Str predℕ p
 
 discreteℕ : Discrete ℕ
-discreteℕ zero zero = yes refl
-discreteℕ zero (suc n) = no znots
-discreteℕ (suc m) zero = no snotz
+discreteℕ zero zero = right refl
+discreteℕ zero (suc n) = left znots
+discreteℕ (suc m) zero = left snotz
 discreteℕ (suc m) (suc n) with discreteℕ m n
-... | yes p = yes (cong-Str suc p)
-... | no p = no (λ x → p (injSuc x))
+... | right p = right (cong-Str suc p)
+... | left p = left (λ x → p (injSuc x))
 
 -- isSetℕ : isSet ℕ
 -- isSetℕ = Discrete→isSet discreteℕ

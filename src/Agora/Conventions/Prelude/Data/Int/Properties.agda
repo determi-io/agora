@@ -120,13 +120,13 @@ negsucNotpos a b h = subst-Str T h 0
 
 discreteInt : Discrete Int
 discreteInt (pos n) (pos m) with discreteℕ n m
-... | yes p = yes (cong-Str pos p)
-... | no p  = no (λ x → p (injPos x))
-discreteInt (pos n) (negsuc m) = no (posNotnegsuc n m)
-discreteInt (negsuc n) (pos m) = no (negsucNotpos n m)
+... | right p = right (cong-Str pos p)
+... | left p  = left (λ x → p (injPos x))
+discreteInt (pos n) (negsuc m) = left (posNotnegsuc n m)
+discreteInt (negsuc n) (pos m) = left (negsucNotpos n m)
 discreteInt (negsuc n) (negsuc m) with discreteℕ n m
-... | yes p = yes (cong-Str negsuc p)
-... | no p  = no (λ x → p (injNegsuc x))
+... | right p = right (cong-Str negsuc p)
+... | left p  = left (λ x → p (injNegsuc x))
 
 -- isSetInt : isSet Int
 -- isSetInt = Discrete→isSet discreteInt
