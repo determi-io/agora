@@ -8,15 +8,16 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # agda
-    # agda.url = "github:agda/agda";
-
     # determi
     agda-driver.url = "github:determi-io/agda-driver";
+
+    # library deps
+    agda-stdlib.url = "github:determi-io/agda-stdlib";
+
   };
 
   ###################################################
-  outputs = { self, nixpkgs, flake-utils, agda-driver }:
+  outputs = { self, nixpkgs, flake-utils, agda-driver, agda-stdlib }:
   (
     let mkOutputs = system:
     (
@@ -26,17 +27,21 @@
       {
         devShells.default = pkgs.mkShell {
           packages = [ pkgs.agda ];
-          driver = agda-driver-bin;
-          myoutpath = self.outPath;
+          # driver = agda-driver-bin;
+          # myoutpath = self.outPath;
 
           # DETERMI_NIX_AGDA_PATH = "${agda.outputs.packages.x86_64-linux.Agda}/bin/agda";
         };
 
         packages.default = derivation {
-          name = "myname";
+          name = "determi-io-agora";
           builder = agda-driver-bin;
           args = [ ./src ];
           inherit system;
+
+          AGDA_INCLUDES = "${agda-stdlib.packages.${system}.default}/src";
+
+          BLA = "";
         };
 
         # pkgs.stdenv.mkDerivation {
