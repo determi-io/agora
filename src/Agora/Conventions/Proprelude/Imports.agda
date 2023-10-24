@@ -18,12 +18,6 @@ String = Text
 
 
 
--- open import Cubical.Foundations.Prelude
---   hiding (Type ; Lift ; lift ; lower ; isGroupoid)
---   renaming (refl to refl-Path ; sym to sym-Path ; _∙_ to trans-Path ; _∎ to _∎-Path ;
---             cong₂ to cong₂-Path ;
---             _∧_ to _⋏_ ; _∨_ to _⋎_)
---   public
 
 open import Data.Product renaming (_×_ to _×-𝒰_ ; proj₁ to fst ; proj₂ to snd) public
 
