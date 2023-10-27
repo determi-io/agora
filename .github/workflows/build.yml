@@ -5,21 +5,23 @@ on:
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
-    container:
-      image: git.determi.io/determi-io/prebuilt-dependencies:dev-2023-10-27
-      options: -v /__w/determi-io/agora:/data/:rw
+    # container:
+    #   image: git.determi.io/determi-io/prebuilt-dependencies:dev-2023-10-27
+    #   options: -v /__w/determi-io/agora:/data/:rw
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build with nix
-        run: |
-              nix build --no-write-lock-file \
-              --extra-experimental-features nix-command \
-              --extra-experimental-features flakes \
-              --extra-substituters https://nix-cache.determi.io \
-              --extra-trusted-substituters https://nix-cache.determi.io \
-              --extra-trusted-public-keys nix-cache.determi.io:iAIZ0R6niwnWYjnkfOGN+S6UypVqpsHOchCLEanJQAM= \
-              -L \
-              .
+      - name: Build
+        uses: determi-io/build-agda-github-action@v1
+      # - name: Build with nix
+      #   run: |
+      #         nix build --no-write-lock-file \
+      #         --extra-experimental-features nix-command \
+      #         --extra-experimental-features flakes \
+      #         --extra-substituters https://nix-cache.determi.io \
+      #         --extra-trusted-substituters https://nix-cache.determi.io \
+      #         --extra-trusted-public-keys nix-cache.determi.io:iAIZ0R6niwnWYjnkfOGN+S6UypVqpsHOchCLEanJQAM= \
+      #         -L \
+      #         .
 
 
