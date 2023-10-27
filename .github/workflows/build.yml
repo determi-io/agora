@@ -7,7 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: git.determi.io/determi-io/prebuilt-dependencies:dev-2023-10-27
+      options: -v /__w/determi-io/agora:/data/:rw
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Build with nix
         run: |
               nix build --no-write-lock-file \
