@@ -25,10 +25,10 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} where
 
 macro
   𝐓𝐲𝐩𝐞 : ∀(𝑖 : 𝔏) -> SomeStructure
-  𝐓𝐲𝐩𝐞 (𝑖) = #structureOn (𝒰' 𝑖)
+  𝐓𝐲𝐩𝐞 (𝑖) = #structureOn (𝒰 𝑖)
 
   𝐔𝐧𝐢𝐯 : ∀(𝑖 : 𝔏) -> SomeStructure
-  𝐔𝐧𝐢𝐯 (𝑖) = #structureOn (𝒰' 𝑖)
+  𝐔𝐧𝐢𝐯 (𝑖) = #structureOn (𝒰 𝑖)
 
   𝐔𝐧𝐢𝐯₀ : SomeStructure
   𝐔𝐧𝐢𝐯₀ = #structureOn (𝒰₀)
