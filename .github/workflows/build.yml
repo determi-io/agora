@@ -1,14 +1,14 @@
-name: build-agora
-# run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
-steps:
-  - uses: actions/checkout@v3
-  - name: Install Nix
-    uses: cachix/install-nix-action@v17
-      # with:
-        # Mostly to avoid GitHub rate limiting
-# extra_nix_config: |
-#   access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-  # Note: this would only work if Cargo is included in the Nix shell
-  - name: Build release
-    run: nix build
+name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+    container:
+      image: git.determi.io/determi-io/prebuilt-dependencies:dev-2023-10-27
+    steps:
+      - name: Build with nix
+        run: nix build .
+
+
