@@ -9,7 +9,6 @@ open import Agora.Conventions.Meta.Term
 try-unify-𝔏n : Term -> ℕ -> TC ℕ
 try-unify-𝔏n hole n =
   do target-Type <- quoteTC (𝔏 ^ n)
-     -- target-Type <- normalise target-Type
      _ <- unify hole target-Type
      return n
 
@@ -32,7 +31,6 @@ macro
       level-Type <- inferType level-Term
       `𝔏` <- quoteTC 𝔏
       `ℕ` <- quoteTC ℕ
-      -- `𝒰''` <- quoteωTC 𝒰''
 
       let try-simple = (
             do
@@ -91,6 +89,4 @@ postulate
 𝒰₂ = 𝒰' ℓ₂
 
 
--- test : 𝒰 (ls ⌄ 7)
--- test = {!!}
 
