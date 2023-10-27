@@ -35,10 +35,10 @@ private
   isIso-𝒰.inv-r-◆-𝒰 (lem-20 {f = f}) = inv-l-◆-𝒰
   isIso-𝒰.inv-l-◆-𝒰 (lem-20 {f = f}) = inv-r-◆-𝒰
 
-  lem-30 : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} -> {f : A ≅-𝒰 B} -> {g : B ≅-𝒰 C} -> isIso-𝒰 (⟨ f ⟩ ◆-𝒰 ⟨ g ⟩)
-  isIso-𝒰.inverse-𝒰 (lem-30 {f = f}) = inverse-𝒰 ◆-𝒰 inverse-𝒰
-  isIso-𝒰.inv-r-◆-𝒰 (lem-30 {f = f}) = {!!}
-  isIso-𝒰.inv-l-◆-𝒰 (lem-30 {f = f}) = {!!}
+  -- lem-30 : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} -> {f : A ≅-𝒰 B} -> {g : B ≅-𝒰 C} -> isIso-𝒰 (⟨ f ⟩ ◆-𝒰 ⟨ g ⟩)
+  -- isIso-𝒰.inverse-𝒰 (lem-30 {f = f}) = inverse-𝒰 ◆-𝒰 inverse-𝒰
+  -- isIso-𝒰.inv-r-◆-𝒰 (lem-30 {f = f} {g = g}) = {!λ x -> cong-Str ⟨ f ⟩ (inv-r-◆-𝒰 {{of g}} _) ∙-≣ ?!}
+  -- isIso-𝒰.inv-l-◆-𝒰 (lem-30 {f = f}) = {!!}
 
 -- instance
   -- isEquivRel:≅-𝒰 : isEquivRel (∼-Base (_≅-𝒰_ {𝑖} {𝑖}))

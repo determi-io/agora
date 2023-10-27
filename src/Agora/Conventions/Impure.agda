@@ -20,5 +20,3 @@ postulate
 {-# COMPILE GHC FQName as Text #-}
 
 
-getFQName : Name -> FQName
-get

@@ -1,5 +1,5 @@
 
-module Agora.Conventions where
+module Agora.ConventionsAlt where
 
 open import Agda.Primitive public
 open import Agda.Builtin.Equality public
@@ -26,8 +26,8 @@ variable
 -- f ∘ g = λ x -> f (g x)
 
 
-isFinite : (A : Set 𝑖) -> Set 𝑖
-isFinite A = ∑ λ (n : Nat) -> {!!}
+-- isFinite : (A : Set 𝑖) -> Set 𝑖
+-- isFinite A = ∑ λ (n : Nat) -> Bool
 
 -- isFinite-𝒫 : 
 
