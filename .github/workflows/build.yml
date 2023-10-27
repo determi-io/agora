@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build
-        uses: determi-io/build-agda-github-action@v3
+        uses: determi-io/build-agda-github-action@v4-dev001
       # - name: Build with nix
       #   run: |
       #         nix build --no-write-lock-file \
