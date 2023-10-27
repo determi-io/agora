@@ -9,6 +9,13 @@ jobs:
       image: git.determi.io/determi-io/prebuilt-dependencies:dev-2023-10-27
     steps:
       - name: Build with nix
-        run: nix build .
+        run: nix build --no-write-lock-file \
+              --extra-experimental-features nix-command \
+              --extra-experimental-features flakes \
+              --extra-substituters https://nix-cache.determi.io \
+              --extra-trusted-substituters https://nix-cache.determi.io \
+              --extra-trusted-public-keys nix-cache.determi.io:iAIZ0R6niwnWYjnkfOGN+S6UypVqpsHOchCLEanJQAM= \
+              -L \
+              .
 
 
