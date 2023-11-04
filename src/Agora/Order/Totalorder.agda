@@ -26,7 +26,9 @@ data Trichotomy' (A : Preorder 𝑖) (a b : ⟨ A ⟩) : 𝒰 𝑖 where
   gt : b ⋦ a -> Trichotomy' A a b
 
 case-Trichotomy_of : {A : Preorder 𝑖} {a b : ⟨ A ⟩} -> Trichotomy' A a b -> {P : 𝒰 𝑗} -> (a ⋦ b -> P) -> (a ∼ b -> P) -> (b ⋦ a -> P) -> P
-case-Trichotomy_of = {!!}
+case-Trichotomy lt x of a b c = a x
+case-Trichotomy eq x of a b c = b x
+case-Trichotomy gt x of a b c = c x
 
 
 

@@ -213,12 +213,15 @@ instance
 record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ] A}} (P : A -> 𝒰 𝑘) : 𝒰 (𝑗 ､ 𝑘 ､ 𝑖 ､ 𝑙) where
   constructor ′_′
   field ⟨_⟩ : Univ
+  -- field overlap {{oldProof}} : Proof ⟨_⟩
+  -- field overlap {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
   field {oldProof} : Proof ⟨_⟩
   field {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
 
+
 --   -- field {{of_}} : P (reconstruct U (⟨_⟩ , oldProof))
-open _:&_ {{...}} public hiding (⟨_⟩ ; oldProof)
-open _:&_ public using (⟨_⟩ ; oldProof)
+open _:&_ {{...}} public hiding (⟨_⟩)
+open _:&_ public using (⟨_⟩)
 
 infixl 30 _:&_
 
@@ -230,17 +233,17 @@ instance
     { Proof = λ a -> ∑i λ (p1 : Proof {{UU}} a) -> P (reconstructObj a p1)
     ; projectUniv = λ ap -> ⟨ ap ⟩
     -- λ ap -> projectUniv {{UU}} (reconstructObj ⟨ ap ⟩ (_:&_.oldProof ap))
-    ; projectProof = λ {a -> make∑i {ifst = oldProof a} {{of a}}}
-    ; reconstructObj = λ u -> λ z -> ′ u ′
+    ; projectProof = λ {a -> make∑i {ifst = _:&_.oldProof a} {{of a}}}
+    ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
     }
 
 _on_ : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
 _on_ UU {{U}} a = Proof {{U}} a
 
--- is-syntax : (UU : 𝒰 𝑖) {{U : hasU UU 𝑘 𝑙}} -> (a : getU U) -> 𝒰 _
--- is-syntax UU {{U}} a = getP U a
+is-syntax : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
+is-syntax UU {{U}} a = Proof {{U}} a
 
--- syntax is-syntax a b = b is a
+syntax is-syntax a b = b is a
 
 
 --------------------------------------------------------------------

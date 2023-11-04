@@ -7,7 +7,7 @@ open import Agora.Conventions
 -- open import Agora.Type
 
 open import Agora.Setoid.Definition
-open import Agora.Data.Prop.Everything
+-- open import Agora.Data.Prop.Everything
 
 open import Agora.Order.Preorder
 open import Agora.Order.Totalorder

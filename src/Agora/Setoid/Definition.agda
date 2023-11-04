@@ -1,6 +1,4 @@
 
-{-# OPTIONS --lossy-unification #-}
-
 module Agora.Setoid.Definition where
 
 open import Agora.Conventions
@@ -321,7 +319,7 @@ macro
 
 module _ {A : 𝒰 𝑖} {{S : isSetoid {𝑗} A}} {I : 𝒰 𝑘} where
   _∼-Family_ : (f g : I -> A) -> 𝒰 _
-  _∼-Family_ f g = ∀{i} -> f i ∼ g i
+  _∼-Family_ f g = ∀ i -> f i ∼ g i
 
   -- instance
   --   isEquivRel:∼-Family : isEquivRel (∼-Base _∼-Family_)
@@ -332,9 +330,9 @@ module _ {A : 𝒰 𝑖} {{S : isSetoid {𝑗} A}} {I : 𝒰 𝑘} where
   instance
     isEquivRel:∼-Family : isEquivRel _∼-Family_
     isEquivRel:∼-Family = isEquivRel:byDef
-      (refl)
-      (λ p -> sym p)
-      (λ p q -> p ∙ q)
+      (λ i -> refl)
+      (λ p i -> sym (p i))
+      (λ p q i -> (p i) ∙ (q i))
 
   instance
     isSetoid:Family : isSetoid (I -> A)

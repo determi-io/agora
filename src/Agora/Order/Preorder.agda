@@ -29,6 +29,7 @@ open isPreorderData {{...}} public
 
 
 record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
+  constructor isPreorder:byDef
   field _≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘
   field {{isPreorderData:≤}} : isPreorderData A _≤_
 
@@ -65,33 +66,33 @@ Partialorder 𝑖 = Preorder 𝑖 :& isPartialorder
 
 
 
+module _ {A : 𝒰 _} {{_ : A is Preorder 𝑗}} {I : 𝒰 𝑙} where
 
-
-module _ {A : Preorder 𝑖} {I : 𝒰 𝑙} where
   _≤-Family_ : (I →# A) -> (I →# A) -> 𝒰 _
   _≤-Family_ f g = ∀ a -> f a ≤ g a
-
 
   instance
     isPreorderData:≤-Family : isPreorderData (I →# A) _≤-Family_
     isPreorderData:≤-Family = record
       { reflexive = λ a → reflexive
       ; _⟡_ = λ p q a -> p a ⟡ q a
-      ; transp-≤ = λ p q f a -> transp-≤ p q (f a)
+      ; transp-≤ = λ p q f a -> transp-≤ (p a) (q a) (f a)
       }
 
     isPreorder:≤-Family : isPreorder _ (I →# A )
     isPreorder:≤-Family = record { _≤_ = _≤-Family_ }
 
 
-
 -- module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} {{_ : isPreorder 𝑘 ′ A ′}} {{_ : isPartialorder ′ A ′}} where
---   instance
---     isPartialorder:Family : ∀{I : 𝒰 𝑙} -> isPartialorder (′ (I -> A) ′)
---     isPartialorder:Family = {!!}
-    -- isPartialorder.antisym isPartialorder:Family (incl p) (incl q) = antisym (incl p) (incl q)
-{-
--}
+
+module _ {A : 𝒰 _} {{_ : A is Partialorder 𝑖}} {I : 𝒰 𝑙} where
+
+  instance
+    isPartialorder:Family : isPartialorder (I →# A)
+    isPartialorder:Family = record
+      { antisym = λ p q i → antisym (p i) (q i)
+      }
+
 ----------------------------------------------------------
 -- Category of preorders
 
