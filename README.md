@@ -6,8 +6,8 @@ We migrate the code from the [hata project](https://github.com/project-hata/hata
 ### Migration notes
 
 The following changes are to be followed:
- - Move `Verification.Core` to `Agora`
- - Merge `Verification.Core.Set` with `Verification.Core.Data.Universe` into `Agora.Data.Universe`
+ - Move `Agora. to `Agora`
+ - Merge `Agora.Set` with `Agora.Data.Universe` into `Agora.Data.Universe`
 
 
 ### Notes on conventions

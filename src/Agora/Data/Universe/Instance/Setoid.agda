@@ -2,7 +2,7 @@
 module Agora.Data.Universe.Instance.Setoid where
 
 --
--- MIGRATION NOTES: ported from `Verification.Core.Data.Universe.Instance.Setoid`
+-- MIGRATION NOTES: ported from `Agora.Data.Universe.Instance.Setoid`
 --  - Changed definition of `isIso-𝒰` to use `_≡-Str_` instead of the path types `_≡_`
 --  - Commented out the "Coercible" code
 --

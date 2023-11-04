@@ -3,12 +3,22 @@ module Agora.Conventions.Meta2.Structure where
 
 open import Agora.Conventions.Prelude hiding (′_′)
 open import Agora.Conventions.Meta.Universe
--- open import Verification.Core.Category.Definition
--- open import Verification.Core.Category.Instance.Set.Definition
--- open import Verification.Core.Order.Preorder renaming (IPreorder to isPreorder)
+-- open import Agora.Category.Definition
+-- open import Agora.Category.Instance.Set.Definition
+-- open import Agora.Order.Preorder renaming (IPreorder to isPreorder)
+
 
 private
   variable 𝑗₂ : 𝔏
+
+--------------------------------------------------------------
+
+record isAnything {A : 𝒰 𝑖} (a : A) (𝑗 : 𝔏) : 𝒰 (𝑗) where
+
+instance
+  isAnything:anything : {A : 𝒰 𝑖} {a : A} {𝑗 : 𝔏} -> isAnything a 𝑗
+  isAnything:anything = record {}
+
 
 record ∑i_ {A : 𝒰 𝑖} (B : A -> 𝒰 𝑗) : 𝒰 (𝑖 ､ 𝑗) where
   instance constructor make∑i
@@ -17,6 +27,10 @@ record ∑i_ {A : 𝒰 𝑖} (B : A -> 𝒰 𝑗) : 𝒰 (𝑖 ､ 𝑗) where
   -- field overlap {{isnd}} : B (ifst)
   field {{isnd}} : B (ifst)
 open ∑i_ {{...}} public
+
+--------------------------------------------------------------
+
+{-
 
 
 record hasU (A : 𝒰 𝑖) 𝑗 𝑘 : 𝒰 (𝑖 ､ 𝑗 ⁺ ､ 𝑘 ⁺) where
@@ -102,12 +116,6 @@ open _:,_ {{...}} public
 
 infixr 80 _:,_
 
-record isAnything {A : 𝒰 𝑖} (a : A) (𝑗 : 𝔏) : 𝒰 (𝑗) where
-
-instance
-  isAnything:anything : {A : 𝒰 𝑖} {a : A} {𝑗 : 𝔏} -> isAnything a 𝑗
-  isAnything:anything = record {}
-
 -- instance
 --   hasU:𝒰 : ∀{𝑖 𝑗 : 𝔏} -> hasU (𝒰 𝑖) (𝑖 ⁺) (𝑖 ⁺ ⊔ 𝑗)
 --   getU (hasU:𝒰 {𝑖}) = 𝒰 𝑖
@@ -169,6 +177,73 @@ is-syntax UU {{U}} a = getP U a
 
 syntax is-syntax a b = b is a
 
+-}
+
+--------------------------------------------------------------------
+-- hasU for the #structureOn feature, which is broken with the original hasU
+-- since https://github.com/agda/agda/pull/6368, we recreate the effect
+-- here with a relational data type.
+
+record _isUniverseOf[_]_ (Univ : 𝒰 𝑖) (𝑘 : 𝔏) (A : 𝒰 𝑗) : 𝒰 (𝑖 ､ 𝑘 ⁺ ､ 𝑗) where
+  field Proof : Univ -> 𝒰 𝑘
+  field projectUniv : A -> Univ
+  field projectProof : (a : A) -> Proof (projectUniv a)
+  field reconstructObj : (u : Univ) -> Proof u -> A
+
+open _isUniverseOf[_]_ {{...}} public
+
+_isUniverseOf[_]_:byBase : {A : 𝒰 𝑖} -> _isUniverseOf[ _ ]_ A A
+_isUniverseOf[_]_:byBase = record
+  { Proof = λ a -> isAnything a ℓ₀
+  ; projectUniv = λ a -> a
+  ; projectProof = λ a → record {}
+  ; reconstructObj = λ u _ → u
+  }
+
+instance
+  _isUniverseOf[_]_:𝒰 : ∀{𝑖 : 𝔏} -> (𝒰 𝑖) isUniverseOf[ _ ] (𝒰 𝑖)
+  _isUniverseOf[_]_:𝒰 = _isUniverseOf[_]_:byBase
+
+  _isUniverseOf[_]_:Exp : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} -> (A -> B) isUniverseOf[ _ ] (A -> B)
+  _isUniverseOf[_]_:Exp = _isUniverseOf[_]_:byBase
+
+  _isUniverseOf[_]_:∏ : ∀{A : 𝒰 𝑖} {B : A -> 𝒰 𝑗} -> (∀{a} -> B a) isUniverseOf[ _ ] _
+  _isUniverseOf[_]_:∏ = _isUniverseOf[_]_:byBase
+
+record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ] A}} (P : A -> 𝒰 𝑘) : 𝒰 (𝑗 ､ 𝑘 ､ 𝑖 ､ 𝑙) where
+  constructor ′_′
+  field ⟨_⟩ : Univ
+  -- field overlap {{oldProof}} : Proof ⟨_⟩
+  -- field overlap {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
+  field {oldProof} : Proof ⟨_⟩
+  field {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
+
+
+--   -- field {{of_}} : P (reconstruct U (⟨_⟩ , oldProof))
+open _:&_ {{...}} public hiding (⟨_⟩)
+open _:&_ public using (⟨_⟩)
+
+infixl 30 _:&_
+
+instance
+  isUniverseOf::& : ∀{Univ : 𝒰 𝑖} -> {A : 𝒰 𝑗} -> {{_ : Univ isUniverseOf[ 𝑘 ] A}}
+                    -> {P : A -> 𝒰 𝑙}
+                    -> Univ isUniverseOf[ _ ] (A :& P)
+  isUniverseOf::& {{UU}} {P = P} = record
+    { Proof = λ a -> ∑i λ (p1 : Proof {{UU}} a) -> P (reconstructObj a p1)
+    ; projectUniv = λ ap -> ⟨ ap ⟩
+    -- λ ap -> projectUniv {{UU}} (reconstructObj ⟨ ap ⟩ (_:&_.oldProof ap))
+    ; projectProof = λ {a -> make∑i {ifst = _:&_.oldProof a} {{of a}}}
+    ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
+    }
+
+_on_ : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
+_on_ UU {{U}} a = Proof {{U}} a
+
+is-syntax : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
+is-syntax UU {{U}} a = Proof {{U}} a
+
+syntax is-syntax a b = b is a
 
 
 --------------------------------------------------------------------
@@ -176,12 +251,12 @@ syntax is-syntax a b = b is a
 
 -- record hasStructure {A : 𝒰 𝑘} (a : A) (UU : 𝒰 𝑗) (U : hasU UU 𝑘 𝑙) : 𝒰 ((𝑘 ⁺) ､ 𝑙) where
 --   constructor hasstructure
---   field isUniverseOf : A ≡-Str getU U
---   field isWithStructure : getP U (transport-Str (isUniverseOf) a)
+--   field _isUniverseOf[_]_ : A ≡-Str getU U
+--   field isWithStructure : getP U (transport-Str (_isUniverseOf[_]_) a)
 
 -- instance
 --   hasStructure:Structure : ∀{UU : 𝒰 𝑗} {{U : hasU UU 𝑘 𝑙}} -> {a : getU U} -> {{_ : getP U a}} -> hasStructure {A = getU U} a UU U -- {{{!!}}}
---   hasStructure.isUniverseOf hasStructure:Structure = refl
+--   hasStructure._isUniverseOf[_]_ hasStructure:Structure = refl
 --   hasStructure.isWithStructure (hasStructure:Structure {{U = U}} {{P}}) = P
 
 ---------------------------------------------------------------
@@ -192,8 +267,8 @@ record hasStructure {A : 𝒰 𝑘} (a : A) (UU : 𝒰 𝑗) 𝑙 : 𝒰 ((𝑘 
   pattern
   constructor hasstructure
   field myU : hasU UU 𝑘 𝑙
-  field isUniverseOf : A ≡-Str getU myU
-  field isWithStructure : getP myU (transport-Str (isUniverseOf) a)
+  field _isUniverseOf[_]_ : A ≡-Str getU myU
+  field isWithStructure : getP myU (transport-Str (_isUniverseOf[_]_) a)
 
 
 instance
@@ -201,8 +276,8 @@ instance
   hasStructure:Structure : ∀{UU : 𝒰 𝑗} {{U : hasU UU 𝑘 𝑙}} -> {a : getU U} -> {{P : getP U a}} -> hasStructure {A = getU U} a UU 𝑙
   hasStructure:Structure {{U = U}} {{P = P}} = hasstructure U refl P
   -- hasStructure.myU (hasStructure:Structure {{U = U}}) = U
-  -- hasStructure.isUniverseOf (hasStructure:Structure) = refl
-  -- -- hasStructure.isUniverseOf (hasStructure:Structure {{pp = pp}}) = pp
+  -- hasStructure._isUniverseOf[_]_ (hasStructure:Structure) = refl
+  -- -- hasStructure._isUniverseOf[_]_ (hasStructure:Structure {{pp = pp}}) = pp
   -- hasStructure.isWithStructure (hasStructure:Structure {{U = U}} {{P = P}}) = P
 
 -- structureOn : {A : 𝒰 𝑘} (a : A) {UU : 𝒰 𝑗} {U : hasU UU 𝑘 𝑙} -> {{pp : A ≡-Str getU U}} -> {{_ : hasStructure {A = A} a UU 𝑙}} -> UU
@@ -233,8 +308,8 @@ record hasStructure {𝑘 𝑗 : 𝔏} {A : 𝒰 𝑘} (a : A) (UU : 𝒰 𝑗) 
   constructor hasstructure
   field myUU : UU
   -- field myU : hasU UU 𝑘 𝑙
-  -- field isUniverseOf : A ≡-Str getU myU
-  -- field isWithStructure : getP myU (transport-Str (isUniverseOf) a)
+  -- field _isUniverseOf[_]_ : A ≡-Str getU myU
+  -- field isWithStructure : getP myU (transport-Str (_isUniverseOf[_]_) a)
 
 
 instance
