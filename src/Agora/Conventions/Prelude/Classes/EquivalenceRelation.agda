@@ -21,21 +21,6 @@ open import Agora.Conventions.Prelude.Classes.Setoid
 
 
 
--- [Definition]
-record isEquivRel {X : 𝒰 𝑖} (_≣_ : X -> X -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) where
-  constructor equivRel
-  field refl-Equiv : ∀{x : X} -> x ≣ x
-        sym-Equiv : ∀{x y : X} -> x ≣ y -> y ≣ x
-        _∙-Equiv_ : ∀{x y z : X} -> x ≣ y -> y ≣ z -> x ≣ z
-
-  infixl 30 _∙-Equiv_
-open isEquivRel {{...}} public
--- //
-
--- module _ {X : 𝒰 𝑖} {_≣_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≣_}} where
---   instance
---     Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ≣ y) (y ≣ x)
---     Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
 
 
 

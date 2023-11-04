@@ -28,6 +28,7 @@ open import Agora.Conventions.Prelude.Classes.Discrete
 private
   ⊥ = 𝟘-𝒰
 
+
 {-
 
 This file defines
@@ -226,6 +227,7 @@ ind-comm _∙_ f g p g∙ ∙g base z (suc n) = {!!}
   -- IH = ind-comm _∙_ f g p g∙ ∙g base z n
 
 private instance _ = isSetoid:byId
+private instance _ = isEquivRel:≣
 
 ind-assoc : {A : Type₀} (_·_ : A → A → A) (f : ℕ → A)
         (g : A → A) (p : ∀ a b → g (a · b) ≣ a · (g b))

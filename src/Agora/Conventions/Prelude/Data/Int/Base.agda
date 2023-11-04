@@ -33,9 +33,17 @@ open import Agda.Builtin.Int public
 -- {-# BUILTIN INTEGERPOS    pos    #-}
 -- {-# BUILTIN INTEGERNEGSUC negsuc #-}
 
+
+_∼-Int_ : Int -> Int -> 𝒰₀
+_∼-Int_ = _≣_
+
+instance
+  isEquivRel:∼-Int : isEquivRel _∼-Int_
+  isEquivRel:∼-Int = isEquivRel:≣
+
 instance
   isSetoid:Int : isSetoid Int
-  isSetoid:Int = isSetoid:byId
+  isSetoid:Int = isSetoid:byDef _∼-Int_
 
 neg : (n : ℕ) → Int
 neg zero = pos zero
