@@ -38,6 +38,13 @@ private
   variable
     l m n : ℕ
 
+_∼-ℕ_ : ℕ -> ℕ -> 𝒰₀
+_∼-ℕ_ = _≣_
+
+instance
+  isEquivRel:∼-ℕ : isEquivRel _∼-ℕ_
+  isEquivRel:∼-ℕ = isEquivRel:≣
+
 instance
   isSetoid:ℕ : isSetoid ℕ
   isSetoid:ℕ = isSetoid:byId

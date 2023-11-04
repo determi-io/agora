@@ -43,9 +43,16 @@ infixr 6 _and_
 infixr 5 _or_
 infix  0 if_then_else_
 
+_∼-Bool_ : Bool -> Bool -> 𝒰₀
+_∼-Bool_ = _≣_
+
+instance
+  isEquivRel:∼-Bool : isEquivRel _∼-Bool_
+  isEquivRel:∼-Bool = isEquivRel:≣
+
 instance
   isSetoid:Bool : isSetoid Bool
-  isSetoid:Bool = isSetoid:byId
+  isSetoid:Bool = isSetoid:byDef _∼-Bool_
 
 
 not : Bool → Bool

@@ -8,6 +8,31 @@ open import Agora.Conventions.Prelude.Classes.Operators.Unary
 open import Agora.Conventions.Prelude.Data.StrictId
 
 
+-- AbstractOver : {P : 𝒰 𝑖} -> (P₀ : P) -> (Statement : P -> 𝒰 𝑗) -> Statement P₀
+--         -> ∀{P₁ : P} -> {{P₁ ≣ P₀}} -> Statement P₁
+-- AbstractOver {P} Statement P₀ proof {P₁} {{refl-≣}} = proof
+
+
+-- [Definition]
+record isEquivRel {A : 𝒰 𝑖} (_∼_ : A -> A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) where
+  constructor isEquivRel:byDef
+  field refl : ∀{x : A} -> x ∼ x
+        sym : ∀{x y : A} -> x ∼ y -> y ∼ x
+        _∙_ : ∀{x y z : A} -> x ∼ y -> y ∼ z -> x ∼ z
+
+  _≁_ : A -> A -> 𝒰 (𝑗)
+  a ≁ b = ¬ a ∼ b
+
+
+  infixl 30 _∙_
+open isEquivRel {{...}} public
+-- //
+
+module _ {X : 𝒰 𝑖} {_≣_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≣_}} where
+  instance
+    Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ≣ y) (y ≣ x)
+    Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
+
 
 -- [Definition]
 -- | We call a type |A| a /setoid/ if it is equipped with an
@@ -16,31 +41,23 @@ open import Agora.Conventions.Prelude.Data.StrictId
 record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) where
   constructor isSetoid:byDef
 
-  -- | 1. A binary relation [..].
   field _∼_ : A -> A -> 𝒰 𝑗
+  field {{isEquivRel:∼}} : isEquivRel _∼_
 
-  -- | 2. Proofs of reflexivity, symmetry, and transitivity.
-        refl  : ∀ {a : A} -> a ∼ a
-        sym   : ∀ {a b : A} -> a ∼ b -> b ∼ a
-        _∙_   : ∀ {a b c : A} -> a ∼ b -> b ∼ c -> a ∼ c
+        -- refl  : ∀ {a : A} -> a ∼ a
+        -- sym   : ∀ {a b : A} -> a ∼ b -> b ∼ a
+        -- _∙_   : ∀ {a b c : A} -> a ∼ b -> b ∼ c -> a ∼ c
 
-  -- |: For convenience, we say [] [..].
-  _≁_ : A -> A -> 𝒰 (𝑗)
-  a ≁ b = ¬ a ∼ b
-
-  -- |> And we usually write |a ⁻¹| for |sym a|.
-
-  infixl 30 _∙_
 -- //
 open isSetoid {{...}} public
 
 
 -- [Hide]
-module _ {X : 𝒰 𝑗} {{_ : isSetoid {𝑖} X}} where
-  open import Agora.Conventions.Prelude.Data.StrictId
-  instance
-    Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ∼ y) (y ∼ x)
-    Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
+-- module _ {X : 𝒰 𝑗} {{_ : isSetoid {𝑖} X}} where
+--   open import Agora.Conventions.Prelude.Data.StrictId
+--   instance
+--     Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ∼ y) (y ∼ x)
+--     Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
 -- //
 
 
@@ -58,10 +75,13 @@ module _ {A : 𝒰 𝑖} where
   _∙-≣_ : {a b c : A} -> a ≣ b -> b ≣ c -> a ≣ c
   _∙-≣_ refl-≣ q = q
 
+  isEquivRel:≣ : isEquivRel {A = A} _≣_
+  isEquivRel:≣ = isEquivRel:byDef refl-≣ sym-≣ _∙-≣_
+
   -- |> This means that |A| together with the identity type
   -- is a setoid.
   isSetoid:byId : isSetoid A
-  isSetoid:byId = isSetoid:byDef _≣_ refl-≣ sym-≣ _∙-≣_
+  isSetoid:byId = isSetoid:byDef _≣_ {{isEquivRel:≣}}
 -- //
 
 -- [Example]
@@ -87,4 +107,6 @@ module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
 
 -- //
 
+{-
 
+-}
