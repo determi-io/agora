@@ -1,5 +1,5 @@
 
-module Agora.Data.Universe.Power.Definition where
+module Agora.Data.Power.Definition where
 
 open import Agora.Conventions
 

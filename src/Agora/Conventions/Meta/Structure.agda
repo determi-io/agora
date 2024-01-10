@@ -141,7 +141,7 @@ replaceFullTele σ (x ∷ tele) = replaceFull σ x ∷ replaceFullTele (jumpOver
 {-# TERMINATING #-}
 mergeLevelVars : (FullTele) -> ((ℕ -> Type -> Type) × FullTele)
 mergeLevelVars ([]) = ∆ (λ x -> x) , []
-mergeLevelVars (x ∷ []) = ∆ (λ x -> x) , x ∷ []
+mergeLevelVars (x ∷ []) = ∆ (λ x -> x) , (x ∷ [])
 mergeLevelVars (x ∷ y ∷ tele) with isDefInTele x (quote 𝔏) and isDefInTele y (quote Σ) and isVisibleInTele x and isVisibleInTele y
 ... | false =
   let (τ , tele) = mergeLevelVars (y ∷ tele)

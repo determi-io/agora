@@ -15,3 +15,7 @@ module _ {A B : 𝒰 𝑖} where
   map-Maybe f (left x) = left x
   map-Maybe f (just x) = just (f x)
 
+  bind-Maybe : Maybe A -> (f : A -> Maybe B) -> Maybe B
+  bind-Maybe (left x) f = left x
+  bind-Maybe (just x) f = f x
+

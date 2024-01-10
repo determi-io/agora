@@ -15,8 +15,8 @@ module Agora.Conventions.Prelude.Data.Nat.Base where
 open import Agora.Conventions.Proprelude.CubicalConventions
 
 open import Agda.Builtin.Nat public
-  using (zero; suc; _+_; _*_)
-  renaming (Nat to ℕ; _-_ to _∸_)
+  using (zero; suc)
+  renaming (Nat to ℕ; _-_ to _∸_ ; _+_ to infixl 30 _+_ ; _*_ to infixl 40 _*_)
 
 open import Agora.Conventions.Prelude.Data.Nat.Literals public
 

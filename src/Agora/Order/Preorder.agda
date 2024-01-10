@@ -64,8 +64,6 @@ Partialorder 𝑖 = Preorder 𝑖 :& isPartialorder
 -- Derived instances
 
 
-
-
 module _ {A : 𝒰 _} {{_ : A is Preorder 𝑗}} {I : 𝒰 𝑙} where
 
   _≤-Family_ : (I →# A) -> (I →# A) -> 𝒰 _

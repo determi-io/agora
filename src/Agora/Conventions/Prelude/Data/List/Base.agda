@@ -16,13 +16,13 @@ open import Agora.Conventions.Proprelude.CubicalConventions
 open import Agora.Conventions.Prelude.Data.Nat
 open import Agora.Conventions.Prelude.Data.Nat.Literals
 
-open import Agda.Builtin.List        public
+open import Agda.Builtin.List        public renaming (_∷_ to infixr 25 _∷_)
 -- open import Cubical.Core.Everything
 -- open import Cubical.Data.Nat
 
 module _ {ℓ} {A : Type ℓ} where
 
-  infixr 5 _++_ _∷ʳ_
+  infixr 25 _++_ _∷ʳ_
 
   [_] : A → List A
   [ a ] = a ∷ []
