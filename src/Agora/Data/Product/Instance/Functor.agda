@@ -1,6 +1,8 @@
 
 module Agora.Data.Product.Instance.Functor where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Data.Product.Definition
 open import Agora.Data.Universe.Definition
@@ -20,5 +22,5 @@ instance
   isFunctor:×-𝒰 = isFunctor:⊓
 
 
-
+-}
 

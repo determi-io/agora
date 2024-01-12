@@ -1,6 +1,8 @@
 
 module Agora.Data.Prop.Instance.HeytingAlgebra where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Setoid.Definition
 open import Agora.Order.Preorder
@@ -20,3 +22,5 @@ instance
   isHeytingAlgebra._⇒_     isHeytingAlgebra:Prop A B = ∣ (⟨ A ⟩ -> ⟨ B ⟩) ∣
   isHeytingAlgebra.embed-⇒ isHeytingAlgebra:Prop = incl (λ a b -> a , b)
   isHeytingAlgebra.eval-⇒  isHeytingAlgebra:Prop = incl (λ (a , f) -> f a)
+
+-}

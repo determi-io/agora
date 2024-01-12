@@ -1,6 +1,8 @@
 
 module Agora.Data.Product.Instance.Product where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Data.Product.Definition
 open import Agora.Data.Universe.Definition
@@ -41,5 +43,5 @@ instance
   hasFiniteProducts:𝐔𝐧𝐢𝐯 : hasFiniteProducts (𝐔𝐧𝐢𝐯 𝑖)
   hasFiniteProducts:𝐔𝐧𝐢𝐯 = hasFiniteProducts:default
 
-
+-}
 

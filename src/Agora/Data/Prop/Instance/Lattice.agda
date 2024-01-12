@@ -1,6 +1,8 @@
 
 module Agora.Data.Prop.Instance.Lattice where
 
+{-
+
 open import Agora.Conventions
 
 open import Agora.Setoid.Definition
@@ -47,3 +49,5 @@ instance
   hasAllMeets.⋀ hasAllMeets:Prop F = ∣ ∏ (λ a -> ⟨ F a ⟩) ∣
   hasAllMeets.π-⋀ hasAllMeets:Prop = λ x → incl (λ Fx → Fx x)
   hasAllMeets.⟨ hasAllMeets:Prop ⟩-⋀ = λ P → incl (λ F → λ x -> ⟨ P x ⟩ F)
+
+-}

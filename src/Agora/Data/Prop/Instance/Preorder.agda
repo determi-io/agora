@@ -1,6 +1,8 @@
 
 module Agora.Data.Prop.Instance.Preorder where
 
+{-
+
 open import Agora.Conventions
 
 open import Agora.Setoid.Definition
@@ -43,3 +45,5 @@ instance
 -- instance
 --   isPartialorder:Prop : isPartialorder ′ Prop 𝑖 ′
 --   isPartialorder.antisym isPartialorder:Prop (incl p) (incl q) = (p , q)
+
+-}

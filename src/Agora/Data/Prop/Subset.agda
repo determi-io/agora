@@ -1,6 +1,8 @@
 
 module Agora.Data.Prop.Subset where
 
+{-
+
 open import Agora.Conventions
 
 open import Agora.Setoid.Definition
@@ -97,4 +99,4 @@ module _ {A B : 𝒰 𝑖} where
     Notation-Restriction:pb-𝒫-Dec : Notation-Restriction (𝒫-Dec B) (A -> B) (λ _ _ -> 𝒫-Dec A)
     Notation-Restriction._∣_ Notation-Restriction:pb-𝒫-Dec P f = pb-𝒫-Dec f P
 
-
+-}
