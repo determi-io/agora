@@ -1,6 +1,7 @@
 
 module Agora.Order.WellFounded.Definition where
 
+{-
 open import Agora.Set.Induction.WellFounded
 open import Agora.Conventions
 
@@ -35,3 +36,4 @@ WFT0 : (𝑖 : 𝔏 ^ 2) -> 𝒰 _
 WFT0 𝑖 = (WFT 𝑖) :& isWFT0
 
 
+-}

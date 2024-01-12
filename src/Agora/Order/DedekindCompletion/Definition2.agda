@@ -1,6 +1,8 @@
 
 module Agora.Order.DedekindCompletion.Definition2 where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Data.Int.Definition
 open import Agora.Data.Rational.Definition
@@ -85,4 +87,5 @@ module _ {𝑖 : 𝔏 ^ 3} {X : Linearorder 𝑖} where
     field {{isCutProof}} : isCut ⩘ ⩗
 
   open Cut public
+  -}
   -}

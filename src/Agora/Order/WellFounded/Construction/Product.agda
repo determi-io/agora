@@ -1,6 +1,8 @@
 
 module Agora.Order.WellFounded.Construction.Product where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Set.Induction.WellFounded
 open import Agora.Data.Product.Definition
@@ -75,4 +77,4 @@ instance
     --     isWFT0:Lexi = record { ⊥-WFT = ⊥' ; initial-⊥-WFT = lem-1 }
 
 
-
+-}

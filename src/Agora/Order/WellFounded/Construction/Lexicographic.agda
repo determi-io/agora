@@ -1,6 +1,8 @@
 
 module Agora.Order.WellFounded.Construction.Lexicographic where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Set.Induction.WellFounded
 open import Agora.Data.Product.Definition
@@ -54,5 +56,5 @@ module _ {A : 𝒰 𝑖} {{_ : isWF 𝑗 A}}
         isWFT0:Lexi = {!!}
 
 
-
+-}
 

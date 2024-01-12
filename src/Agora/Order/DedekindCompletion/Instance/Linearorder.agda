@@ -1,6 +1,8 @@
 
 module Agora.Order.DedekindCompletion.Instance.Linearorder where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Data.Int.Definition
 open import Agora.Data.Rational.Definition
@@ -81,6 +83,6 @@ module _ {𝑖 : 𝔏 ^ 3} {X : Linearorder 𝑖} where
           P₁ = ⟨ ⟨ q ⟩ .fst ⟩ .fst
       in incl (x , P₀ x-⩗a₀ , P₁ x-⩘b₀)
 
-
+-}
 
 

@@ -1,6 +1,8 @@
 
 module Agora.Order.WellFounded.Construction.Sum where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Set.Induction.WellFounded
 open import Agora.Data.Sum.Definition
@@ -60,3 +62,4 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isWF 𝑘 A}} {{_ : isWF 𝑙 B}}
           ; initial-⊥-WFT = lem-4
           }
 
+-}

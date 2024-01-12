@@ -12,6 +12,7 @@ open import Agora.Setoid.Definition
 open import Agora.Order.Preorder
 open import Agora.Order.Totalorder
 
+{-
 --------------------------------------------------------------------
 -- == Linear order
 -- mainly from https://ncatlab.org/nlab/show/linear+order
@@ -160,4 +161,4 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Linearorder 𝑗 on A}} where
   infixr 2 ⟨⟩-<-∼-syntax
   infixr 2 _⟨_⟩-<-∼_
 
-
+-}

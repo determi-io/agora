@@ -1,6 +1,8 @@
 
 module Agora.Order.DedekindCompletion.Definition3 where
 
+{-
+
 open import Agora.Conventions
 open import Agora.Data.Int.Definition
 open import Agora.Data.Prop.Everything
@@ -95,8 +97,5 @@ module _ {𝑖 : 𝔏 ^ 3} {X : Linearorder 𝑖} {𝑘 : 𝔏} where
 
 
 
-{-
-{-
--}
 
 -}
