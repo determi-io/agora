@@ -9,6 +9,7 @@ open import Agora.Conventions
 open import Agora.Order.Preorder
 open import Agora.Order.Lattice
 
+{-
 
 data Test : 𝒰₀ where
 
@@ -67,5 +68,5 @@ ICategory._◈_ isCategory:Frame = {!!}
 --   (B : 𝒰 𝑗) {{_ : Frame 𝑗 on B}}
 --   (f : (⟨ A ⟩ -> B) :& isMonotone :& isCompleteJoinPreserving) : 𝒰 (𝑖 ､ 𝑗) where
 
-
+-}
 

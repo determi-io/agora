@@ -150,8 +150,8 @@ module _ {A : 𝒰 𝑖}
   instance
     hasAllJoins:Family : ∀{I : 𝒰 𝑗} -> hasAllJoins 𝑙 (′ (I -> A) ′)
     hasAllJoins.⋁ hasAllJoins:Family F = λ i -> ⋁ (λ x -> F x i)
-    hasAllJoins.ι-⋁ hasAllJoins:Family = λ x → {!!}
-    hasAllJoins.[ hasAllJoins:Family ]-⋁ = {!!}
+    hasAllJoins.ι-⋁ hasAllJoins:Family = λ x → λ a → ι-⋁ x
+    hasAllJoins.[ hasAllJoins:Family ]-⋁ = λ F a → [ (λ x → F x a) ]-⋁
 
 
   module _ {{_ : isPartialorder ′ A ′}}
@@ -171,8 +171,8 @@ module _ {A : 𝒰 𝑖}
   instance
     hasAllMeets:Family : ∀{I : 𝒰 𝑗} -> hasAllMeets 𝑙 (′ (I -> A) ′)
     hasAllMeets.⋀ hasAllMeets:Family F = λ i -> ⋀ (λ x -> F x i)
-    hasAllMeets.π-⋀ hasAllMeets:Family = λ x → {!!}
-    hasAllMeets.⟨ hasAllMeets:Family ⟩-⋀ = {!!}
+    hasAllMeets.π-⋀ hasAllMeets:Family = λ x → λ a → π-⋀ x
+    hasAllMeets.⟨ hasAllMeets:Family ⟩-⋀ = λ F a → ⟨ (λ x → F x a) ⟩-⋀
 
 module _ {A : 𝒰 𝑖}
          {{_ : isSetoid {𝑗} A}}

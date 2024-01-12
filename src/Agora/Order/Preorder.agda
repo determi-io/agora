@@ -94,7 +94,6 @@ module _ {A : 𝒰 _} {{_ : A is Partialorder 𝑖}} {I : 𝒰 𝑙} where
 ----------------------------------------------------------
 -- Category of preorders
 
-{-
 record isMonotone (A : Preorder 𝑖) (B : Preorder 𝑗) (f : SetoidHom ′ ⟨ A ⟩ ′ ′ ⟨ B ⟩ ′) : 𝒰 (𝑖 ､ 𝑗) where
   field monotone : ∀{a b : ⟨ A ⟩} -> (a ≤ b) -> ⟨ f ⟩ a ≤ ⟨ f ⟩ b
 
@@ -109,9 +108,22 @@ Monotone : (A : Preorder 𝑖) (B : Preorder 𝑗) -> 𝒰 (𝑖 ､ 𝑗)
 Monotone A B = _ :& isMonotone A B
 
 module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
+  _∼-Monotone_ : (f g : Monotone A B) -> 𝒰 _
+  _∼-Monotone_ f g = ↳ f ∼ ↳ g
+  -- record _∼-Monotone_ {A : Preorder 𝑖} {B : Preorder 𝑗} (f g : Monotone A B) : 𝒰 (𝑖 ､ 𝑗) where
+  --   constructor incl
+  --   field ⟨_⟩ : ↳ f ∼ ↳ g
+
+  instance
+    isEquivRel:∼-Monotone : isEquivRel _∼-Monotone_
+    isEquivRel:∼-Monotone = isEquivRel:byDef refl (λ p -> sym p) (λ p q -> p ∙ q)
+    -- (λ {f} -> incl (λ {a} -> refl)) (λ (incl p) -> incl (sym p)) {!!}
+
+module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
   instance
     isSetoid:Monotone : isSetoid (Monotone A B)
-    isSetoid:Monotone = isSetoid:byDef (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩) refl sym _∙_
+    isSetoid:Monotone = isSetoid:byDef _∼-Monotone_
+    -- (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩) refl sym _∙_
     -- isSetoid._∼'_ isSetoid:Monotone f g = ⟨ f ⟩ ∼' ⟨ g ⟩
     -- isSetoid.isEquivRel:∼ isSetoid:Monotone = {!!}
 
@@ -172,7 +184,7 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   _ ∎-≤ = reflexive
 
   _⟨_⟩-∼-≤_ : (x : A) {y : A} {z : A} → x ∼ y → y ≤ z → x ≤ z
-  _ ⟨ x≤y ⟩-∼-≤ y≤z = {!!} -- x≤y ⟡ y≤z
+  _ ⟨ x∼y ⟩-∼-≤ y≤z = transp-≤ (sym x∼y) refl y≤z -- x≤y ⟡ y≤z
 
   ⟨⟩-∼-≤-syntax : (x : A) {y z : A} → x ∼ y → y ≤ z → x ≤ z
   ⟨⟩-∼-≤-syntax = _⟨_⟩-∼-≤_
@@ -180,13 +192,14 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   infixr 2 _⟨_⟩-∼-≤_
 
   _⟨_⟩-≤-∼_ : (x : A) {y : A} {z : A} → x ≤ y → y ∼ z → x ≤ z
-  _ ⟨ x≤y ⟩-≤-∼ y≤z = {!!} -- x≤y ⟡ y≤z
+  _ ⟨ x≤y ⟩-≤-∼ y∼z = transp-≤ refl y∼z x≤y -- x≤y ⟡ y≤z
 
   ⟨⟩-≤-∼-syntax : (x : A) {y z : A} → x ≤ y → y ∼ z → x ≤ z
   ⟨⟩-≤-∼-syntax = _⟨_⟩-≤-∼_
   infixr 2 ⟨⟩-≤-∼-syntax
   infixr 2 _⟨_⟩-≤-∼_
 
+{-
 {-
 
 -}

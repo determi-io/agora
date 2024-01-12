@@ -237,6 +237,22 @@ instance
     ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
     }
 
+--------------------------------------------------------------------
+
+record _:,_ {A : 𝒰 𝑖} {⟨A⟩ : 𝒰 𝑗} {{relA : ⟨A⟩ isUniverseOf[ 𝑘 ] A}}
+            (P : A -> 𝒰 𝑙) (Q : A -> 𝒰 𝑚) (a : A) : 𝒰 (𝑙 ､ 𝑚) where
+  instance constructor make,
+  field {{Proof1,}} : P a
+  field {{Proof2,}} : Q a
+
+open _:,_ {{...}} public
+
+infixr 80 _:,_
+
+
+
+--------------------------------------------------------------------
+
 _on_ : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
 _on_ UU {{U}} a = Proof {{U}} a
 
@@ -244,6 +260,12 @@ is-syntax : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -
 is-syntax UU {{U}} a = Proof {{U}} a
 
 syntax is-syntax a b = b is a
+
+module _ {⟨A⟩ : 𝒰 𝑖} {A : 𝒰 𝑗} {{U : ⟨A⟩ isUniverseOf[ 𝑘 ] A}} {P : A -> 𝒰 𝑙} where
+  ↳_ : (A :& P) -> A
+  ↳_ val = reconstructObj ⟨ val ⟩ (oldProof {{_}} {{val}})
+
+  infixl 80 ↳_
 
 
 --------------------------------------------------------------------
