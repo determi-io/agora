@@ -193,7 +193,8 @@ case right x of f g = g x
 
 
 -- bottom
-data 𝟘-𝒰 : 𝒰₀ where
+-- data 𝟘-𝒰 : 𝒰₀ where
+open import Data.Empty renaming (⊥ to 𝟘-𝒰) public
 
 𝟘-rec : ∀ {ℓ} {A : 𝒰 ℓ} → 𝟘-𝒰 → A
 𝟘-rec ()

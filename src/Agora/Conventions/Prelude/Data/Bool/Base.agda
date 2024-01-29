@@ -52,7 +52,7 @@ instance
 
 instance
   isSetoid:Bool : isSetoid Bool
-  isSetoid:Bool = isSetoid:byDef _∼-Bool_
+  isSetoid:Bool = isSetoid:byId
 
 
 not : Bool → Bool

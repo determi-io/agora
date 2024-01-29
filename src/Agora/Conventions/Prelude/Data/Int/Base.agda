@@ -43,7 +43,7 @@ instance
 
 instance
   isSetoid:Int : isSetoid Int
-  isSetoid:Int = isSetoid:byDef _∼-Int_
+  isSetoid:Int = isSetoid:byId
 
 neg : (n : ℕ) → Int
 neg zero = pos zero

@@ -15,7 +15,7 @@ open import Agora.Conventions.Prelude.Data.StrictId
 
 -- [Definition]
 record isEquivRel {A : 𝒰 𝑖} (_∼_ : A -> A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) where
-  constructor isEquivRel:byDef
+  -- constructor isEquivRel:byDef
   field refl : ∀{x : A} -> x ∼ x
         sym : ∀{x y : A} -> x ∼ y -> y ∼ x
         _∙_ : ∀{x y z : A} -> x ∼ y -> y ∼ z -> x ∼ z
@@ -39,7 +39,7 @@ module _ {X : 𝒰 𝑖} {_≣_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≣_}} 
 --   equivalence relation.
 --   That is, the type [..] is constructed by giving the following data.
 record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) where
-  constructor isSetoid:byDef
+  -- constructor isSetoid:byDef
 
   field _∼_ : A -> A -> 𝒰 𝑗
   field {{isEquivRel:∼}} : isEquivRel _∼_
@@ -76,12 +76,14 @@ module _ {A : 𝒰 𝑖} where
   _∙-≣_ refl-≣ q = q
 
   isEquivRel:≣ : isEquivRel {A = A} _≣_
-  isEquivRel:≣ = isEquivRel:byDef refl-≣ sym-≣ _∙-≣_
+  isEquivRel:≣ = record { refl = refl-≣ ; sym = sym-≣ ; _∙_ = _∙-≣_ }
+
+  private instance _ = isEquivRel:≣
 
   -- |> This means that |A| together with the identity type
   -- is a setoid.
   isSetoid:byId : isSetoid A
-  isSetoid:byId = isSetoid:byDef _≣_ {{isEquivRel:≣}}
+  isSetoid:byId = record { _∼_ = _≣_ }
 -- //
 
 -- [Example]

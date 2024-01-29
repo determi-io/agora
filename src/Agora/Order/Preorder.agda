@@ -47,7 +47,16 @@ module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
   _⋦_ : A -> A -> 𝒰 _
   a ⋦ b = (a ≤ b) ×-𝒰 (a ≁ b)
 
-  -- ⋧
+--------------------------------------------------------------------
+-- == Decidable preorder
+
+record isDecidablePreorder (X : Preorder 𝑗) : 𝒰 𝑗 where
+  field decide-≤ : ∀(a b : ⟨ X ⟩) -> (¬ (a ≤ b)) +-𝒰 (a ≤ b)
+
+open isDecidablePreorder {{...}} public
+
+DecidablePreorder : ∀ 𝑖 -> _
+DecidablePreorder 𝑖 = Preorder 𝑖 :& isDecidablePreorder
 
 --------------------------------------------------------------------
 -- == Partial order
@@ -116,18 +125,46 @@ module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
 
   instance
     isEquivRel:∼-Monotone : isEquivRel _∼-Monotone_
-    isEquivRel:∼-Monotone = isEquivRel:byDef refl (λ p -> sym p) (λ p q -> p ∙ q)
-    -- (λ {f} -> incl (λ {a} -> refl)) (λ (incl p) -> incl (sym p)) {!!}
+    isEquivRel:∼-Monotone = record
+      { refl = refl
+      ; sym = (λ p -> sym p)
+      ; _∙_ = (λ p q -> p ∙ q)
+      }
 
 module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
   instance
     isSetoid:Monotone : isSetoid (Monotone A B)
-    isSetoid:Monotone = isSetoid:byDef _∼-Monotone_
+    isSetoid:Monotone = record { _∼_ = _∼-Monotone_ }
+      -- isSetoid:byDef _∼-Monotone_
     -- (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩) refl sym _∙_
     -- isSetoid._∼'_ isSetoid:Monotone f g = ⟨ f ⟩ ∼' ⟨ g ⟩
     -- isSetoid.isEquivRel:∼ isSetoid:Monotone = {!!}
 
--- unquoteDecl Monotone makeMonotone = #struct "Monotone" (quote isMonotone) "f" Monotone makeMonotone
+----------------------------------------------------------
+-- Setoid by PreorderData
+
+module _ {A : 𝒰 𝑖}
+  (R : A -> A -> 𝒰 𝑗)
+  (refl' : ∀{a} -> R a a)
+  (trans' : ∀{a b c} -> R a b -> R b c -> R a c)
+  where
+
+  private
+    _∼'_ : A -> A -> 𝒰 𝑗
+    _∼'_ a b = R a b ×-𝒰 R b a
+
+  isEquivRel:byPreorder : isEquivRel _∼'_
+  isEquivRel:byPreorder = record
+    { refl = refl' , refl'
+    ; sym = λ (p , q) -> (q , p)
+    ; _∙_ = λ (p , q) (r , s) -> (trans' p r , trans' s q)
+    }
+
+
+
+
+----------------------------------------------------------
+
 
 {-
 Category:Preorder : (𝑖 : 𝔏) -> Category _

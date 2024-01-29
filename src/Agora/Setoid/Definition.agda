@@ -67,13 +67,14 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isSetoid {𝑖₁} A}} {{_ : isSe
 
   instance
     isEquivRel:∼-× : isEquivRel _∼-×_
-    isEquivRel:∼-× = isEquivRel:byDef
-                 (refl , refl)
-                 (λ (p , q) -> (p ⁻¹ , q ⁻¹))
-                 (λ (p₀ , q₀) (p₁ , q₁) -> (p₀ ∙ p₁ , q₀ ∙ q₁))
+    isEquivRel:∼-× = record
+      { refl = (refl , refl)
+      ; sym = (λ (p , q) -> (p ⁻¹ , q ⁻¹))
+      ; _∙_ = (λ (p₀ , q₀) (p₁ , q₁) -> (p₀ ∙ p₁ , q₀ ∙ q₁))
+      }
 
     isSetoid:× : isSetoid (A ×-𝒰 B)
-    isSetoid:× = isSetoid:byDef _∼-×_
+    isSetoid:× = record { _∼_ = _∼-×_ }
 
 -- instance
 --   isEquivRel:≡∼-Base : ∀{A : 𝒰 𝑖} -> isEquivRel (∼-Base (_≡_ {A = A}))
@@ -150,11 +151,15 @@ module _ {A : Setoid 𝑖} {B : Setoid 𝑗} where
 
   instance
     isEquivRel:∼-SetoidHom : isEquivRel _∼-SetoidHom_
-    isEquivRel:∼-SetoidHom = isEquivRel:byDef refl (λ p -> sym p) (λ p q -> p ∙ q)
+    isEquivRel:∼-SetoidHom = record
+      { refl = refl
+      ; sym = (λ p -> sym p)
+      ; _∙_ = (λ p q -> p ∙ q)
+      }
 
   instance
     isSetoid:SetoidHom : isSetoid (SetoidHom A B)
-    isSetoid:SetoidHom = isSetoid:byDef _∼-SetoidHom_
+    isSetoid:SetoidHom = record { _∼_ = _∼-SetoidHom_ }
 
 
 {-
@@ -330,14 +335,15 @@ module _ {A : 𝒰 𝑖} {{S : isSetoid {𝑗} A}} {I : 𝒰 𝑘} where
 
   instance
     isEquivRel:∼-Family : isEquivRel _∼-Family_
-    isEquivRel:∼-Family = isEquivRel:byDef
-      (λ i -> refl)
-      (λ p i -> sym (p i))
-      (λ p q i -> (p i) ∙ (q i))
+    isEquivRel:∼-Family = record
+      { refl = (λ i -> refl)
+      ; sym = (λ p i -> sym (p i))
+      ; _∙_ = (λ p q i -> (p i) ∙ (q i))
+      }
 
   instance
     isSetoid:Family : isSetoid (I -> A)
-    isSetoid:Family = isSetoid:byDef _∼-Family_
+    isSetoid:Family = record { _∼_ = _∼-Family_ }
 
     -- isSetoid._∼'_ isSetoid:Family f g = f ∼-Family g
 
