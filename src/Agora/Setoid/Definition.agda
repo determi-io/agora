@@ -26,23 +26,17 @@ open import Agora.Data.Product.Definition
 Setoid : (𝑗 : 𝔏 ^ 2) -> 𝒰 _
 Setoid 𝑗 = 𝒰 (𝑗 ⌄ 0) :& isSetoid {𝑗 ⌄ 1}
 
-refl2 : ∀{A : 𝒰 𝑖} -> {P : A -> A -> 𝒰 𝑗}
-        -> {a : A}
-        -> {{S : isSetoid {𝑗} A}}
-        -> {{_ : _∼_ {{S}} ≣ P}}
-        -> P a a
-refl2 {{S}} {{refl-≣}} = refl
+-- refl2 : ∀{A : 𝒰 𝑖} -> {P : A -> A -> 𝒰 𝑗}
+--         -> {a : A}
+--         -> {{S : isSetoid {𝑗} A}}
+--         -> {{_ : _∼_ {{S}} ≣ P}}
+--         -> P a a
+-- refl2 {{S}} {{refl-≣}} = refl
 
 
-Of : ∀(A : 𝒰 𝑖) -> A -> A
-Of _ a = a
+-- Of : ∀(A : 𝒰 𝑖) -> A -> A
+-- Of _ a = a
 
-record isDefault (A : 𝒰 𝑖) (myProp : A -> A -> 𝒰 𝑖) : 𝒰 (𝑖 ⁺) where
-  -- field myProp : A -> A -> 𝒰 𝑖
-  -- field val : A
-  field valp : ∀ {a : A} -> myProp a a
-
-open isDefault {{...}} using (valp) public
 
 
 -- module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isDefault A}} {{_ : isDefault B}} where
@@ -52,10 +46,6 @@ open isDefault {{...}} using (valp) public
 
   -- aD : ∀{A B : 𝒰 𝑖} -> {{_ : isDefault A}} -> {{_ : isDefault B}} -> isDefault (A ×-𝒰 B)
   -- aD = {!!}
-
-mytest : ∀{A B : 𝒰 𝑖} -> ∀ {myProp} {myProp2} -> {{Ax : isDefault A myProp}}
-         -> {{ _ : isDefault B myProp2}} -> (a : A) -> myProp a a
-mytest a = valp
 
 -- mytest2 : ∀{A B : 𝒰 𝑖} -> (A : _ :& isDefault {𝑖 = 𝑖}) -> (B : _ :& isDefault {𝑖 = 𝑖}) -> (a : ⟨ A ⟩) -> myProp a a
 -- mytest2 X P a = valp

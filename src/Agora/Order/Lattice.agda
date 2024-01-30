@@ -55,6 +55,9 @@ CompleteJoinSemilattice 𝑖 = Preorder (𝑖 ⌄ 0 , 𝑖 ⌄ 1 , 𝑖 ⌄ 2) :
 MeetSemilattice : ∀ 𝑖 -> 𝒰 (𝑖 ⁺)
 MeetSemilattice 𝑖 = Preorder 𝑖 :& hasFiniteMeets
 
+JoinSemilattice : ∀ 𝑖 -> 𝒰 (𝑖 ⁺)
+JoinSemilattice 𝑖 = Preorder 𝑖 :& hasFiniteJoins
+
 record isLattice (A : Preorder 𝑖 :& (hasFiniteMeets :, hasFiniteJoins)) : 𝒰 𝑖 where
 
 instance
@@ -70,6 +73,34 @@ Lattice 𝑖 = Preorder 𝑖 :& (hasFiniteMeets :, hasFiniteJoins) :& isLattice
 ----------------------------------------------------------
 -- Derived instances
 
+module _ {A : 𝒰 _} {{_ : A is JoinSemilattice 𝑖}} {B : 𝒰 _} {{_ : B is JoinSemilattice 𝑗}} where
+  open import Agora.Data.Product.Definition
+
+  instance
+    hasFiniteJoins:× : hasFiniteJoins (A × B)
+    hasFiniteJoins:× = record
+      { ⊥ = ⊥ , ⊥
+      ; initial-⊥ = initial-⊥ , initial-⊥
+      ; _∨_ = λ (a0 , b0) (a1 , b1) -> (a0 ∨ a1) , (b0 ∨ b1)
+      ; ι₀-∨ = ι₀-∨ , ι₀-∨
+      ; ι₁-∨ = ι₁-∨ , ι₁-∨
+      ; [_,_]-∨ = λ (pa , pb) (qa , qb) -> [ pa , qa ]-∨ , [ pb , qb ]-∨
+      }
+
+module _ {A : 𝒰 _} {{_ : A is MeetSemilattice 𝑖}} {B : 𝒰 _} {{_ : B is MeetSemilattice 𝑗}} where
+  open import Agora.Data.Product.Definition
+
+  instance
+    hasFiniteMeets:× : hasFiniteMeets (A × B)
+    hasFiniteMeets:× = record
+      { ⊤ = ⊤ , ⊤
+      ; terminal-⊤ = terminal-⊤ , terminal-⊤
+      ; _∧_ = λ (a0 , b0) (a1 , b1) -> (a0 ∧ a1) , (b0 ∧ b1)
+      ; π₀-∧ = π₀-∧ , π₀-∧
+      ; π₁-∧ = π₁-∧ , π₁-∧
+      ; ⟨_,_⟩-∧ = λ (pa , pb) (qa , qb) -> ⟨ pa , qa ⟩-∧ , ⟨ pb , qb ⟩-∧
+      }
+
 module _ {A : 𝒰 𝑖}
          {{_ : isSetoid {𝑗} A}}
          {{_ : isPreorder 𝑘 ′ A ′}}
@@ -82,12 +113,6 @@ module _ {A : 𝒰 𝑖}
     hasFiniteJoins.ι₀-∨      hasFiniteJoins:Family = λ a -> ι₀-∨
     hasFiniteJoins.ι₁-∨      hasFiniteJoins:Family = λ a -> ι₁-∨
     hasFiniteJoins.[_,_]-∨   hasFiniteJoins:Family = λ f g a -> [ f a , g a ]-∨
-    -- hasFiniteJoins.⊥         hasFiniteJoins:Family = λ _ -> ⊥
-    -- hasFiniteJoins.initial-⊥ hasFiniteJoins:Family = incl ⟨ initial-⊥ ⟩
-    -- hasFiniteJoins._∨_       hasFiniteJoins:Family = λ a b i -> a i ∨ b i
-    -- hasFiniteJoins.ι₀-∨      hasFiniteJoins:Family = incl ⟨ ι₀-∨ ⟩
-    -- hasFiniteJoins.ι₁-∨      hasFiniteJoins:Family = incl ⟨ ι₁-∨ ⟩
-    -- hasFiniteJoins.[_,_]-∨   hasFiniteJoins:Family = λ f g -> incl ⟨ [ incl ⟨ f ⟩ , incl ⟨ g ⟩ ]-∨ ⟩
 
 
 
@@ -104,12 +129,11 @@ module _ {A : 𝒰 𝑖}
     hasFiniteMeets.π₁-∧       hasFiniteMeets:Family = λ a -> π₁-∧
     hasFiniteMeets.⟨_,_⟩-∧    hasFiniteMeets:Family = λ f g a -> ⟨ f a , g a ⟩-∧
 
-    -- hasFiniteMeets.terminal-⊤ hasFiniteMeets:Family = incl ⟨ terminal-⊤ ⟩
-    -- hasFiniteMeets._∧_        hasFiniteMeets:Family = λ a b i -> a i ∧ b i
-    -- hasFiniteMeets.π₀-∧       hasFiniteMeets:Family = incl ⟨ π₀-∧ ⟩
-    -- hasFiniteMeets.π₁-∧       hasFiniteMeets:Family = incl ⟨ π₁-∧ ⟩
-    -- hasFiniteMeets.⟨_,_⟩-∧    hasFiniteMeets:Family = λ f g -> incl ⟨ ⟨ incl ⟨ f ⟩ , incl ⟨ g ⟩ ⟩-∧ ⟩
 
+module _ {A : 𝒰 𝑖}
+         {{_ : isSetoid {𝑗} A}}
+         {{_ : isPreorder 𝑘 ′ A ′}}
+         {{_ : hasFiniteMeets ′ A ′}} where
 
   map-∧ : ∀{a b c d : A} -> (a ≤ b) -> (c ≤ d) -> a ∧ c ≤ b ∧ d
   map-∧ f g = ⟨ π₀-∧ ⟡ f , π₁-∧ ⟡ g ⟩-∧
@@ -219,4 +243,6 @@ record preservesFiniteMeets {A B} {{_ : MeetSemilattice 𝑖 on A}} {{_ : MeetSe
         preserves-⊤ : ⟨ f ⟩ ⊤ ≚ ⊤
 
 -}
+
+
 

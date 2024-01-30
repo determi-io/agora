@@ -9,6 +9,7 @@ open import Agora.Conventions
 -- open import Agora.Type
 open import Agora.Setoid.Definition
 open import Agora.Data.Universe.Definition
+open import Agora.Data.Product.Definition
 
 --------------------------------------------------------------------
 -- == Preorder
@@ -29,7 +30,6 @@ open isPreorderData {{...}} public
 
 
 record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
-  constructor isPreorder:byDef
   field _≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘
   field {{isPreorderData:≤}} : isPreorderData A _≤_
 
@@ -89,9 +89,6 @@ module _ {A : 𝒰 _} {{_ : A is Preorder 𝑗}} {I : 𝒰 𝑙} where
     isPreorder:≤-Family : isPreorder _ (I →# A )
     isPreorder:≤-Family = record { _≤_ = _≤-Family_ }
 
-
--- module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} {{_ : isPreorder 𝑘 ′ A ′}} {{_ : isPartialorder ′ A ′}} where
-
 module _ {A : 𝒰 _} {{_ : A is Partialorder 𝑖}} {I : 𝒰 𝑙} where
 
   instance
@@ -99,6 +96,28 @@ module _ {A : 𝒰 _} {{_ : A is Partialorder 𝑖}} {I : 𝒰 𝑙} where
     isPartialorder:Family = record
       { antisym = λ p q i → antisym (p i) (q i)
       }
+
+module _ {A : 𝒰 _} {B : 𝒰 _} {{_ : A is Preorder 𝑖}} {{_ : B is Preorder 𝑗}} where
+  _≤-×_ : (A × B) -> (A × B) -> 𝒰 _
+  _≤-×_ (a0 , b0) (a1 , b1) = (a0 ≤ a1) × (b0 ≤ b1)
+
+  instance
+    isPreorderData:≤-× : isPreorderData (A × B) _≤-×_
+    isPreorderData:≤-× = record
+      { reflexive = reflexive , reflexive
+      ; _⟡_ = λ (pa , pb) (qa , qb) -> (pa ⟡ qa) , (pb ⟡ qb)
+      ; transp-≤ = λ (ra , rb) (sa , sb) (pa , pb) -> (transp-≤ ra sa pa , transp-≤ rb sb pb)
+      }
+
+  instance
+    isPreorder:× : isPreorder _ (A × B)
+    isPreorder:× = record { _≤_ = _≤-×_ }
+
+module _ {A : 𝒰 _} {B : 𝒰 _} {{_ : A is Partialorder 𝑖}} {{_ : B is Partialorder 𝑗}} where
+
+  instance
+    isPartialorder:× : isPartialorder (A × B)
+    isPartialorder:× = record { antisym = λ (pa , pb) (qa , qb) -> antisym pa qa , antisym pb qb }
 
 ----------------------------------------------------------
 -- Category of preorders
