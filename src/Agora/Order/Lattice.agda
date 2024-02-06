@@ -26,6 +26,8 @@ module _ {𝑖 : 𝔏 ^ 3} where
     infixl 60 _∨_
   open hasFiniteJoins {{...}} public
 
+  {-# DISPLAY hasFiniteJoins._∨_ M a b = a ∨ b #-}
+
   record hasFiniteMeets (A : Preorder 𝑖) : 𝒰 𝑖 where
     field ⊤ : ⟨ A ⟩
           terminal-⊤ : ∀{a : ⟨ A ⟩} -> a ≤ ⊤
@@ -36,6 +38,8 @@ module _ {𝑖 : 𝔏 ^ 3} where
 
     infixl 80 _∧_
   open hasFiniteMeets {{...}} public
+
+  {-# DISPLAY hasFiniteMeets._∧_ M a b = a ∧ b #-}
 
   record hasAllJoins (𝑗 : 𝔏) (A : Preorder 𝑖) : 𝒰 (𝑖 ､ (𝑗 ⁺)) where
     field ⋁ : ∀{X : 𝒰 𝑗} -> (X -> ⟨ A ⟩) -> ⟨ A ⟩

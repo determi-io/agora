@@ -28,6 +28,8 @@ record isPreorderData (A : 𝒰 𝑖 :& isSetoid {𝑗}) (_≤_ : ⟨ A ⟩ -> �
 
 open isPreorderData {{...}} public
 
+{-# DISPLAY isPreorderData._⟡_ M a b = a ⟡ b #-}
+
 
 record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
   field _≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘
@@ -37,12 +39,14 @@ record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (𝑘 ⁺ ､ �
 
 open isPreorder {{...}} public
 
+{-# DISPLAY isPreorder._≤_ M a b = a ≤ b #-}
+
 Preorder : ∀ (𝑖 : 𝔏 ^ 3) -> 𝒰 (𝑖 ⁺)
 Preorder 𝑖 = 𝒰 (𝑖 ⌄ 0) :& isSetoid {𝑖 ⌄ 1} :& isPreorder (𝑖 ⌄ 2)
 
 module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
-  _≰_ : A -> A -> 𝒰 _
-  a ≰ b = ¬ a ≤ b
+  -- _≰_ : A -> A -> 𝒰 _
+  -- a ≰ b = ¬ a ≤ b
 
   _⋦_ : A -> A -> 𝒰 _
   a ⋦ b = (a ≤ b) ×-𝒰 (a ≁ b)
@@ -50,8 +54,10 @@ module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
 --------------------------------------------------------------------
 -- == Decidable preorder
 
-record isDecidablePreorder (X : Preorder 𝑗) : 𝒰 𝑗 where
-  field decide-≤ : ∀(a b : ⟨ X ⟩) -> (¬ (a ≤ b)) +-𝒰 (a ≤ b)
+record isDecidablePreorder (X : Preorder 𝑗) : 𝒰 (𝑗 ⁺) where
+  field _≰_ : ⟨ X ⟩ -> ⟨ X ⟩ -> 𝒰 (𝑗 ⌄ 2)
+  field impossible-≤ : ∀{a b} ->  a ≰ b -> a ≤ b -> 𝟘-𝒰
+  field decide-≤ : ∀(a b : ⟨ X ⟩) -> (a ≰ b) +-𝒰 (a ≤ b)
 
 open isDecidablePreorder {{...}} public
 
