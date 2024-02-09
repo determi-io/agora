@@ -9,14 +9,14 @@ open import Agora.Conventions.Prelude.Data.StrictId
 
 
 -- AbstractOver : {P : 𝒰 𝑖} -> (P₀ : P) -> (Statement : P -> 𝒰 𝑗) -> Statement P₀
---         -> ∀{P₁ : P} -> {{P₁ ≣ P₀}} -> Statement P₁
--- AbstractOver {P} Statement P₀ proof {P₁} {{refl-≣}} = proof
+--         -> ∀{P₁ : P} -> {{P₁ ≡ P₀}} -> Statement P₁
+-- AbstractOver {P} Statement P₀ proof {P₁} {{refl-≡}} = proof
 
 
 -- [Definition]
 record isEquivRel {A : 𝒰 𝑖} (_∼_ : A -> A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) where
   -- constructor isEquivRel:byDef
-  field refl : ∀{x : A} -> x ∼ x
+  field refl-∼ : ∀{x : A} -> x ∼ x
         sym : ∀{x y : A} -> x ∼ y -> y ∼ x
         _∙_ : ∀{x y z : A} -> x ∼ y -> y ∼ z -> x ∼ z
 
@@ -28,9 +28,9 @@ record isEquivRel {A : 𝒰 𝑖} (_∼_ : A -> A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔
 open isEquivRel {{...}} public
 -- //
 
-module _ {X : 𝒰 𝑖} {_≣_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≣_}} where
+module _ {X : 𝒰 𝑖} {_≡_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≡_}} where
   instance
-    Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ≣ y) (y ≣ x)
+    Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ≡ y) (y ≡ x)
     Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
 
 
@@ -44,7 +44,7 @@ record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) wh
   field _∼_ : A -> A -> 𝒰 𝑗
   field {{isEquivRel:∼}} : isEquivRel _∼_
 
-        -- refl  : ∀ {a : A} -> a ∼ a
+        -- refl-∼  : ∀ {a : A} -> a ∼ a
         -- sym   : ∀ {a b : A} -> a ∼ b -> b ∼ a
         -- _∙_   : ∀ {a b c : A} -> a ∼ b -> b ∼ c -> a ∼ c
 
@@ -66,24 +66,24 @@ open isSetoid {{...}} public
 module _ {A : 𝒰 𝑖} where
   -- |> Then the identity type on |A| is symmetric.
   -- The proof can be done by pattern matching on the
-  -- given proof of |a ≣ b|, thus reducing the goal
-  -- to |a ≣ a|, which we can conclude by |refl-≣|.
-  sym-≣ : {a b : A} -> a ≣ b -> b ≣ a
-  sym-≣ refl-≣ = refl-≣
+  -- given proof of |a ≡ b|, thus reducing the goal
+  -- to |a ≡ a|, which we can conclude by |refl-≡|.
+  sym-≡ : {a b : A} -> a ≡ b -> b ≡ a
+  sym-≡ refl-≡ = refl-≡
 
   -- |> Similarly we can use pattern matching to prove transitivity.
-  _∙-≣_ : {a b c : A} -> a ≣ b -> b ≣ c -> a ≣ c
-  _∙-≣_ refl-≣ q = q
+  _∙-≡_ : {a b c : A} -> a ≡ b -> b ≡ c -> a ≡ c
+  _∙-≡_ refl-≡ q = q
 
-  isEquivRel:≣ : isEquivRel {A = A} _≣_
-  isEquivRel:≣ = record { refl = refl-≣ ; sym = sym-≣ ; _∙_ = _∙-≣_ }
+  isEquivRel:≡ : isEquivRel {A = A} _≡_
+  isEquivRel:≡ = record { refl-∼ = refl-≡ ; sym = sym-≡ ; _∙_ = _∙-≡_ }
 
-  private instance _ = isEquivRel:≣
+  private instance _ = isEquivRel:≡
 
   -- |> This means that |A| together with the identity type
   -- is a setoid.
   isSetoid:byId : isSetoid A
-  isSetoid:byId = record { _∼_ = _≣_ }
+  isSetoid:byId = record { _∼_ = _≡_ }
 -- //
 
 -- [Example]

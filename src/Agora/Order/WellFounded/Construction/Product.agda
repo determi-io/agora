@@ -44,7 +44,7 @@ instance
   isWFT:𝟙 = record { _⟡-≪_ = λ () }
 
   isWFT0:𝟙 : isWFT0 ′ 𝟙-𝒰 ′
-  isWFT0:𝟙 = record { ⊥-WFT = tt ; initial-⊥-WFT = left refl-≣ }
+  isWFT0:𝟙 = record { ⊥-WFT = tt ; initial-⊥-WFT = left refl-≡ }
 
 
 instance
@@ -57,8 +57,8 @@ instance
   isWFT0:⊤ : isWFT0 ′ ⊤-𝒰 {𝑖} ′
   isWFT0:⊤ = record { ⊥-WFT = tt ; initial-⊥-WFT = left (Pa _) }
     where
-      Pa : ∀(a : ⊤-𝒰 {𝑖}) -> tt ≣ a
-      Pa tt = refl-≣
+      Pa : ∀(a : ⊤-𝒰 {𝑖}) -> tt ≡ a
+      Pa tt = refl-≡
 
 
     -- module _ {{_ : isWFT0 ′ A ′}} {{_ : isWFT0 ′ B ′}} where
@@ -68,7 +68,7 @@ instance
 
     --     lem-1 : ∀{a : A} {b : B} -> ⊥' ⪣ (a , b)
     --     lem-1 {a} {b} with initial-⊥-WFT {a = a} | initial-⊥-WFT {a = b}
-    --     ... | left refl-≣ | left refl-≣ = left refl-≣
+    --     ... | left refl-≡ | left refl-≡ = left refl-≡
     --     ... | left x | just x₁ = {!!}
     --     ... | just x | Y = {!!}
 

@@ -48,7 +48,7 @@ _≀∼≀_ = both
 
 
 
-  -- setoid _≣_ refl-≣ (λ {refl-≣ -> refl-≣}) (λ{refl-≣ q -> q})
+  -- setoid _≡_ refl-≡ (λ {refl-≡ -> refl-≡}) (λ{refl-≡ q -> q})
 
 -- instance
 -- module _ where
@@ -130,17 +130,17 @@ instance
 -- === path syntax
 
 module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
-  _≣⟨_⟩_ : (x : A) {y : A} {z : A} → x ∼ y → y ∼ z → x ∼ z
-  _ ≣⟨ x≡y ⟩ y≡z = x≡y ∙ y≡z
+  _≡⟨_⟩_ : (x : A) {y : A} {z : A} → x ∼ y → y ∼ z → x ∼ z
+  _ ≡⟨ x≡y ⟩ y≡z = x≡y ∙ y≡z
 
-  ≣⟨⟩-syntax : (x : A) {y z : A} → x ∼ y → y ∼ z → x ∼ z
-  ≣⟨⟩-syntax = _≣⟨_⟩_
-  infixr 2 ≣⟨⟩-syntax
+  ≡⟨⟩-syntax : (x : A) {y z : A} → x ∼ y → y ∼ z → x ∼ z
+  ≡⟨⟩-syntax = _≡⟨_⟩_
+  infixr 2 ≡⟨⟩-syntax
   infix  3 _∎
-  infixr 2 _≣⟨_⟩_
+  infixr 2 _≡⟨_⟩_
 
   _∎ : (x : A) → x ∼ x
-  _ ∎ = refl
+  _ ∎ = refl-∼
 
 
 -- new syntax with ∼
@@ -156,7 +156,7 @@ module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
   infix  3 _∎-∼
 
   _∎-∼ : (x : A) → x ∼ x
-  _ ∎-∼ = refl
+  _ ∎-∼ = refl-∼
 
 
 {-
@@ -175,17 +175,17 @@ module _ {A : 𝒰 𝑖} where
   _ ∎-≡ = refl-≡
 
 module _ {A : 𝒰 𝑖} where
-  _⟨_⟩-≣_ : (x : A) {y : A} {z : A} → x ≣ y → y ≣ z → x ≣ z
-  _ ⟨ x≣y ⟩-≣ y≣z =  x≣y ∙-≣ y≣z
+  _⟨_⟩-≡_ : (x : A) {y : A} {z : A} → x ≡ y → y ≡ z → x ≡ z
+  _ ⟨ x≡y ⟩-≡ y≡z =  x≡y ∙-≡ y≡z
 
-  ⟨⟩-≣-syntax : (x : A) {y z : A} → x ≣ y → y ≣ z → x ≣ z
-  ⟨⟩-≣-syntax = _⟨_⟩-≣_
-  infixr 2 ⟨⟩-≣-syntax
-  infixr 2 _⟨_⟩-≣_
+  ⟨⟩-≡-syntax : (x : A) {y z : A} → x ≡ y → y ≡ z → x ≡ z
+  ⟨⟩-≡-syntax = _⟨_⟩-≡_
+  infixr 2 ⟨⟩-≡-syntax
+  infixr 2 _⟨_⟩-≡_
 
-  infix  3 _∎-≣
+  infix  3 _∎-≡
 
-  _∎-≣ : (x : A) → x ≣ x
-  _ ∎-≣ = refl-≣
+  _∎-≡ : (x : A) → x ≡ x
+  _ ∎-≡ = refl-≡
 
 -}

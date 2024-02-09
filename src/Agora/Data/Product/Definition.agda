@@ -40,15 +40,15 @@ macro
   𝟙 : ∀ {𝑖} -> SomeStructure
   𝟙 {𝑖} = #structureOn (⊤-𝒰 {𝑖})
 
-isProp:⊤-𝒰 : ∀{a b : ⊤-𝒰 {𝑖}} -> a ≣ b
-isProp:⊤-𝒰 {a = tt} {tt} = refl-≣
+isProp:⊤-𝒰 : ∀{a b : ⊤-𝒰 {𝑖}} -> a ≡ b
+isProp:⊤-𝒰 {a = tt} {tt} = refl-≡
 
--- isSet:⊤-𝒰 : ∀{a b : ⊤-𝒰 {𝑖}} {p q : a ≣ b} -> p ≣ q
--- isSet:⊤-𝒰 {p = refl-≣} {q} = {!!}
+-- isSet:⊤-𝒰 : ∀{a b : ⊤-𝒰 {𝑖}} {p q : a ≡ b} -> p ≡ q
+-- isSet:⊤-𝒰 {p = refl-≡} {q} = {!!}
 
 instance
   isDiscrete:⊤-𝒰 : isDiscrete (⊤-𝒰 {𝑖})
-  isDiscrete:⊤-𝒰 = record { _≟-Str_ = λ {tt tt → right refl-≣} }
+  isDiscrete:⊤-𝒰 = record { _≟-Str_ = λ {tt tt → right refl-≡} }
 
 instance
   IShow:⊤-𝒰 : IShow (⊤-𝒰 {𝑖})

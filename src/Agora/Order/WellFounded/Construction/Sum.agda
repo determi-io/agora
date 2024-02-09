@@ -51,7 +51,7 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isWF 𝑘 A}} {{_ : isWF 𝑙 B}}
         ⊥' = left ⊥-WFT
         lem-4 : ∀{a : A + B} -> ⊥' ⪣ a
         lem-4 {left x} with initial-⊥-WFT {a = x}
-        ... | left refl-≣ = left refl-≣
+        ... | left refl-≡ = left refl-≡
         ... | just p = right (left p)
         lem-4 {just x} = right left-right
 

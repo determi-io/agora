@@ -29,9 +29,9 @@ Setoid 𝑗 = 𝒰 (𝑗 ⌄ 0) :& isSetoid {𝑗 ⌄ 1}
 -- refl2 : ∀{A : 𝒰 𝑖} -> {P : A -> A -> 𝒰 𝑗}
 --         -> {a : A}
 --         -> {{S : isSetoid {𝑗} A}}
---         -> {{_ : _∼_ {{S}} ≣ P}}
+--         -> {{_ : _∼_ {{S}} ≡ P}}
 --         -> P a a
--- refl2 {{S}} {{refl-≣}} = refl
+-- refl2 {{S}} {{refl-≡}} = refl
 
 
 -- Of : ∀(A : 𝒰 𝑖) -> A -> A
@@ -73,10 +73,10 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isSetoid {𝑖₁} A}} {{_ : isSe
 --   isEquivRel._∙_ isEquivRel:≡∼-Base (incl p) (incl q) = incl (trans-Path p q)
 
 -- instance
---   isEquivRel:≣∼-Base : ∀{A : 𝒰 𝑖} -> isEquivRel (∼-Base (_≣_ {A = A}))
---   isEquivRel.refl isEquivRel:≣∼-Base = incl refl-StrId
---   isEquivRel.sym isEquivRel:≣∼-Base (incl p) = incl (p ⁻¹)
---   isEquivRel._∙_ isEquivRel:≣∼-Base (incl p) (incl q) = incl (p ∙ q)
+--   isEquivRel:≡∼-Base : ∀{A : 𝒰 𝑖} -> isEquivRel (∼-Base (_≡_ {A = A}))
+--   isEquivRel.refl isEquivRel:≡∼-Base = incl refl-StrId
+--   isEquivRel.sym isEquivRel:≡∼-Base (incl p) = incl (p ⁻¹)
+--   isEquivRel._∙_ isEquivRel:≡∼-Base (incl p) (incl q) = incl (p ∙ q)
 
 -- record isSetoid 𝑗 A {{_ : From (𝒰 𝑖) A}} : 𝒰 (𝑖 ､ 𝑗 ⁺) where
 -- open isTypoid {{...}} public

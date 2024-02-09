@@ -195,8 +195,8 @@ module _ {A : 𝒰 𝑖}
 Category:Preorder : (𝑖 : 𝔏) -> Category _
 ⟨ Category:Preorder 𝑖 ⟩ = Preorder 𝑖
 ICategory.Hom (of Category:Preorder 𝑖) = Monotone
-ICategory._≣_ (of Category:Preorder 𝑖) f g = El f ≡ El g
-ICategory.IEquiv:≣ (of Category:Preorder 𝑖) = {!!}
+ICategory._≡_ (of Category:Preorder 𝑖) f g = El f ≡ El g
+ICategory.IEquiv:≡ (of Category:Preorder 𝑖) = {!!}
 ICategory.id (of Category:Preorder 𝑖) = {!!}
 ICategory._◆_ (of Category:Preorder 𝑖) = {!!}
 ICategory.unit-l-◆ (of Category:Preorder 𝑖) = {!!}

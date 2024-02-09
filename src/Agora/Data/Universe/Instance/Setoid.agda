@@ -27,8 +27,8 @@ A ≅-𝒰 B = (A -> B) :& isIso-𝒰
 private
   lem-10 : ∀{A : 𝒰 𝑖} -> isIso-𝒰 (id-𝒰 {A = A})
   isIso-𝒰.inverse-𝒰 lem-10 = id-𝒰
-  isIso-𝒰.inv-r-◆-𝒰 lem-10 = λ x → refl-≣ -- refl-≡
-  isIso-𝒰.inv-l-◆-𝒰 lem-10 = λ x → refl-≣ -- refl-≡
+  isIso-𝒰.inv-r-◆-𝒰 lem-10 = λ x → refl-≡ -- refl-≡
+  isIso-𝒰.inv-l-◆-𝒰 lem-10 = λ x → refl-≡ -- refl-≡
 
   lem-20 : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} -> {f : A ≅-𝒰 B} -> isIso-𝒰 inverse-𝒰
   isIso-𝒰.inverse-𝒰 (lem-20 {f = f}) = ⟨ f ⟩
@@ -37,7 +37,7 @@ private
 
   -- lem-30 : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} -> {f : A ≅-𝒰 B} -> {g : B ≅-𝒰 C} -> isIso-𝒰 (⟨ f ⟩ ◆-𝒰 ⟨ g ⟩)
   -- isIso-𝒰.inverse-𝒰 (lem-30 {f = f}) = inverse-𝒰 ◆-𝒰 inverse-𝒰
-  -- isIso-𝒰.inv-r-◆-𝒰 (lem-30 {f = f} {g = g}) = {!λ x -> cong-Str ⟨ f ⟩ (inv-r-◆-𝒰 {{of g}} _) ∙-≣ ?!}
+  -- isIso-𝒰.inv-r-◆-𝒰 (lem-30 {f = f} {g = g}) = {!λ x -> cong-Str ⟨ f ⟩ (inv-r-◆-𝒰 {{of g}} _) ∙-≡ ?!}
   -- isIso-𝒰.inv-l-◆-𝒰 (lem-30 {f = f}) = {!!}
 
 -- instance

@@ -53,8 +53,8 @@ FrameHom A B = _ :& isFrameHom {A = A} {B = B}
 
 isCategory:Frame : ICategory (Frame 𝑖) (𝑖 ⁺ , 𝑖)
 ICategory.Hom isCategory:Frame A B = FrameHom (⟨ A ⟩) (⟨ B ⟩)
-ICategory._≣_ isCategory:Frame f g = ⟨ f ⟩ ≡ ⟨ g ⟩
-ICategory.IEquiv:≣ isCategory:Frame = {!!}
+ICategory._≡_ isCategory:Frame f g = ⟨ f ⟩ ≡ ⟨ g ⟩
+ICategory.IEquiv:≡ isCategory:Frame = {!!}
 ICategory.id isCategory:Frame = {!!}
 ICategory._◆_ isCategory:Frame = {!!}
 ICategory.unit-l-◆ isCategory:Frame = {!!}

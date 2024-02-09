@@ -44,11 +44,11 @@ infixr 5 _or_
 infix  0 if_then_else_
 
 _∼-Bool_ : Bool -> Bool -> 𝒰₀
-_∼-Bool_ = _≣_
+_∼-Bool_ = _≡_
 
 instance
   isEquivRel:∼-Bool : isEquivRel _∼-Bool_
-  isEquivRel:∼-Bool = isEquivRel:≣
+  isEquivRel:∼-Bool = isEquivRel:≡
 
 instance
   isSetoid:Bool : isSetoid Bool
@@ -81,20 +81,20 @@ if true  then x else y = x
 if false then x else y = y
 
 _≟_ : Discrete Bool
-false ≟ false = right refl
+false ≟ false = right refl-∼
 false ≟ true  = left λ ()
 -- λ p →  (λ b → if b then 𝟘-𝒰 else Bool) p true
 true  ≟ false = left λ ()
 -- λ p → subst (λ b → if b then Bool else 𝟘-𝒰) p true
-true  ≟ true  = right refl
+true  ≟ true  = right refl-∼
 
 -- Dec→Bool : Decision A → Bool
 -- Dec→Bool (yes p) = true
 -- Dec→Bool (no ¬p) = false
 
-dichotomyBool : (x : Bool) → (x ≣ true) +-𝒰 (x ≣ false)
-dichotomyBool true  = left refl
-dichotomyBool false = right refl
+dichotomyBool : (x : Bool) → (x ≡ true) +-𝒰 (x ≡ false)
+dichotomyBool true  = left refl-∼
+dichotomyBool false = right refl-∼
 
 -- TODO: this should be uncommented and implemented using instance arguments
 -- _==_ : {dA : Discrete A} → A → A → Bool

@@ -214,11 +214,15 @@ infix 3 ¬_
 ¬_ : 𝒰 ℓ → 𝒰 ℓ
 ¬ A = A → 𝟘-𝒰
 
--- Decidable types (inspired by standard library)
--- data Decision (P : 𝒰 ℓ) : 𝒰 ℓ where
---   yes : ( p :   P) → Decision P
---   no  : (¬p : ¬ P) → Decision P
 
+--------------------------------------------------
+-- emulating the Dec data type from stl
+
+isDecidable : ∀{𝑖} -> (A : Set 𝑖) -> Set _
+isDecidable A = (¬ A) +-𝒰 A
+
+pattern yes a = right a
+pattern no a = left a
 
 
 

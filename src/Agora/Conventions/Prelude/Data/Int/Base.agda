@@ -35,11 +35,11 @@ open import Agda.Builtin.Int public
 
 
 _∼-Int_ : Int -> Int -> 𝒰₀
-_∼-Int_ = _≣_
+_∼-Int_ = _≡_
 
 instance
   isEquivRel:∼-Int : isEquivRel _∼-Int_
-  isEquivRel:∼-Int = isEquivRel:≣
+  isEquivRel:∼-Int = isEquivRel:≡
 
 instance
   isSetoid:Int : isSetoid Int

@@ -33,5 +33,5 @@ instance
           postulate bot : 𝟘-𝒰
       ... | true = right eq
         where
-          postulate eq : a ≣ b
+          postulate eq : a ≡ b
 

@@ -42,14 +42,14 @@ private
 infix 4 _≤_ _<_
 
 _≤_ : ℕ → ℕ → Type₀
-m ≤ n = Σ[ k ∈ ℕ ] k + m ≣ n
+m ≤ n = Σ[ k ∈ ℕ ] k + m ≡ n
 
 _<_ : ℕ → ℕ → Type₀
 m < n = suc m ≤ n
 
 data Trichotomy (m n : ℕ) : Type₀ where
   lt : m < n → Trichotomy m n
-  eq : m ≣ n → Trichotomy m n
+  eq : m ≡ n → Trichotomy m n
   gt : n < m → Trichotomy m n
 
 private
@@ -57,14 +57,14 @@ private
     k l m n : ℕ
 
 -- private
---   witness-prop : ∀ j → isProp (j + m ≣ n)
+--   witness-prop : ∀ j → isProp (j + m ≡ n)
 --   witness-prop {m} {n} j = isSetℕ (j + m) n
 
 -- m≤n-isProp : isProp (m ≤ n)
 -- m≤n-isProp {m} {n} (k , p) (l , q)
---   = Σ≣Prop witness-prop lemma
+--   = Σ≡Prop witness-prop lemma
 --   where
---   lemma : k ≣ l
+--   lemma : k ≡ l
 --   lemma = inj-+m (p ∙ (sym q))
 
 zero-≤ : 0 ≤ n
@@ -87,7 +87,7 @@ pred-≤-pred : suc m ≤ suc n → m ≤ n
 pred-≤-pred (k , p) = k , injSuc ((sym (+-suc k _)) ∙ p)
 
 ≤-refl : m ≤ m
-≤-refl = 0 , refl
+≤-refl = 0 , refl-∼
 
 ≤-suc : m ≤ n → m ≤ suc n
 ≤-suc (k , p) = suc k , cong-Str suc p
@@ -99,31 +99,31 @@ pred-≤-pred (k , p) = k , injSuc ((sym (+-suc k _)) ∙ p)
 ≤-trans : k ≤ m → m ≤ n → k ≤ n
 ≤-trans {k} {m} {n} (i , p) (j , q) = i + j , l2 ∙ (l1 ∙ q)
   where
-  l1 : j + i + k ≣ j + m
+  l1 : j + i + k ≡ j + m
   l1 = (sym (+-assoc j i k)) ∙ (cong-Str (j +_) p)
-  l2 : i + j + k ≣ j + i + k
+  l2 : i + j + k ≡ j + i + k
   l2 = cong-Str (_+ k) (+-comm i j)
 
-≤-antisym : m ≤ n → n ≤ m → m ≣ n
+≤-antisym : m ≤ n → n ≤ m → m ≡ n
 ≤-antisym {m} (i , p) (j , q) = (cong-Str (_+ m) l3) ∙ p
   where
-  l1 : j + i + m ≣ m
+  l1 : j + i + m ≡ m
   l1 = (sym (+-assoc j i m)) ∙ ((cong-Str (j +_) p) ∙ q)
-  l2 : j + i ≣ 0
-  l2 = m+n≣n→m≣0 l1
-  l3 : 0 ≣ i
-  l3 = sym (snd (m+n≣0→m≣0×n≣0 l2))
+  l2 : j + i ≡ 0
+  l2 = m+n≡n→m≡0 l1
+  l3 : 0 ≡ i
+  l3 = sym (snd (m+n≡0→m≡0×n≡0 l2))
 
 ≤-k+-cancel : k + m ≤ k + n → m ≤ n
 ≤-k+-cancel {k} {m} (l , p) = l , inj-m+ (sub k m ∙ p)
  where
- sub : ∀ k m → k + (l + m) ≣ l + (k + m)
+ sub : ∀ k m → k + (l + m) ≡ l + (k + m)
  sub k m = +-assoc k l m ∙ cong-Str (_+ m) (+-comm k l) ∙ sym (+-assoc l k m)
 
 ≤-+k-cancel : m + k ≤ n + k → m ≤ n
 ≤-+k-cancel {m} {k} {n} (l , p) = l , cancelled
  where
- cancelled : l + m ≣ n
+ cancelled : l + m ≡ n
  cancelled = inj-+m (sym (+-assoc l m k) ∙ p)
 
 <-k+-cancel : k + m < k + n → m < n
@@ -135,9 +135,9 @@ pred-≤-pred (k , p) = k , injSuc ((sym (+-suc k _)) ∙ p)
 ¬m<m : ¬ m < m
 ¬m<m {m} = ¬-<-zero ∘ ≤-+k-cancel {k = m}
 
-≤0→≣0 : n ≤ 0 → n ≣ 0
-≤0→≣0 {zero} ineq = refl
-≤0→≣0 {suc n} ineq = 𝟘-rec (¬-<-zero ineq)
+≤0→≡0 : n ≤ 0 → n ≡ 0
+≤0→≡0 {zero} ineq = refl-∼
+≤0→≡0 {suc n} ineq = 𝟘-rec (¬-<-zero ineq)
 
 predℕ-≤-predℕ : m ≤ n → (predℕ m) ≤ (predℕ n)
 predℕ-≤-predℕ {zero} {zero}   ineq = ≤-refl
@@ -154,20 +154,20 @@ predℕ-≤-predℕ {suc m} {suc n} ineq = pred-≤-pred ineq
 ≤<-trans : l ≤ m → m < n → l < n
 ≤<-trans {l} {m} {n} (i , p) (j , q) = (j + i) , reason
   where
-  reason : j + i + suc l ≣ n
-  reason = j + i + suc l ≣⟨ sym (+-assoc j i (suc l)) ⟩
-           j + (i + suc l) ≣⟨ cong-Str (j +_) (+-suc i l) ⟩
-           j + (suc (i + l)) ≣⟨ cong-Str (_+_ j ∘ suc) p ⟩
-           j + suc m ≣⟨ q ⟩
+  reason : j + i + suc l ≡ n
+  reason = j + i + suc l ≡⟨ sym (+-assoc j i (suc l)) ⟩
+           j + (i + suc l) ≡⟨ cong-Str (j +_) (+-suc i l) ⟩
+           j + (suc (i + l)) ≡⟨ cong-Str (_+_ j ∘ suc) p ⟩
+           j + suc m ≡⟨ q ⟩
            n ∎
 
 <≤-trans : l < m → m ≤ n → l < n
 <≤-trans {l} {m} {n} (i , p) (j , q) = j + i , reason
   where
-  reason : j + i + suc l ≣ n
-  reason = j + i + suc l ≣⟨ sym (+-assoc j i (suc l)) ⟩
-           j + (i + suc l) ≣⟨ cong-Str (j +_) p ⟩
-           j + m ≣⟨ q ⟩
+  reason : j + i + suc l ≡ n
+  reason = j + i + suc l ≡⟨ sym (+-assoc j i (suc l)) ⟩
+           j + (i + suc l) ≡⟨ cong-Str (j +_) p ⟩
+           j + m ≡⟨ q ⟩
            n ∎
 
 <-trans : l < m → m < n → l < n
@@ -182,13 +182,13 @@ Trichotomy-suc (eq m=n) = eq (cong-Str suc m=n)
 Trichotomy-suc (gt n<m) = gt (suc-≤-suc n<m)
 
 _≟_ : ∀ m n → Trichotomy m n
-zero ≟ zero = eq refl
+zero ≟ zero = eq refl-∼
 zero ≟ suc n = lt (n , +-comm n 1)
 suc m ≟ zero = gt (m , +-comm m 1)
 suc m ≟ suc n = Trichotomy-suc (m ≟ n)
 
--- <-split : m < suc n → (m < n) ⊎ (m ≣ n)
--- <-split {n = zero} = inr ∘ snd ∘ m+n≣0→m≣0×n≣0 ∘ snd ∘ pred-≤-pred
+-- <-split : m < suc n → (m < n) ⊎ (m ≡ n)
+-- <-split {n = zero} = inr ∘ snd ∘ m+n≡0→m≡0×n≡0 ∘ snd ∘ pred-≤-pred
 -- <-split {zero} {suc n} = λ _ → inl (suc-≤-suc zero-≤)
 -- <-split {suc m} {suc n} = ⊎.map suc-≤-suc (cong-Str suc) ∘ <-split ∘ pred-≤-pred
 
@@ -198,7 +198,7 @@ suc m ≟ suc n = Trichotomy-suc (m ≟ n)
 --     = acc λ y y<sn
 --     → case <-split y<sn of λ
 --     { (inl y<n) → access a y y<n
---     ; (inr y≣n) → subst-Str _ (sym y≣n) a
+--     ; (inr y≡n) → subst-Str _ (sym y≡n) a
 --     }
 
 -- <-wellfounded : WellFounded _<_
@@ -214,35 +214,35 @@ suc m ≟ suc n = Trichotomy-suc (m ≟ n)
 --   open WFI (<-wellfounded)
 
 --   private
---     dichotomy : ∀ b n → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≣ b + m)
+--     dichotomy : ∀ b n → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≡ b + m)
 --     dichotomy b n
---       = case n ≟ b return (λ _ → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≣ b + m)) of λ
+--       = case n ≟ b return (λ _ → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≡ b + m)) of λ
 --       { (lt o) → inl o
 --       ; (eq p) → inr (0 , p ∙ sym (+-zero b))
 --       ; (gt (m , p)) → inr (suc m , sym p ∙ +-suc m b ∙ +-comm (suc m) b)
 --       }
 
---     dichotomy<≣ : ∀ b n → (n<b : n < b) → dichotomy b n ≣ inl n<b
---     dichotomy<≣ b n n<b
---       = case dichotomy b n return (λ d → d ≣ inl n<b) of λ
+--     dichotomy<≡ : ∀ b n → (n<b : n < b) → dichotomy b n ≡ inl n<b
+--     dichotomy<≡ b n n<b
+--       = case dichotomy b n return (λ d → d ≡ inl n<b) of λ
 --       { (inl x) → cong-Str inl (m≤n-isProp x n<b)
 --       ; (inr (m , p)) → 𝟘-rec (<-asym n<b (m , sym (p ∙ +-comm b m)))
 --       }
 
---     dichotomy+≣ : ∀ b m n → (p : n ≣ b + m) → dichotomy b n ≣ inr (m , p)
---     dichotomy+≣ b m n p
---       = case dichotomy b n return (λ d → d ≣ inr (m , p)) of λ
+--     dichotomy+≡ : ∀ b m n → (p : n ≡ b + m) → dichotomy b n ≡ inr (m , p)
+--     dichotomy+≡ b m n p
+--       = case dichotomy b n return (λ d → d ≡ inr (m , p)) of λ
 --       { (inl n<b) → 𝟘-rec (<-asym n<b (m , +-comm m b ∙ sym p))
 --       ; (inr (m' , q))
---       → cong-Str inr (Σ≣Prop (λ x → isSetℕ n (b + x)) (inj-m+ {m = b} (sym q ∙ p)))
+--       → cong-Str inr (Σ≡Prop (λ x → isSetℕ n (b + x)) (inj-m+ {m = b} (sym q ∙ p)))
 --       }
 
 --     b = suc b₀
 
---     lemma₁ : ∀{x y z} → x ≣ suc z + y → y < x
+--     lemma₁ : ∀{x y z} → x ≡ suc z + y → y < x
 --     lemma₁ {y = y} {z} p = z , +-suc z y ∙ sym p
 
---     subStep : (n : ℕ) → (∀ m → m < n → P m) → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≣ b + m) → P n
+--     subStep : (n : ℕ) → (∀ m → m < n → P m) → (n < b) ⊎ (Σ[ m ∈ ℕ ] n ≡ b + m) → P n
 --     subStep n _   (inl l) = base n l
 --     subStep n rec (inr (m , p))
 --       = transport (cong-Str P (sym p)) (step m (rec m (lemma₁ p)))
@@ -250,19 +250,19 @@ suc m ≟ suc n = Trichotomy-suc (m ≟ n)
 --     wfStep : (n : ℕ) → (∀ m → m < n → P m) → P n
 --     wfStep n rec = subStep n rec (dichotomy b n)
 
---     wfStepLemma₀ : ∀ n (n<b : n < b) rec → wfStep n rec ≣ base n n<b
---     wfStepLemma₀ n n<b rec = cong-Str (subStep n rec) (dichotomy<≣ b n n<b)
+--     wfStepLemma₀ : ∀ n (n<b : n < b) rec → wfStep n rec ≡ base n n<b
+--     wfStepLemma₀ n n<b rec = cong-Str (subStep n rec) (dichotomy<≡ b n n<b)
 
---     wfStepLemma₁ : ∀ n rec → wfStep (b + n) rec ≣ step n (rec n (lemma₁ refl))
+--     wfStepLemma₁ : ∀ n rec → wfStep (b + n) rec ≡ step n (rec n (lemma₁ refl))
 --     wfStepLemma₁ n rec
---       = cong-Str (subStep (b + n) rec) (dichotomy+≣ b n (b + n) refl)
+--       = cong-Str (subStep (b + n) rec) (dichotomy+≡ b n (b + n) refl)
 --       ∙ transportRefl _
 
 --   +induction : ∀ n → P n
 --   +induction = induction wfStep
 
---   +inductionBase : ∀ n → (l : n < b) → +induction n ≣ base n l
+--   +inductionBase : ∀ n → (l : n < b) → +induction n ≡ base n l
 --   +inductionBase n l = induction-compute wfStep n ∙ wfStepLemma₀ n l _
 
---   +inductionStep : ∀ n → +induction (b + n) ≣ step n (+induction n)
+--   +inductionStep : ∀ n → +induction (b + n) ≡ step n (+induction n)
 --   +inductionStep n = induction-compute wfStep (b + n) ∙ wfStepLemma₁ n _
