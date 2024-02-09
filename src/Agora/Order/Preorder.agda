@@ -20,7 +20,7 @@ open import Agora.Data.Product.Definition
 -- open ≤-Base public
 
 record isPreorderData (A : 𝒰 𝑖 :& isSetoid {𝑗}) (_≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
-  field reflexive : {a : ⟨ A ⟩} -> a ≤ a
+  field refl-≤ : {a : ⟨ A ⟩} -> a ≤ a
         _⟡_ : {a b c : ⟨ A ⟩} -> a ≤ b -> b ≤ c -> a ≤ c
         transp-≤ : ∀{a₀ a₁ b₀ b₁ : ⟨ A ⟩} -> a₀ ∼ a₁ -> b₀ ∼ b₁ -> a₀ ≤ b₀ -> a₁ ≤ b₁
 
@@ -87,7 +87,7 @@ module _ {A : 𝒰 _} {{_ : A is Preorder 𝑗}} {I : 𝒰 𝑙} where
   instance
     isPreorderData:≤-Family : isPreorderData (I →# A) _≤-Family_
     isPreorderData:≤-Family = record
-      { reflexive = λ a → reflexive
+      { refl-≤ = λ a → refl-≤
       ; _⟡_ = λ p q a -> p a ⟡ q a
       ; transp-≤ = λ p q f a -> transp-≤ (p a) (q a) (f a)
       }
@@ -110,7 +110,7 @@ module _ {A : 𝒰 _} {B : 𝒰 _} {{_ : A is Preorder 𝑖}} {{_ : B is Preorde
   instance
     isPreorderData:≤-× : isPreorderData (A × B) _≤-×_
     isPreorderData:≤-× = record
-      { reflexive = reflexive , reflexive
+      { refl-≤ = refl-≤ , refl-≤
       ; _⟡_ = λ (pa , pb) (qa , qb) -> (pa ⟡ qa) , (pb ⟡ qb)
       ; transp-≤ = λ (ra , rb) (sa , sb) (pa , pb) -> (transp-≤ ra sa pa , transp-≤ rb sb pb)
       }
@@ -151,7 +151,7 @@ module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
   instance
     isEquivRel:∼-Monotone : isEquivRel _∼-Monotone_
     isEquivRel:∼-Monotone = record
-      { refl = refl
+      { refl-∼ = refl-∼
       ; sym = (λ p -> sym p)
       ; _∙_ = (λ p q -> p ∙ q)
       }
@@ -161,7 +161,7 @@ module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
     isSetoid:Monotone : isSetoid (Monotone A B)
     isSetoid:Monotone = record { _∼_ = _∼-Monotone_ }
       -- isSetoid:byDef _∼-Monotone_
-    -- (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩) refl sym _∙_
+    -- (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩) refl-∼ sym _∙_
     -- isSetoid._∼'_ isSetoid:Monotone f g = ⟨ f ⟩ ∼' ⟨ g ⟩
     -- isSetoid.isEquivRel:∼ isSetoid:Monotone = {!!}
 
@@ -170,7 +170,7 @@ module _ {A : Preorder 𝑖} {B : Preorder 𝑗} where
 
 module _ {A : 𝒰 𝑖}
   (R : A -> A -> 𝒰 𝑗)
-  (refl' : ∀{a} -> R a a)
+  (refl-∼' : ∀{a} -> R a a)
   (trans' : ∀{a b c} -> R a b -> R b c -> R a c)
   where
 
@@ -180,7 +180,7 @@ module _ {A : 𝒰 𝑖}
 
   isEquivRel:byPreorder : isEquivRel _∼'_
   isEquivRel:byPreorder = record
-    { refl = refl' , refl'
+    { refl-∼ = refl-∼' , refl-∼'
     ; sym = λ (p , q) -> (q , p)
     ; _∙_ = λ (p , q) (r , s) -> (trans' p r , trans' s q)
     }
@@ -227,9 +227,9 @@ ICategory._◈_ (of Category:Preorder 𝑖) = {!!}
 
 module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   by-∼-≤_ : {a b : A} -> (a ∼ b) -> a ≤ b
-  by-∼-≤_ p = transp-≤ refl p reflexive
+  by-∼-≤_ p = transp-≤ refl-∼ p refl-≤
 
-  命reflexive = by-∼-≤_
+  命refl-≤ = by-∼-≤_
 
   infixl 10 by-∼-≤_
 
@@ -243,10 +243,10 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   infixr 2 _⟨_⟩-≤_
 
   _∎-≤ : (x : A) → x ≤ x
-  _ ∎-≤ = reflexive
+  _ ∎-≤ = refl-≤
 
   _⟨_⟩-∼-≤_ : (x : A) {y : A} {z : A} → x ∼ y → y ≤ z → x ≤ z
-  _ ⟨ x∼y ⟩-∼-≤ y≤z = transp-≤ (sym x∼y) refl y≤z -- x≤y ⟡ y≤z
+  _ ⟨ x∼y ⟩-∼-≤ y≤z = transp-≤ (sym x∼y) refl-∼ y≤z -- x≤y ⟡ y≤z
 
   ⟨⟩-∼-≤-syntax : (x : A) {y z : A} → x ∼ y → y ≤ z → x ≤ z
   ⟨⟩-∼-≤-syntax = _⟨_⟩-∼-≤_
@@ -254,7 +254,7 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   infixr 2 _⟨_⟩-∼-≤_
 
   _⟨_⟩-≤-∼_ : (x : A) {y : A} {z : A} → x ≤ y → y ∼ z → x ≤ z
-  _ ⟨ x≤y ⟩-≤-∼ y∼z = transp-≤ refl y∼z x≤y -- x≤y ⟡ y≤z
+  _ ⟨ x≤y ⟩-≤-∼ y∼z = transp-≤ refl-∼ y∼z x≤y -- x≤y ⟡ y≤z
 
   ⟨⟩-≤-∼-syntax : (x : A) {y z : A} → x ≤ y → y ∼ z → x ≤ z
   ⟨⟩-≤-∼-syntax = _⟨_⟩-≤-∼_
@@ -284,7 +284,7 @@ module _ {𝑗 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   infixr 2 _⟨_⟩-≤_
 
   _∎-≤ : (x : A) → x ≤ x
-  _ ∎-≤ = reflexive
+  _ ∎-≤ = refl-≤
 
   _⟨_⟩-∼-≤_ : (x : A) {y : A} {z : A} → x ∼ y → y ≤ z → x ≤ z
   _ ∼⟨ x≤y ⟩≤ y≤z = {!!} -- x≤y ⟡ y≤z
@@ -333,7 +333,7 @@ module _ {A : 𝒰 𝑖} {{_ : isPreorder A}} where
 
   instance
     Cast:≡→≤ : ∀{a b : A} -> Cast (a ≡ b) IAnything (a ≤ b)
-    Cast.cast (Cast:≡→≤ {a = a} {b}) e = transport (λ i -> e (~ i) ≤ b) reflexive
+    Cast.cast (Cast:≡→≤ {a = a} {b}) e = transport (λ i -> e (~ i) ≤ b) refl-≤
 
 
 -- record isPreorderHom {A B : Preorder} (f : ⟨ A ⟩ -> ⟨ B ⟩) : 𝒰₀ where
@@ -351,7 +351,7 @@ instance
 
   isPreorder:ℕ : isPreorder ℕ
   isPreorder._≤_ isPreorder:ℕ = _≤-ℕ_
-  isPreorder.reflexive isPreorder:ℕ = reflexive-ℕ
+  isPreorder.refl-≤ isPreorder:ℕ = refl-≤-ℕ
   isPreorder.trans-≤ isPreorder:ℕ = trans-≤-ℕ
 
 
@@ -374,15 +374,15 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑖} {{_ : isPreorder A}} {{_ : isPreorder B
   trans-≤-⊕ (right-≤ p) (right-≤ q) = right-≤ (trans-≤ p q)
   trans-≤-⊕ left-right-≤ (right-≤ x) = left-right-≤
 
-  reflexive-⊕ : ∀{a} -> (a ≤-⊕ a)
-  reflexive-⊕ {left x} = left-≤ reflexive
-  reflexive-⊕ {just x} = right-≤ reflexive
+  refl-≤-⊕ : ∀{a} -> (a ≤-⊕ a)
+  refl-≤-⊕ {left x} = left-≤ refl-≤
+  refl-≤-⊕ {just x} = right-≤ refl-≤
 
 
   instance
     isPreorder:+ : isPreorder (A +-𝒰 B)
     isPreorder._≤_ isPreorder:+ = _≤-⊕_
-    isPreorder.reflexive isPreorder:+ {a = a} = reflexive-⊕ {a}
+    isPreorder.refl-≤ isPreorder:+ {a = a} = refl-≤-⊕ {a}
     isPreorder.trans-≤ isPreorder:+ {a = a} = trans-≤-⊕ {a = a}
 
 
@@ -400,7 +400,7 @@ instance
 instance
   isPreorder:⊤ : ∀{𝑖} -> isPreorder (Lift {j = 𝑖} 𝟙-𝒰)
   isPreorder._≤_ isPreorder:⊤ a b = `𝟙`
-  isPreorder.reflexive isPreorder:⊤ = lift tt
+  isPreorder.refl-≤ isPreorder:⊤ = lift tt
   isPreorder.trans-≤ isPreorder:⊤ a b = lift tt
 
 -}
