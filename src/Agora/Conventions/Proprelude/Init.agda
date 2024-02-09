@@ -215,9 +215,9 @@ infix 3 ¬_
 ¬ A = A → 𝟘-𝒰
 
 -- Decidable types (inspired by standard library)
-data Decision (P : 𝒰 ℓ) : 𝒰 ℓ where
-  yes : ( p :   P) → Decision P
-  no  : (¬p : ¬ P) → Decision P
+-- data Decision (P : 𝒰 ℓ) : 𝒰 ℓ where
+--   yes : ( p :   P) → Decision P
+--   no  : (¬p : ¬ P) → Decision P
 
 
 

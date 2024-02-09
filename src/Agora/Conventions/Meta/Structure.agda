@@ -9,6 +9,8 @@ open import Agora.Conventions.Meta.Term
 
 open PrimitiveUniverseNotation
 
+open Structure
+
 
 
 -- module _ (A : 𝒰 𝑖) where

@@ -88,9 +88,9 @@ true  ≟ false = left λ ()
 -- λ p → subst (λ b → if b then Bool else 𝟘-𝒰) p true
 true  ≟ true  = right refl
 
-Dec→Bool : Decision A → Bool
-Dec→Bool (yes p) = true
-Dec→Bool (no ¬p) = false
+-- Dec→Bool : Decision A → Bool
+-- Dec→Bool (yes p) = true
+-- Dec→Bool (no ¬p) = false
 
 dichotomyBool : (x : Bool) → (x ≣ true) +-𝒰 (x ≣ false)
 dichotomyBool true  = left refl

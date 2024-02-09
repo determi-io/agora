@@ -233,7 +233,7 @@ instance
     { Proof = λ a -> ∑i λ (p1 : Proof {{UU}} a) -> P (reconstructObj a p1)
     ; projectUniv = λ ap -> ⟨ ap ⟩
     -- λ ap -> projectUniv {{UU}} (reconstructObj ⟨ ap ⟩ (_:&_.oldProof ap))
-    ; projectProof = λ {a -> make∑i {ifst = _:&_.oldProof a} {{of a}}}
+    ; projectProof = λ {a -> make∑i {ifst = _:&_.oldProof a} {{_:&_.of_ a}}}
     ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
     }
 

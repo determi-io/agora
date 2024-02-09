@@ -14,5 +14,5 @@ record Structure {A : 𝒰 𝑖} (P : A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔ 𝑗) whe
 
   infixr 2 of_
 
-open Structure public
+-- open Structure public
 
