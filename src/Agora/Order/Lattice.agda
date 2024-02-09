@@ -150,7 +150,7 @@ module _ {A : 𝒰 𝑖}
     sym-∧ = antisym (⟨ π₁-∧ , π₀-∧ ⟩-∧) (⟨ π₁-∧ , π₀-∧ ⟩-∧)
 
     unit-r-∧ : ∀{a : A} -> a ∧ ⊤ ∼ a
-    unit-r-∧ = antisym π₀-∧ ⟨ reflexive , terminal-⊤ ⟩-∧
+    unit-r-∧ = antisym π₀-∧ ⟨ refl-≤ , terminal-⊤ ⟩-∧
 
     unit-l-∧ : ∀{a : A} -> ⊤ ∧ a ∼ a
     unit-l-∧ = sym-∧ ∙ unit-r-∧
@@ -164,7 +164,7 @@ module _ {A : 𝒰 𝑖}
     assoc-r-∧ = assoc-l-∧ ⁻¹
 
     idem-∧ : ∀{a : A} -> a ∧ a ∼ a
-    idem-∧ = antisym π₀-∧ ⟨ reflexive , reflexive ⟩-∧
+    idem-∧ = antisym π₀-∧ ⟨ refl-≤ , refl-≤ ⟩-∧
 
   ⋀-fin : ∀{n} -> (F : Fin-R n -> A) -> A
   ⋀-fin {zero} F = ⊤
@@ -190,7 +190,7 @@ module _ {A : 𝒰 𝑖}
 
     duplicate-r-⋁ : ∀{B : 𝒰 𝑙} -> {F : B -> A} -> (b : B) -> {a : A}
                     -> F b ∼ a -> ⋁ F ∨ a ∼ ⋁ F
-    duplicate-r-⋁ b {a} p = antisym [ reflexive , (by-∼-≤ (p ⁻¹)) ⟡ ι-⋁ b ]-∨ (ι₀-∨)
+    duplicate-r-⋁ b {a} p = antisym [ refl-≤ , (by-∼-≤ (p ⁻¹)) ⟡ ι-⋁ b ]-∨ (ι₀-∨)
 
 module _ {A : 𝒰 𝑖}
          {{_ : isSetoid {𝑗} A}}
