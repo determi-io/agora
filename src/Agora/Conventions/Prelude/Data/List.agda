@@ -28,18 +28,18 @@ instance
   IBootMonoid._<>_ IBootMonoid:List = _++-List_
 
   IBootEq:List : ∀{A : 𝒰 𝑖} -> {{_  : IBootEq A}} -> IBootEq (List A)
-  IBootEq._≟_ IBootEq:List = f
+  IBootEq._==_ IBootEq:List = f
     where
       f : ∀{A : 𝒰 𝑖} -> {{_  : IBootEq A}} -> (List A) -> List A -> Bool
       f [] [] = true
       f [] (x ∷ ys) = false
       f (x ∷ xs) [] = false
-      f (x ∷ xs) (y ∷ ys) = (x ≟ y) and (f xs ys)
+      f (x ∷ xs) (y ∷ ys) = (x == y) and (f xs ys)
 
 
 module _ {A : 𝒰 𝑖} {{_ : IBootEq A}} where
   _∈?-List_ :  (a : A) -> (xs : List A) -> Bool
-  a ∈?-List xs = foldr (λ a' res -> (a' ≟ a) or res) false xs
+  a ∈?-List xs = foldr (λ a' res -> (a' == a) or res) false xs
 
 module _ {A : 𝒰 𝑖} where
   filter : (A -> Bool) -> List A -> List A

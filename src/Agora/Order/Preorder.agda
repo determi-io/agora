@@ -57,7 +57,7 @@ module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
 record isDecidablePreorder (X : Preorder 𝑗) : 𝒰 (𝑗 ⁺) where
   -- field _≰_ : ⟨ X ⟩ -> ⟨ X ⟩ -> 𝒰 (𝑗 ⌄ 2)
   -- field impossible-≤ : ∀{a b} ->  a ≰ b -> a ≤ b -> 𝟘-𝒰
-  field decide-≤ : ∀(a b : ⟨ X ⟩) -> ¬(a ≤ b) +-𝒰 (a ≤ b)
+  field decide-≤ : ∀(a b : ⟨ X ⟩) -> (¬(a ≤ b)) +-𝒰 (a ≤ b)
 
 open isDecidablePreorder {{...}} public
 

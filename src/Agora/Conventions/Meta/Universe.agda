@@ -16,7 +16,7 @@ try-eq-𝔏n : Term -> ℕ -> TC ℕ
 try-eq-𝔏n hole n =
   do `cmp` <- quoteTC (𝔏 ^ n)
      `cmp` <- normalise `cmp`
-     if (`cmp` ≟ hole) then (return n) else (printErr (show `cmp` <> "\nis not eq to\n" <> show hole))
+     if (`cmp` == hole) then (return n) else (printErr (show `cmp` <> "\nis not eq to\n" <> show hole))
 
 
 try-all : ∀{a : 𝒰' 𝑖} -> ℕ -> (ℕ -> TC a) -> TC a

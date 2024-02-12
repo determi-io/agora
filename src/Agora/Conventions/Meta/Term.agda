@@ -13,97 +13,97 @@ cmpTerm : Term -> Term -> Bool
 
 instance
   IBootEq:Term : IBootEq Term
-  IBootEq._≟_ IBootEq:Term = cmpTerm
+  IBootEq._==_ IBootEq:Term = cmpTerm
 
 instance
   IBootEq:Name : IBootEq Name
-  IBootEq._≟_ IBootEq:Name = primQNameEquality
+  IBootEq._==_ IBootEq:Name = primQNameEquality
 
   IBootEq:Meta : IBootEq Meta
-  IBootEq._≟_ IBootEq:Meta = primMetaEquality
+  IBootEq._==_ IBootEq:Meta = primMetaEquality
 
 instance
   IBootEq:Visibility : IBootEq Visibility
-  IBootEq._≟_ IBootEq:Visibility = _≟V_
+  IBootEq._==_ IBootEq:Visibility = _==V_
     where
-      _≟V_ : Visibility -> Visibility -> Bool
-      visible ≟V visible = true
-      hidden ≟V hidden = true
-      instance′ ≟V instance′ = true
-      _ ≟V _ = false
+      _==V_ : Visibility -> Visibility -> Bool
+      visible ==V visible = true
+      hidden ==V hidden = true
+      instance′ ==V instance′ = true
+      _ ==V _ = false
 
 
 instance
   IBootEq:Relevance : IBootEq Relevance
-  (IBootEq:Relevance IBootEq.≟ relevant) relevant = true
-  (IBootEq:Relevance IBootEq.≟ relevant) irrelevant = false
-  (IBootEq:Relevance IBootEq.≟ irrelevant) relevant = false
-  (IBootEq:Relevance IBootEq.≟ irrelevant) irrelevant = true
+  (IBootEq:Relevance IBootEq.== relevant) relevant = true
+  (IBootEq:Relevance IBootEq.== relevant) irrelevant = false
+  (IBootEq:Relevance IBootEq.== irrelevant) relevant = false
+  (IBootEq:Relevance IBootEq.== irrelevant) irrelevant = true
 
   IBootEq:Quantity : IBootEq Quantity
-  IBootEq._≟_ IBootEq:Quantity quantity-0 quantity-0 = true
-  IBootEq._≟_ IBootEq:Quantity quantity-0 quantity-ω = false
-  IBootEq._≟_ IBootEq:Quantity quantity-ω quantity-0 = false
-  IBootEq._≟_ IBootEq:Quantity quantity-ω quantity-ω = true
+  IBootEq._==_ IBootEq:Quantity quantity-0 quantity-0 = true
+  IBootEq._==_ IBootEq:Quantity quantity-0 quantity-ω = false
+  IBootEq._==_ IBootEq:Quantity quantity-ω quantity-0 = false
+  IBootEq._==_ IBootEq:Quantity quantity-ω quantity-ω = true
 
 
   IBootEq:Modality : IBootEq Modality
-  IBootEq._≟_ IBootEq:Modality (modality r1 q1) (modality r2 q2) = (r1 ≟ r2) and (q1 ≟ q2)
+  IBootEq._==_ IBootEq:Modality (modality r1 q1) (modality r2 q2) = (r1 == r2) and (q1 == q2)
 
 
 instance
   IBootEq:ArgInfo : IBootEq ArgInfo
-  (IBootEq:ArgInfo IBootEq.≟ arg-info v r) (arg-info w s) = (v ≟ w) and (r ≟ s)
+  (IBootEq:ArgInfo IBootEq.== arg-info v r) (arg-info w s) = (v == w) and (r == s)
 
   IBootEq:Arg : ∀{A : 𝒰 𝑖} -> {{_ : IBootEq A}} -> IBootEq (Arg A)
-  (IBootEq:Arg IBootEq.≟ arg i x) (arg j y) = (i ≟ j) and (x ≟ y)
+  (IBootEq:Arg IBootEq.== arg i x) (arg j y) = (i == j) and (x == y)
 
   IBootEq:Abs : ∀{A : 𝒰 𝑖} -> {{_ : IBootEq A}} -> IBootEq (Abs A)
-  (IBootEq:Abs IBootEq.≟ Abs.abs s x) (Abs.abs t y) = x ≟ y -- WARNING! We do ignore the strings here, because they should not be relevant
+  (IBootEq:Abs IBootEq.== Abs.abs s x) (Abs.abs t y) = x == y -- WARNING! We do ignore the strings here, because they should not be relevant
 
   IBootEq:Literal : IBootEq Literal
-  (IBootEq:Literal IBootEq.≟ nat n) (nat m) = n ≟ m
-  (IBootEq:Literal IBootEq.≟ word64 n) (word64 m) = n ≟ m
-  (IBootEq:Literal IBootEq.≟ float x) (float y) = x ≟ y
-  (IBootEq:Literal IBootEq.≟ char c) (char d) = c ≟ d
-  (IBootEq:Literal IBootEq.≟ string s) (string t) = s ≟ t
-  (IBootEq:Literal IBootEq.≟ name x) (name y) = x ≟ y
-  (IBootEq:Literal IBootEq.≟ meta x) (meta y) = x ≟ y
-  (IBootEq:Literal IBootEq.≟ _) (_) = false
+  (IBootEq:Literal IBootEq.== nat n) (nat m) = n == m
+  (IBootEq:Literal IBootEq.== word64 n) (word64 m) = n == m
+  (IBootEq:Literal IBootEq.== float x) (float y) = x == y
+  (IBootEq:Literal IBootEq.== char c) (char d) = c == d
+  (IBootEq:Literal IBootEq.== string s) (string t) = s == t
+  (IBootEq:Literal IBootEq.== name x) (name y) = x == y
+  (IBootEq:Literal IBootEq.== meta x) (meta y) = x == y
+  (IBootEq:Literal IBootEq.== _) (_) = false
 
 
   IBootEq:Pattern : IBootEq Pattern
-  (IBootEq:Pattern IBootEq.≟ con c ps) (con d ps2) = (c ≟ d) and (ps ≟ ps2)
-  (IBootEq:Pattern IBootEq.≟ dot t) (dot s) = t ≟ s
-  (IBootEq:Pattern IBootEq.≟ var x) (var y) = x ≟ y
-  (IBootEq:Pattern IBootEq.≟ lit l) (lit m) = l ≟ m
-  (IBootEq:Pattern IBootEq.≟ proj f) (proj g) = f ≟ g
-  (IBootEq:Pattern IBootEq.≟ absurd x) (absurd y) = true -- WARNING! We ignore the x : ℕ argument here, though I do not know what it means. (But it seems irrelevant)
-  (IBootEq:Pattern IBootEq.≟ _) (_) = false
+  (IBootEq:Pattern IBootEq.== con c ps) (con d ps2) = (c == d) and (ps == ps2)
+  (IBootEq:Pattern IBootEq.== dot t) (dot s) = t == s
+  (IBootEq:Pattern IBootEq.== var x) (var y) = x == y
+  (IBootEq:Pattern IBootEq.== lit l) (lit m) = l == m
+  (IBootEq:Pattern IBootEq.== proj f) (proj g) = f == g
+  (IBootEq:Pattern IBootEq.== absurd x) (absurd y) = true -- WARNING! We ignore the x : ℕ argument here, though I do not know what it means. (But it seems irrelevant)
+  (IBootEq:Pattern IBootEq.== _) (_) = false
 
   IBootEq:Clause : IBootEq Clause
-  (IBootEq:Clause IBootEq.≟ clause tel ps t) (clause tel2 ps2 t2) = (map-List snd tel ≟ map-List snd tel2) and (ps ≟ ps2) and (t ≟ t2)
-  (IBootEq:Clause IBootEq.≟ absurd-clause tel ps) (absurd-clause tel2 ps2) = (map-List snd tel ≟ map-List snd tel2) and (ps ≟ ps2)
-  (IBootEq:Clause IBootEq.≟ _) (_) = false
+  (IBootEq:Clause IBootEq.== clause tel ps t) (clause tel2 ps2 t2) = (map-List snd tel == map-List snd tel2) and (ps == ps2) and (t == t2)
+  (IBootEq:Clause IBootEq.== absurd-clause tel ps) (absurd-clause tel2 ps2) = (map-List snd tel == map-List snd tel2) and (ps == ps2)
+  (IBootEq:Clause IBootEq.== _) (_) = false
 
   IBootEq:Sort : IBootEq Sort
-  (IBootEq:Sort IBootEq.≟ set s) (set t) = s ≟ t
-  (IBootEq:Sort IBootEq.≟ lit n) (lit m) = n ≟ m
-  (IBootEq:Sort IBootEq.≟ unknown) unknown = true
-  (IBootEq:Sort IBootEq.≟ _) _ = false
+  (IBootEq:Sort IBootEq.== set s) (set t) = s == t
+  (IBootEq:Sort IBootEq.== lit n) (lit m) = n == m
+  (IBootEq:Sort IBootEq.== unknown) unknown = true
+  (IBootEq:Sort IBootEq.== _) _ = false
 
 
 
 
-cmpTerm (var x args) (var y args2) = (x ≟ y) and (args ≟ args2)
-cmpTerm (con c args) (con d args2) = (c ≟ d) and (args ≟ args2)
-cmpTerm (def f args) (def g args2) = (f ≟ g) and (args ≟ args2)
-cmpTerm (lam v t) (lam w s) = (v ≟ w) and (t ≟ s)
-cmpTerm (pat-lam cs args) (pat-lam ds args2) = (cs ≟ ds) and (args ≟ args2)
-cmpTerm (pi a b) (pi a2 b2) = (a ≟ a2) and (b ≟ b2)
-cmpTerm (agda-sort s) (agda-sort t) = s ≟ t
-cmpTerm (lit l) (lit m) = l ≟ m
-cmpTerm (meta x y) (meta x2 y2) = (x ≟ x2) and (y ≟ y2)
+cmpTerm (var x args) (var y args2) = (x == y) and (args == args2)
+cmpTerm (con c args) (con d args2) = (c == d) and (args == args2)
+cmpTerm (def f args) (def g args2) = (f == g) and (args == args2)
+cmpTerm (lam v t) (lam w s) = (v == w) and (t == s)
+cmpTerm (pat-lam cs args) (pat-lam ds args2) = (cs == ds) and (args == args2)
+cmpTerm (pi a b) (pi a2 b2) = (a == a2) and (b == b2)
+cmpTerm (agda-sort s) (agda-sort t) = s == t
+cmpTerm (lit l) (lit m) = l == m
+cmpTerm (meta x y) (meta x2 y2) = (x == x2) and (y == y2)
 cmpTerm unknown unknown = true
 cmpTerm _ _ = false
 
@@ -192,7 +192,7 @@ instance
   IShow.show IShow:Pattern (proj f) = "<< proj pattern >>"
   IShow.show IShow:Pattern (absurd _) = "()"
 
-_≟S_ = primStringEquality
+_==S_ = primStringEquality
 
 _++_ = primStringAppend
 
@@ -430,7 +430,7 @@ lowerVars (suc x ∷ xs) = x ∷ lowerVars xs
 getVars : Visibility -> Type -> List ℕ
 
 getVarsArg : Visibility -> Arg Term -> List ℕ
-getVarsArg v (arg (arg-info w _) x) with v ≟ w
+getVarsArg v (arg (arg-info w _) x) with v == w
 ... | true = getVars v x
 ... | false = []
 
@@ -466,7 +466,7 @@ replace : SSub -> Type -> Type
 
 {-# TERMINATING #-}
 replaceVar : SSub -> ℕ × List (Arg Term) -> Term
-replaceVar (i , τ) (j , args) with i ≟-ℕ j
+replaceVar (i , τ) (j , args) with i ==-ℕ j
 ... | eq _ = τ (map-List (map-Arg (replace (i , τ))) args)
 ... | _ = var j (map-List (map-Arg (replace (i , τ))) args)
 -- replaceVar i (j , ts) = {!!} -- replaceNat i j , map-List (map-Arg (replace i)) ts
@@ -499,7 +499,7 @@ tesubst : SSub -> Type -> Type
 
 {-# TERMINATING #-}
 tesubstVar : SSub -> ℕ × List (Arg Term) -> Term
-tesubstVar (i , τ) (j , args) with i ≟-ℕ j
+tesubstVar (i , τ) (j , args) with i ==-ℕ j
 ... | eq _ = τ (map-List (map-Arg (tesubst (i , τ))) args)
 ... | gt _ = var j (map-List (map-Arg (tesubst (i , τ))) args)
 ... | lt p = var (predℕ j) (map-List (map-Arg (tesubst (i , τ))) args)

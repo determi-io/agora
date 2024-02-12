@@ -11,7 +11,7 @@ open import Agda.Builtin.Float
 
 instance
   IBootEq:Word64 : IBootEq Word64
-  IBootEq._≟_ IBootEq:Word64 a b = primWord64ToNat a ≟ primWord64ToNat b
+  IBootEq._==_ IBootEq:Word64 a b = primWord64ToNat a == primWord64ToNat b
 
   IBootEq:Float : IBootEq Float
-  IBootEq._≟_ IBootEq:Float  = primFloatEquality
+  IBootEq._==_ IBootEq:Float  = primFloatEquality

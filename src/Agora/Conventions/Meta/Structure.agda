@@ -81,8 +81,8 @@ isUsedInOtherVisibles i tele main = isUsedInOtherVisibles' i (rev tele) main
   where
     isUsedInOtherVisibles' : ℕ -> FullTele -> String -> Bool
     isUsedInOtherVisibles' i [] main = false
-    isUsedInOtherVisibles' (zero) _ _ = false -- ((a , ar) ∷ tele) main with a ≟ main
-    isUsedInOtherVisibles' (suc i) ((a , ar) ∷ tele) main with a ≟ main
+    isUsedInOtherVisibles' (zero) _ _ = false -- ((a , ar) ∷ tele) main with a == main
+    isUsedInOtherVisibles' (suc i) ((a , ar) ∷ tele) main with a == main
     ... | true = isUsedInOtherVisibles' i tele main
     ... | false with i ∈?-List (getVars visible (unArg ar .fst))
     ... | true = true
@@ -92,7 +92,7 @@ isUsedInOtherVisibles i tele main = isUsedInOtherVisibles' i (rev tele) main
 -- merge level variables
 
 isDef : Term -> Name -> Bool
-isDef (def f args) n = f ≟ n
+isDef (def f args) n = f == n
 isDef x n = false
 
 isDefInTele : (String × Arg (Type × Pattern)) -> Name -> Bool
@@ -214,7 +214,7 @@ readTele a = 0 , [] , [] , a
 
 
 buildStruct : String -> Type -> (ℕ × FullTele × List (Arg ℕ) × Maybe (ℕ × Arg Type) × Maybe Sort)
-buildStruct mainArg (pi a (Abs.abs ar b)) with (mainArg ≟S ar) | (buildStruct mainArg b)
+buildStruct mainArg (pi a (Abs.abs ar b)) with (mainArg ==S ar) | (buildStruct mainArg b)
 ... | false | i ,  mtel , mte , mainPos , s = (suc i)
                                               -- , (λ τ -> pi a (Abs.abs ar (mty τ)))
                                               -- , (((ar , a) , (map-Arg (∆ (var (i))) a)) ∷ mtel)

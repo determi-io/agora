@@ -45,11 +45,11 @@ fromℕ (suc n) = suc (fromℕ n)
 ¬Fin-R0 : ¬ Fin-R 0
 ¬Fin-R0 ()
 
-_==_ : ∀ {n} → Fin-R n → Fin-R n → Bool
-zero == zero   = true
-zero == suc _  = false
-suc _ == zero  = false
-suc m == suc n = m == n
+_==-Fin_ : ∀ {n} → Fin-R n → Fin-R n → Bool
+zero ==-Fin zero   = true
+zero ==-Fin suc _  = false
+suc _ ==-Fin zero  = false
+suc m ==-Fin suc n = m ==-Fin n
 
 foldrFin-R : ∀ {n} → (A → B → B) → B → (Fin-R n → A) → B
 foldrFin-R {n = zero}  _ b _ = b

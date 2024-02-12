@@ -16,6 +16,6 @@ record IBootMonoid (A : 𝒰 𝑖) : 𝒰 𝑖 where
 open IBootMonoid {{...}} public
 
 record IBootEq (A : 𝒰 𝑖) : 𝒰 𝑖 where
-  field _≟_ : A -> A -> Bool
+  field _==_ : A -> A -> Bool
 open IBootEq {{...}} public
 

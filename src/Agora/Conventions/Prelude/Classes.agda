@@ -12,3 +12,4 @@ open import Agora.Conventions.Prelude.Classes.Setoid public
 open import Agora.Conventions.Prelude.Classes.EquivalenceRelation public
 open import Agora.Conventions.Prelude.Classes.Anything public
 open import Agora.Conventions.Prelude.Classes.SpecialElements public
+open import Agora.Conventions.Prelude.Classes.DecidableEquality public

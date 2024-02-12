@@ -18,16 +18,16 @@ instance
   IShow.show IShow:String s = s
 
   IBootEq:String : IBootEq String
-  IBootEq._≟_ IBootEq:String = primStringEquality
+  IBootEq._==_ IBootEq:String = primStringEquality
 
   IBootEq:Char : IBootEq Char
-  IBootEq._≟_ IBootEq:Char = primCharEquality
+  IBootEq._==_ IBootEq:Char = primCharEquality
 
   isDiscrete:String : isDiscrete Text
   isDiscrete:String = record { _≟-Str_ = lem-1 }
     where
       lem-1 : (a b : Text) → isDecidable (StrId a b)
-      lem-1 a b with a ≟ b
+      lem-1 a b with a == b
       ... | false = left λ x → bot
         where
           postulate bot : 𝟘-𝒰
