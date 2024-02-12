@@ -237,6 +237,24 @@ instance
     ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
     }
 
+
+-- record _:>_ {UU : 𝒰 𝑖} {{U : hasU UU 𝑘 𝑙}} (P : UU -> 𝒰 𝑗) (Q : UU :& P -> 𝒰 𝑗₂) (a : UU) : 𝒰 (𝑗 ､ 𝑗₂ ､ 𝑘 ､ 𝑙) where
+--   instance constructor make:>
+--   field {{Proof1>}} : P (reconstruct U (destructEl U a , destructP U a))
+--   field {{Proof2>}} : Q (′_′ (destructEl U a) {destructP U a} {{Proof1>}})
+
+-- open _:>_ {{...}} public
+
+record _:>_ {A : 𝒰 𝑖} {⟨A⟩ : 𝒰 𝑗} {{relA : ⟨A⟩ isUniverseOf[ 𝑘 ] A}}
+            (P : A -> 𝒰 𝑙) (Q : A :& P -> 𝒰 𝑚) (a : A) : 𝒰 (𝑙 ､ 𝑚) where
+            -- (Q : A -> 𝒰 𝑚) (a : A) : 𝒰 (𝑙 ､ 𝑚) where
+
+  instance constructor make:>
+  field {{Proof1>}} : P (reconstructObj (projectUniv a) (projectProof a))
+  field {{Proof2>}} : Q (′_′ (projectUniv a) {projectProof a} {{Proof1>}})
+
+infixr 40 _:>_
+
 --------------------------------------------------------------------
 
 record _:,_ {A : 𝒰 𝑖} {⟨A⟩ : 𝒰 𝑗} {{relA : ⟨A⟩ isUniverseOf[ 𝑘 ] A}}
