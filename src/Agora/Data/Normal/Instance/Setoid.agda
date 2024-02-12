@@ -20,7 +20,8 @@ module _ { X : Normalizable 𝑖} where
       ; _∙_ = λ p q -> incl (⟨ p ⟩ ∙-≡ ⟨ q ⟩)
       }
 
-  isSetoid:𝒩 : isSetoid (𝒩 X)
-  isSetoid:𝒩 = record { _∼_ = _∼-Normalform_ }
+  instance
+    isSetoid:𝒩 : isSetoid (𝒩 X)
+    isSetoid:𝒩 = record { _∼_ = _∼-Normalform_ }
 
 

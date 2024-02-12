@@ -26,7 +26,7 @@ record isNormalizable 𝑘 (X : Setoid 𝑖) : 𝒰 (𝑖 ､ 𝑘 ⁺) where
   field Normal : ⟨ X ⟩ -> 𝒰 𝑘
   field normalize : ⟨ X ⟩ -> ⟨ X ⟩
   field normal : ∀{x} -> Normal (normalize x)
-  field preserves-∼:normalize : ∀{x} -> x ∼ normalize x
+  field preserves-∼:normalize : ∀{x} -> normalize x ∼ x
   field cong-∼-normalize : ∀{x y} -> x ∼ y -> normalize x ≡ normalize y
 
 open isNormalizable {{...}} public

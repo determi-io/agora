@@ -170,6 +170,37 @@ module _ {A : 𝒰 𝑖}
   ⋀-fin {zero} F = ⊤
   ⋀-fin {suc n} F = F zero ∧ (⋀-fin (λ i -> F (suc i)))
 
+  -- meets are preserved by equivalence
+  transp-terminal-⊤ : ∀{x : A} -> x ∼ ⊤ -> ∀{a} -> a ≤ x
+  transp-terminal-⊤ p = transp-≤ refl-∼ (sym p) terminal-⊤
+
+  transp-π₀-∧ : ∀{x y z : A} -> x ∼ (y ∧ z) -> x ≤ y
+  transp-π₀-∧ p = transp-≤ (sym p) refl-∼ π₀-∧
+
+  transp-π₁-∧ : ∀{x y z : A} -> x ∼ (y ∧ z) -> x ≤ z
+  transp-π₁-∧ p = transp-≤ (sym p) refl-∼ π₁-∧
+
+  transp-⟨⟩-∧ : ∀{x y z w : A} -> x ∼ (y ∧ z) -> w ≤ y -> w ≤ z -> w ≤ x
+  transp-⟨⟩-∧ p ϕ ψ = transp-≤ refl-∼ (sym p) ⟨ ϕ , ψ ⟩-∧
+
+module _ {A : 𝒰 𝑖}
+         {{_ : isSetoid {𝑗} A}}
+         {{_ : isPreorder 𝑘 ′ A ′}}
+         {{_ : hasFiniteJoins ′ A ′}} where
+
+  -- joins are preserved by equivalence
+  transp-initial-⊥ : ∀{x : A} -> x ∼ ⊥ -> ∀{a} -> x ≤ a
+  transp-initial-⊥ p = transp-≤ (sym p) refl-∼ initial-⊥
+
+  transp-ι₀-∨ : ∀{x y z : A} -> x ∼ (y ∨ z) -> y ≤ x
+  transp-ι₀-∨ p = transp-≤ refl-∼ (sym p) ι₀-∨
+
+  transp-ι₁-∨ : ∀{x y z : A} -> x ∼ (y ∨ z) -> z ≤ x
+  transp-ι₁-∨ p = transp-≤ refl-∼ (sym p) ι₁-∨
+
+  transp-[]-∨ : ∀{x y z w : A} -> x ∼ (y ∨ z) -> y ≤ w -> z ≤ w -> x ≤ w
+  transp-[]-∨ p ϕ ψ = transp-≤ (sym p) refl-∼ [ ϕ , ψ ]-∨
+
 
 module _ {A : 𝒰 𝑖}
          {{_ : isSetoid {𝑗} A}}
