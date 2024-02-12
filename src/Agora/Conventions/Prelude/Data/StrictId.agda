@@ -33,3 +33,8 @@ cong₂-Str f refl-StrId refl-StrId = refl-StrId
 subst-Str : ∀{A : 𝒰 𝑖} {x y : A} (B : A → 𝒰 𝑗) (p : x ≡ y) → B x → B y
 subst-Str B p pa = transport-Str (cong-Str B p) pa
 
+
+record isProp {𝑖} (A : Set 𝑖) : Set (𝑖) where
+  field force-≡ : ∀(a b : A) -> a ≡ b
+
+open isProp {{...}} public
