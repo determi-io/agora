@@ -44,6 +44,8 @@ open isPreorder {{...}} public
 Preorder : ∀ (𝑖 : 𝔏 ^ 3) -> 𝒰 (𝑖 ⁺)
 Preorder 𝑖 = 𝒰 (𝑖 ⌄ 0) :& isSetoid {𝑖 ⌄ 1} :& isPreorder (𝑖 ⌄ 2)
 
+-- {-# INLINE Preorder #-}
+
 module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
   -- _≰_ : A -> A -> 𝒰 _
   -- a ≰ b = ¬ a ≤ b
@@ -63,6 +65,8 @@ open isDecidablePreorder {{...}} public
 
 DecidablePreorder : ∀ 𝑖 -> _
 DecidablePreorder 𝑖 = Preorder 𝑖 :& isDecidablePreorder
+
+-- {-# INLINE DecidablePreorder #-}
 
 --------------------------------------------------------------------
 -- == Partial order

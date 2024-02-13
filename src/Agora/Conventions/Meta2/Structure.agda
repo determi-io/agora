@@ -210,6 +210,7 @@ instance
   _isUniverseOf[_]_:∏ : ∀{A : 𝒰 𝑖} {B : A -> 𝒰 𝑗} -> (∀{a} -> B a) isUniverseOf[ _ ] _
   _isUniverseOf[_]_:∏ = _isUniverseOf[_]_:byBase
 
+
 record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ] A}} (P : A -> 𝒰 𝑘) : 𝒰 (𝑗 ､ 𝑘 ､ 𝑖 ､ 𝑙) where
   constructor ′_′
   field ⟨_⟩ : Univ
@@ -218,12 +219,23 @@ record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ]
   field {oldProof} : Proof ⟨_⟩
   field {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
 
-
 --   -- field {{of_}} : P (reconstruct U (⟨_⟩ , oldProof))
 open _:&_ {{...}} public hiding (⟨_⟩)
 open _:&_ public using (⟨_⟩)
 
 infixl 30 _:&_
+
+-- {-# INLINE ′_′ #-}
+{-# INLINE ⟨_⟩ #-}
+
+structureOn : {A : 𝒰 𝑖} {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ] A}} {P : A -> 𝒰 𝑘} -> (u : Univ)
+              -> {oldProof : Proof u}
+              -> {{_ : P (reconstructObj u oldProof)}}
+              -> A :& P
+structureOn u {oldProof} {{newProof}} = ′ u ′ {oldProof} {{newProof}}
+
+{-# INLINE structureOn #-}
+
 
 instance
   isUniverseOf::& : ∀{Univ : 𝒰 𝑖} -> {A : 𝒰 𝑗} -> {{_ : Univ isUniverseOf[ 𝑘 ] A}}
@@ -233,9 +245,15 @@ instance
     { Proof = λ a -> ∑i λ (p1 : Proof {{UU}} a) -> P (reconstructObj a p1)
     ; projectUniv = λ ap -> ⟨ ap ⟩
     -- λ ap -> projectUniv {{UU}} (reconstructObj ⟨ ap ⟩ (_:&_.oldProof ap))
-    ; projectProof = λ {a -> make∑i {ifst = _:&_.oldProof a} {{_:&_.of_ a}}}
-    ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{it}}
+    ; projectProof = λ a -> make∑i {ifst = _:&_.oldProof a} {{_:&_.of_ a}}
+    ; reconstructObj = λ u -> λ z -> ′ u ′ {∑i_.ifst z} {{∑i_.isnd z}}
     }
+
+{-# INLINE isUniverseOf::& #-}
+{-# INLINE Proof #-}
+{-# INLINE projectUniv #-}
+{-# INLINE projectProof #-}
+{-# INLINE reconstructObj #-}
 
 
 -- record _:>_ {UU : 𝒰 𝑖} {{U : hasU UU 𝑘 𝑙}} (P : UU -> 𝒰 𝑗) (Q : UU :& P -> 𝒰 𝑗₂) (a : UU) : 𝒰 (𝑗 ､ 𝑗₂ ､ 𝑘 ､ 𝑙) where
@@ -276,6 +294,9 @@ _on_ UU {{U}} a = Proof {{U}} a
 
 is-syntax : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> (a : A) -> 𝒰 _
 is-syntax UU {{U}} a = Proof {{U}} a
+
+{-# INLINE _on_ #-}
+{-# INLINE is-syntax #-}
 
 syntax is-syntax a b = b is a
 

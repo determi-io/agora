@@ -36,7 +36,7 @@ module _ {ℓ} {A : Type ℓ} where
   rev (x ∷ xs) = rev xs ++ [ x ]
 
   _∷ʳ_ : List A → A → List A
-  xs ∷ʳ x = xs ++ x ∷ []
+  xs ∷ʳ x = xs ++ (x ∷ [])
 
   length : List A → ℕ
   length [] = 0

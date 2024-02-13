@@ -28,12 +28,14 @@ record isNormalizable 𝑘 (X : Setoid 𝑖) : 𝒰 (𝑖 ､ 𝑘 ⁺) where
   field normalize : ⟨ X ⟩ -> ⟨ X ⟩
   field normal : ∀{x} -> Normal (normalize x)
   field preserves-∼:normalize : ∀{x} -> normalize x ∼ x
-  field cong-∼-normalize : ∀{x y} -> x ∼ y -> normalize x ≡ normalize y
+  -- field cong-∼-normalize : ∀{x y} -> x ∼ y -> normalize x ≡ normalize y
 
 open isNormalizable {{...}} public
 
 Normalizable : ∀ (𝑖 : 𝔏 ^ 3) -> _
 Normalizable 𝑖 = Setoid (𝑖 ⌄ 0 ⋯ 1) :& isNormalizable (𝑖 ⌄ 2)
+
+{-# INLINE Normalizable #-}
 
 record isNormalform (X : Normalizable 𝑖) (x : MakeUniverse ⟨ X ⟩) : 𝒰 𝑖 where
   constructor incl
@@ -43,6 +45,8 @@ open isNormalform public
 
 Normalform : (X : Normalizable 𝑖) -> _
 Normalform X = MakeUniverse ⟨ X ⟩ :& isNormalform X
+
+-- {-# INLINE Normalform #-}
 
 macro
   𝒩 : (X : Normalizable 𝑖) -> _

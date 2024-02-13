@@ -33,9 +33,13 @@ isUniverse _ = false
     Ty <- inferType hole
     -- Ty <- reduce Ty
     -- value <- normalise value
-    let Res = if isUniverse Ty
-                 then value
-                 else con (quote (′_′)) (arg (arg-info visible (modality relevant quantity-ω)) value ∷ [])
+    Res <- if isUniverse Ty
+                 then returnTC value
+                 -- else con (quote (′_′)) (arg (arg-info visible (modality relevant quantity-ω)) value ∷ [])
+                 else do
+                   let res = def (quote (structureOn)) (arg (arg-info visible (modality relevant quantity-ω)) value ∷ [])
+                   -- normalres <- withReconstructed true (reduce res)
+                   return res
     -- let Fun = 
     unify hole Res
 
@@ -57,6 +61,7 @@ callWithQuote fun ar = do
 
 SomeStructure : 𝒰₀
 SomeStructure = Term -> TC 𝟙-𝒰
+
 
 
     -- unify hole cal
