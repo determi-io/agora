@@ -32,4 +32,15 @@ module _ { X : Normalizable 𝑖} {{_ : isPreorder 𝑗 ′ ⟨ X ⟩ ′}} wher
     isPreorder:𝒩 : isPreorder 𝑗 (𝒩 X)
     isPreorder:𝒩 = record { _≤_ = _≤-𝒩_ }
 
+  module _ {{_ : isDecidablePreorder ′ ⟨ X ⟩ ′}} where
+
+    decide-≤-𝒩 : (a b : Normalform X) → (¬ a ≤ b) +-𝒰 (a ≤ b)
+    decide-≤-𝒩 (a since ap) (b since bp) with decide-≤ a b
+    ... | no p = no λ P -> p ⟨ P ⟩
+    ... | yes p = yes (incl p)
+
+    instance
+      isDecidablePreorder:𝒩 : isDecidablePreorder (𝒩 X)
+      isDecidablePreorder:𝒩 = record { decide-≤ = decide-≤-𝒩 }
+
 
