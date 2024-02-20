@@ -10,12 +10,12 @@ Maybe {𝑖} A = ⊤-𝒰 {𝑖} +-𝒰 A
 pattern just a = right a
 pattern nothing = left tt
 
-module _ {A B : 𝒰 𝑖} where
+module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} where
   map-Maybe : (f : A -> B) -> Maybe A -> Maybe B
-  map-Maybe f (left x) = left x
+  map-Maybe f (left tt) = left tt
   map-Maybe f (just x) = just (f x)
 
   bind-Maybe : Maybe A -> (f : A -> Maybe B) -> Maybe B
-  bind-Maybe (left x) f = left x
+  bind-Maybe (left tt) f = left tt
   bind-Maybe (just x) f = f x
 
