@@ -62,6 +62,11 @@ callWithQuote fun ar = do
 SomeStructure : 𝒰₀
 SomeStructure = Term -> TC 𝟙-𝒰
 
+solveWith : {A : 𝒰 𝑖} (x : String +-𝒰 A) -> Term -> TC 𝟙-𝒰
+solveWith (no x) hole = printErr ("Err: " <> x)
+solveWith (yes x) hole = do
+  x <- quoteTC x
+  unify hole x
 
 
     -- unify hole cal
