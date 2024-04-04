@@ -5,10 +5,10 @@
 module Agora.Data.Sum.Definition where
 
 open import Agora.Conventions
--- open import Verification.Core.Set.Function.Injective
--- open import Verification.Core.Category.Definition
--- open import Verification.Core.Category.EpiMono
--- open import Verification.Core.Category.Instance.Type
+-- open import Agora.Set.Function.Injective
+-- open import Agora.Category.Definition
+-- open import Agora.Category.EpiMono
+-- open import Agora.Category.Instance.Type
 
 
 macro

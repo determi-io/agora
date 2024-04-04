@@ -22,6 +22,6 @@ String = Text
 
 
 
-open import Data.Product renaming (_×_ to _×-𝒰_ ; _,_ to infixr 28 _,_ ; proj₁ to fst ; proj₂ to snd) public
+open import Data.Product using (Σ ; Σ-syntax) renaming (_×_ to _×-𝒰_ ; _,_ to infixr 28 _,_ ; proj₁ to fst ; proj₂ to snd) public
 
 

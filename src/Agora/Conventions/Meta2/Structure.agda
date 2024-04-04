@@ -203,6 +203,14 @@ _isUniverseOf[_]_:byBase = record
   ; reconstructObj = λ u _ → u
   }
 
+_isUniverseOf[_]_:byWrapper : {A : 𝒰 𝑖} {B : 𝒰 𝑗} -> (A -> B) -> (B -> A) -> _isUniverseOf[ _ ]_ A B
+_isUniverseOf[_]_:byWrapper f g = record
+  { Proof = λ a -> isAnything a ℓ₀
+  ; projectUniv = λ a -> g a
+  ; projectProof = λ a → record {}
+  ; reconstructObj = λ u _ → f u
+  }
+
 instance
   _isUniverseOf[_]_:𝒰 : ∀{𝑖 : 𝔏} -> (𝒰 𝑖) isUniverseOf[ _ ] (𝒰 𝑖)
   _isUniverseOf[_]_:𝒰 = _isUniverseOf[_]_:byBase
@@ -217,8 +225,6 @@ instance
 record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ] A}} (P : A -> 𝒰 𝑘) : 𝒰 (𝑗 ､ 𝑘 ､ 𝑖 ､ 𝑙) where
   constructor ′_′
   field ⟨_⟩ : Univ
-  -- field overlap {{oldProof}} : Proof ⟨_⟩
-  -- field overlap {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
   field {oldProof} : Proof ⟨_⟩
   field {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
 
