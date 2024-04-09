@@ -69,6 +69,8 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {{_ : isSetoid {𝑖₁} A}} {{_ : isSe
     isSetoid:× : isSetoid (A ×-𝒰 B)
     isSetoid:× = record { _∼_ = _∼-×_ }
 
+  {-# OVERLAPPING isSetoid:× #-}
+
 -- instance
 --   isEquivRel:≡∼-Base : ∀{A : 𝒰 𝑖} -> isEquivRel (∼-Base (_≡_ {A = A}))
 --   isEquivRel.refl-∼ isEquivRel:≡∼-Base = incl refl-∼-Path

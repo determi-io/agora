@@ -54,7 +54,7 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
   -- Hom a b = Hom-Base Hom' a b
   -- field isSetoid:Hom : ∀{a b : 𝒞} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
 
-  instance
+  private instance
     isCategoryData:isSetoid : ∀{a b} -> isSetoid (Hom a b)
     isCategoryData:isSetoid = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
 
@@ -79,22 +79,25 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
 -- | 7. A proof that composition is compatible with the equivalence relation.
         _◈_               : ∀{a b c : 𝒞} -> ∀{f g : Hom a b} -> ∀{h i : Hom b c} -> f ∼ g -> h ∼ i -> f ◆ h ∼ g ◆ i
 
-  {-# OVERLAPPING isCategoryData:isSetoid #-}
+-- {-# OVERLAPS isCategoryData.isCategoryData:isSetoid #-}
 
 open isCategoryData {{...}} public
 -- hiding (isSetoid:Hom ; isCategoryData:isSetoid) public
 -- open isCategoryData using (isSetoid:Hom) public
 
 
-{-
 module _ {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} {𝒞 : 𝒰 𝑖} {Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)} where
   instance
-    isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{X : 𝒰 (𝑗 ⌄ 0)} -> ∀{a b} -> {{_ : X ≡ Hom a b}} -> isSetoid {𝑗 ⌄ 1} X
-    isCategoryData:isSetoid2 {{X}} {{refl-≡}} = isSetoid:Hom X
+    -- isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{X : 𝒰 (𝑗 ⌄ 0)} -> ∀{a b} -> {{_ : X ≡ Hom a b}} -> isSetoid {𝑗 ⌄ 1} X
+    -- isCategoryData:isSetoid2 {{X}} {{refl-≡}} = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
+
+    isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{a b} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
+    isCategoryData:isSetoid2 {{X}} = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
 
   -- field {{isEquivRel:∼}} : isEquivRel _∼_
 
-{-# OVERLAPPING isCategoryData:isSetoid2 #-}
+{-# OVERLAPPABLE isCategoryData:isSetoid2 #-}
+{-
 -}
 
 
@@ -108,7 +111,7 @@ module _ {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} {𝒞 : 𝒰 𝑖} {Hom : 𝒞 -> 𝒞 
 -- | Given a type $𝒞$, whose elements we are going to call /objects/, we say that it has the structure of a category [...] if
 --   the following additional data is given:
 record isCategory {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) : 𝒰 ((𝑖 ⌄ 0) ⊔ 𝑗 ⁺) where
-  constructor category
+  -- constructor category
 
 -- | 1. A type family [..], assigning to every pair of objects |a b : 𝒞|
 --      a type of /homomorphisms/ |Hom a b| between them.
