@@ -229,8 +229,8 @@ record _:&_ (A : 𝒰 𝑖) {Univ : 𝒰 𝑗} {{rel : Univ isUniverseOf[ 𝑙 ]
   field {{of_}} : P (reconstructObj ⟨_⟩ oldProof)
 
 --   -- field {{of_}} : P (reconstruct U (⟨_⟩ , oldProof))
-open _:&_ {{...}} public hiding (⟨_⟩)
-open _:&_ public using (⟨_⟩)
+open _:&_ {{...}} public hiding (⟨_⟩ ; of_)
+open _:&_ public using (⟨_⟩ ; of_)
 
 infixl 30 _:&_
 
@@ -315,6 +315,9 @@ module _ {⟨A⟩ : 𝒰 𝑖} {A : 𝒰 𝑗} {{U : ⟨A⟩ isUniverseOf[ 𝑘 
 
   infixl 80 ↳_
 
+
+of2_ : {A : 𝒰 𝑙} (UU : 𝒰 𝑖) {{U : A isUniverseOf[ 𝑘 ] UU}} -> {P : UU -> 𝒰 𝑙} -> (a : UU :& P) -> _
+of2_ UU {{U}} a = of_ {{U}} a
 
 --------------------------------------------------------------------
 -- Allowing the subsumption of all structures under a single name

@@ -32,16 +32,36 @@ open Hom-Base public
 -- //
 
 
+record _∼[Category_]_ {𝑖 𝑗 : 𝔏} {A : 𝒰 𝑖} {Hom : A -> A -> 𝒰 𝑗} {a : A} {b : A}
+                        (f : Hom a b) (_≈_ : Hom a b -> Hom a b -> 𝒰 𝑘) (g : Hom a b) : 𝒰 𝑘 where
+  field ⟨_⟩ : f ≈ g
+
 
 ----------------------------------------------------------
 -- Required since currently Agda's instance resolution
 -- is weaker than it once was.
-record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)) : 𝒰 ((𝑖 ⌄ 0) ⊔ 𝑗 ⁺) where
+record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0))
+  -- (_∼2_ : ∀{a b} -> Hom a b -> Hom a b -> 𝒰 (𝑗 ⌄ 1))
+    : 𝒰 ((𝑖 ⌄ 0) ⊔ 𝑗 ⁺)
+    where
   infixl 50 _◆_ _◈_
+
+  field _∼-Hom_ : ∀{a b : 𝒞} -> (f g : Hom a b) -> 𝒰 (𝑗 ⌄ 1)
+
+  field {{isEquivRel:∼-Hom}} : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g)
 
   -- Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
   -- Hom a b = Hom-Base Hom' a b
-  field {{isSetoid:Hom}} : ∀{a b : 𝒞} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
+  -- field isSetoid:Hom : ∀{a b : 𝒞} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
+
+  instance
+    isCategoryData:isSetoid : ∀{a b} -> isSetoid (Hom a b)
+    isCategoryData:isSetoid = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
+
+
+  -- field {{isEquivRel:∼}}
+
+  -- field {{isEquivRel:∼-Hom}} : ∀{a b} -> isEquivRel (_∼_ {a} {b})
 
 -- | 3. An operation [..], assigning to every object |a| an identity morphism on this object.
   field id : ∀{a : 𝒞} -> Hom a a
@@ -59,7 +79,23 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
 -- | 7. A proof that composition is compatible with the equivalence relation.
         _◈_               : ∀{a b c : 𝒞} -> ∀{f g : Hom a b} -> ∀{h i : Hom b c} -> f ∼ g -> h ∼ i -> f ◆ h ∼ g ◆ i
 
+  {-# OVERLAPPING isCategoryData:isSetoid #-}
+
 open isCategoryData {{...}} public
+-- hiding (isSetoid:Hom ; isCategoryData:isSetoid) public
+-- open isCategoryData using (isSetoid:Hom) public
+
+
+{-
+module _ {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} {𝒞 : 𝒰 𝑖} {Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)} where
+  instance
+    isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{X : 𝒰 (𝑗 ⌄ 0)} -> ∀{a b} -> {{_ : X ≡ Hom a b}} -> isSetoid {𝑗 ⌄ 1} X
+    isCategoryData:isSetoid2 {{X}} {{refl-≡}} = isSetoid:Hom X
+
+  -- field {{isEquivRel:∼}} : isEquivRel _∼_
+
+{-# OVERLAPPING isCategoryData:isSetoid2 #-}
+-}
 
 
 
@@ -78,17 +114,35 @@ record isCategory {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) : 𝒰 ((�
 --      a type of /homomorphisms/ |Hom a b| between them.
 --      We call elements of this type also simply /morphisms/ or /arrows/.
   field Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
-  field {{isCategoryData:Hom}} : isCategoryData {𝑗 = 𝑗} 𝒞 Hom
+  -- field {{isSetoid:Hom}} : ∀{a b} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
+  -- field _∼-Hom_ : ∀{a b} -> Hom a b -> Hom a b -> 𝒰 (𝑗 ⌄ 1)
+  field isCategoryData:Hom : isCategoryData {𝑗 = 𝑗} 𝒞 Hom -- _∼-Hom_
 
-open isCategory ⦃...⦄ public
+  -- instance
+  --   isSetoid:Hom : ∀{a b} -> isSetoid (Hom a b)
+  --   isSetoid:Hom = record { _∼_ = _∼-Hom_ }
+
+open isCategory ⦃...⦄ public hiding (isCategoryData:Hom)
+open isCategory public using (isCategoryData:Hom)
 
 -- //
+
+module _ {𝒞 : 𝒰 𝑖} where
+  instance
+    isCategoryData:isCategory : {{_ : isCategory {𝑗} 𝒞}} -> isCategoryData 𝒞 Hom
+    isCategoryData:isCategory {{X}} = isCategoryData:Hom X
+
+  -- field {{isEquivRel:∼}} : isEquivRel _∼_
+
+-- {-# OVERLAPS isCategoryData:isCategory #-}
 
 
 -- [Hide]
 Category : (𝑗 : 𝔏 ^ 3) -> 𝒰 _
 Category 𝑗 = 𝒰 (𝑗 ⌄ 0) :& isCategory {𝑗 ⌄ 1 ⋯ 2}
 -- //
+
+
 
 
 -- [Notation]

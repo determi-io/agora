@@ -2,7 +2,7 @@
 module Agora.Category.Std.Limit.Specific.Pullback where
 
 open import Agora.Conventions
-open import Agora.Setoid
+open import Agora.Setoid.Definition
 open import Agora.Category.Std.Category.Definition
 
 
@@ -10,7 +10,7 @@ open import Agora.Category.Std.Category.Definition
 module _ {𝒞 : Category 𝑖} where
 
   record PullbackData : 𝒰 𝑖 where
-    constructor pullbackData
+    constructor _,_
     field {source₀} {source₁} {target} : ⟨ 𝒞 ⟩
     field map₀ : source₀ ⟶ target
     field map₁ : source₁ ⟶ target
@@ -33,9 +33,18 @@ module _ {𝒞 : Category 𝑖} where
     field intro-Pb : ∀{d : PullbackCandidate 𝒹} -> ⟨ d ⟩ ⟶ ⟨ c ⟩
     -- field unique-Pb : ∀{d : PullbackCandidate 𝒹} -> ∀{f : ⟨ d ⟩ ⟶ ⟨ c ⟩} -> f ∼ intro-Pb
 
+
+module _ {𝒞 : Category 𝑖} where
+  pb₀ : ∀{𝒹 : PullbackData {𝒞 = 𝒞}} -> (x : PullbackCandidate 𝒹) -> _
+  pb₀ X = π₁-Pb {{of X}}
+
+module _ (𝒞 : Category 𝑖) where
+  hasPullback : PullbackData {𝒞 = 𝒞} -> _
+  hasPullback 𝒹 = _ :& isPullback {𝒹 = 𝒹}
+
 record hasPullbacks (𝒞 : Category 𝑖) : 𝒰 𝑖 where
   constructor has-Pullbacks
-  field pullback : ∀{a b c : ⟨ 𝒞 ⟩} -> (f : a ⟶ c) -> (g : b ⟶ c) -> PullbackCandidate {𝒞 = 𝒞} (pullbackData f g)
+  field pullback : ∀{a b c : ⟨ 𝒞 ⟩} -> (f : a ⟶ c) -> (g : b ⟶ c) -> PullbackCandidate {𝒞 = 𝒞} (f , g)
   field isPullback:pullback : ∀{a b c : ⟨ 𝒞 ⟩} -> {f : a ⟶ c} -> {g : b ⟶ c}
                               -> isPullback (pullback f g)
 

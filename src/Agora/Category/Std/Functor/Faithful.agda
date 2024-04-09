@@ -1,4 +1,5 @@
 
+
 module Agora.Category.Std.Functor.Faithful where
 
 open import Agora.Conventions
@@ -6,6 +7,7 @@ open import Agora.Conventions
 open import Agora.Setoid.Definition
 open import Agora.Category.Std.Category.Definition
 open import Agora.Category.Std.Functor.Definition
+open import Agora.Setoid.Definition
 open import Agora.Setoid.Morphism
 
 
@@ -35,23 +37,24 @@ module _ {D : 𝒰 𝑙} {{_ : isCategory {𝑙₁} D}}
       lem-1 : ∀{a b : A} {f : Hom' a b} -> (id' ◆' f) ∼ f
       lem-1 {f = f} = cancel-injective $
               map-ϕ (id' ◆' f)         ⟨ functoriality-◆' ⟩-∼
-              map-ϕ id' ◆ map-ϕ f      ⟨ functoriality-id' ◈ refl ⟩-∼
+              map-ϕ id' ◆ map-ϕ f      ⟨ functoriality-id' ◈ refl-∼ {{isSetoid:isEquivRel {{isCategoryData:isSetoid2}}}} ⟩-∼
               id ◆ map-ϕ f             ⟨ unit-l-◆ ⟩-∼
               map-ϕ f                  ∎
 
       lem-2 : ∀{a b : A} {f : Hom' a b} -> (f ◆' id') ∼ f
       lem-2 {f = f} = cancel-injective $
               map-ϕ (f ◆' id')         ⟨ functoriality-◆' ⟩-∼
-              map-ϕ f ◆ map-ϕ id'      ⟨ refl ◈ functoriality-id' ⟩-∼
+              map-ϕ f ◆ map-ϕ id'      ⟨ refl-∼ ◈ functoriality-id' ⟩-∼
               map-ϕ f ◆ id             ⟨ unit-r-◆ ⟩-∼
               map-ϕ f                  ∎
 
+{-
       lem-3 : ∀{a b c d : A} {f : Hom' a b} {g : Hom' b c} {h : Hom' c d} -> ((f ◆' g) ◆' h) ∼ (f ◆' (g ◆' h))
       lem-3 {f = f} {g} {h} = cancel-injective $
               map-ϕ ((f ◆' g) ◆' h)            ⟨ functoriality-◆' ⟩-∼
-              map-ϕ (f ◆' g) ◆ map-ϕ h         ⟨ functoriality-◆' ◈ refl ⟩-∼
+              map-ϕ (f ◆' g) ◆ map-ϕ h         ⟨ functoriality-◆' ◈ refl-∼ ⟩-∼
               (map-ϕ f ◆ map-ϕ g) ◆ map-ϕ h    ⟨ assoc-l-◆ ⟩-∼
-              map-ϕ f ◆ (map-ϕ g ◆ map-ϕ h)    ⟨ refl ◈ functoriality-◆' ⁻¹ ⟩-∼
+              map-ϕ f ◆ (map-ϕ g ◆ map-ϕ h)    ⟨ refl-∼ ◈ functoriality-◆' ⁻¹ ⟩-∼
               map-ϕ f ◆ map-ϕ (g ◆' h)         ⟨ functoriality-◆' ⁻¹ ⟩-∼
               map-ϕ (f ◆' (g ◆' h))            ∎
 
@@ -65,17 +68,18 @@ module _ {D : 𝒰 𝑙} {{_ : isCategory {𝑙₁} D}}
               map-ϕ (g ◆' i)    ∎
 
   isCategory:byFaithful : isCategory A
-  isCategory.Hom isCategory:byFaithful = Hom'
-  isCategory.isSetoid:Hom isCategory:byFaithful = it
-  isCategory.id isCategory:byFaithful = id'
-  isCategory._◆_ isCategory:byFaithful = _◆'_
-  isCategory.unit-l-◆ isCategory:byFaithful = lem-1
-  isCategory.unit-r-◆ isCategory:byFaithful = lem-2
-  isCategory.unit-2-◆ isCategory:byFaithful = lem-1
-  isCategory.assoc-l-◆ isCategory:byFaithful = lem-3
-  isCategory.assoc-r-◆ isCategory:byFaithful = lem-3 ⁻¹
-  isCategory._◈_ isCategory:byFaithful = lem-4
+  isCategory:byFaithful = ?
+  -- isCategory.Hom isCategory:byFaithful = Hom'
+  -- isCategory.isSetoid:Hom isCategory:byFaithful = it
+  -- isCategory.id isCategory:byFaithful = id'
+  -- isCategory._◆_ isCategory:byFaithful = _◆'_
+  -- isCategory.unit-l-◆ isCategory:byFaithful = lem-1
+  -- isCategory.unit-r-◆ isCategory:byFaithful = lem-2
+  -- isCategory.unit-2-◆ isCategory:byFaithful = lem-1
+  -- isCategory.assoc-l-◆ isCategory:byFaithful = lem-3
+  -- isCategory.assoc-r-◆ isCategory:byFaithful = lem-3 ⁻¹
+  -- isCategory._◈_ isCategory:byFaithful = lem-4
 
 
-
+-}
 

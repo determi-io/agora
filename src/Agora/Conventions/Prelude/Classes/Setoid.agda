@@ -45,6 +45,7 @@ record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) wh
   -- constructor isSetoid:byDef
 
   field _∼_ : A -> A -> 𝒰 𝑗
+  -- field {{isEquivRel:∼}} : isEquivRel _∼_
   field {{isEquivRel:∼}} : isEquivRel _∼_
 
         -- refl-∼  : ∀ {a : A} -> a ∼ a
@@ -53,6 +54,19 @@ record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) wh
 
 -- //
 open isSetoid {{...}} public
+
+-- open isSetoid {{...}} public hiding (isEquivRel:∼)
+-- open isSetoid public using (isEquivRel:∼)
+
+-- module _ {A : 𝒰 𝑖} where
+--   instance
+--     isSetoid:isEquivRel : {{_ : isSetoid {𝑗} A}} -> isEquivRel _∼_
+--     isSetoid:isEquivRel {{X}} = isEquivRel:∼ X
+
+--   -- field {{isEquivRel:∼}} : isEquivRel _∼_
+
+-- {-# OVERLAPS isSetoid:isEquivRel #-}
+
 
 
 -- [Hide]

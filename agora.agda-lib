@@ -1,4 +1,4 @@
 name: agora
 depend: standard-library-2.1
 include: ./src
-flags: --cubical-compatible -WnoUnsupportedIndexedMatch
+flags: --cubical-compatible -WnoUnsupportedIndexedMatch --no-qualified-instances

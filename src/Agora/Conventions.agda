@@ -7,7 +7,7 @@ module Agora.Conventions where
 open import Agora.Conventions.Prelude hiding (𝑖 ; 𝑗 ; 𝑘 ; 𝑙 ; 𝑚 ; ′_′ ; IBootEq) public
 open import Agora.Conventions.Postprelude public
 open import Agora.Conventions.Meta public
-open import Agora.Conventions.Meta2.Macros public
+open import Agora.Conventions.Meta2.Macros hiding (isUniverse) public
 open import Agora.Conventions.Meta2.Structure public
 
 variable
