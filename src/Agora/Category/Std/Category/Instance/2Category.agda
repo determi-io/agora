@@ -14,7 +14,7 @@ open import Agora.Category.Std.Natural.Definition
 open import Agora.Category.Std.Natural.Instance.Setoid
 open import Agora.Category.Std.Morphism.Iso
 open import Agora.Category.Std.Category.Instance.CategoryLike
--- open import Agora.Category.Std.Category.Construction.Product
+open import Agora.Category.Std.Category.Construction.Product
 open import Agora.Category.Std.Category.Notation.Associativity
 
 

@@ -27,26 +27,22 @@ module _ {𝒞 : 𝒰 𝑖} {{𝒞p : isCategory {𝑗} 𝒞}} where
 
   module _ {𝑘} {a : Lift-Cat {𝑘} 𝒞} {b : Lift-Cat {𝑘} 𝒞} where
     _∼-Hom-Lift_ : (f g : Hom-Lift 𝑘 (Hom {{𝒞p}}) a b) -> 𝒰 _
-    _∼-Hom-Lift_ = HomRel {Hom = Hom-Lift 𝑘 (Hom {{𝒞p}})} (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩)
-
-    instance
-      isEquivRel:Hom-Lift : isEquivRel (_∼-Hom-Lift_)
-      isEquivRel:Hom-Lift = isEquivRel:HomRel {{record { refl-∼ = refl-∼ ; sym = sym ; _∙_ = _∙_ }}}
+    _∼-Hom-Lift_ = (λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩)
 
     -- instance
-    --   isSetoid:Hom-Lift : isSetoid (Hom-Lift 𝑘 (Hom {{𝒞p}}) a b)
-    --   isSetoid:Hom-Lift = ? -- isSetoid:byDef
-        -- (λ f g -> Lift {𝑘 ⌄ 2} (⟨ f ⟩ ∼ ⟨ g ⟩))
-        -- (lift refl)
-        -- {!!}
-        -- {!!}
-        -- (λ lift sym)
-        -- (lift _∙_)
+    --   isEquivRel:Hom-Lift : isEquivRel (_∼-Hom-Lift_)
+    --   isEquivRel:Hom-Lift = isEquivRel:HomRel {{record { refl-∼ = refl-∼ ; sym = sym ; _∙_ = _∙_ }}}
+
+    isEquivRel:∼-Hom-Lift : isEquivRel _∼-Hom-Lift_
+    isEquivRel:∼-Hom-Lift = record { refl-∼ = refl-∼ ; sym = sym ; _∙_ = _∙_ }
+
+    instance
+      isSetoid:Hom-Lift : isSetoid (Hom-Lift 𝑘 (Hom {{𝒞p}}) a b)
+      isSetoid:Hom-Lift = record {_∼_ = _ ; isEquivRel:∼ = isEquivRel:∼-Hom-Lift}
 
   instance
     isCategoryData:Lift : ∀{𝑘} -> isCategoryData (Lift-Cat {𝑘} 𝒞) (Hom-Lift 𝑘 (Hom {{𝒞p}}))
-    isCategoryData._∼-Hom_ (isCategoryData:Lift {𝑘}) = λ f g -> ⟨ f ⟩ ∼ ⟨ g ⟩
-    isCategoryData.isEquivRel:∼-Hom (isCategoryData:Lift {𝑘}) = it
+    isCategoryData.isSetoid:Hom (isCategoryData:Lift {𝑘}) = isSetoid:Hom-Lift
     isCategoryData.id (isCategoryData:Lift {𝑘}) = incl id
     isCategoryData._◆_ (isCategoryData:Lift {𝑘}) f g = incl (⟨ f ⟩ ◆ ⟨ g ⟩)
     isCategoryData.unit-l-◆ (isCategoryData:Lift {𝑘}) = incl $ unit-l-◆ -- {{𝒞p}}
@@ -59,7 +55,8 @@ module _ {𝒞 : 𝒰 𝑖} {{𝒞p : isCategory {𝑗} 𝒞}} where
     isCategory:Lift : ∀{𝑘} -> isCategory (Lift-Cat {𝑘} 𝒞)
     isCategory:Lift {𝑘} = record { Hom = Hom-Lift 𝑘 (Hom {{𝒞p}}) ; HomData = isCategoryData:Lift }
 
-
+  -- {-# OVERLAPS isCategory:Lift #-}
+  -- {-# OVERLAPS isCategoryData:Lift #-}
 
 
 

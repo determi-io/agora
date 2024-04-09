@@ -61,13 +61,17 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
     where
   infixl 50 _◆_ _◈_
 
-  field _∼-Hom_ : ∀{a b : 𝒞} -> (f g : Hom a b) -> 𝒰 (𝑗 ⌄ 1)
+  -- field _∼-Hom_ : ∀{a b : 𝒞} -> (f g : Hom a b) -> 𝒰 (𝑗 ⌄ 1)
+  -- field {{isEquivRel:∼-Hom}} : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g)
 
-  field {{isEquivRel:∼-Hom}} : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g)
+  field isSetoid:Hom : ∀{a b : 𝒞} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
 
-  -- Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
-  -- Hom a b = Hom-Base Hom' a b
-  -- field isSetoid:Hom : ∀{a b : 𝒞} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
+  _∼-Hom_ : ∀{a b : 𝒞} -> (f g : Hom a b) -> 𝒰 (𝑗 ⌄ 1)
+  _∼-Hom_ f g = _∼_ {{isSetoid:Hom}} f g
+
+  instance
+    isEquivRel:∼-Hom : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g)
+    isEquivRel:∼-Hom = isEquivRel:HomRel {{isEquivRel:∼ {{isSetoid:Hom}}}}
 
   private instance
     isCategoryData:isSetoid : ∀{a b} -> isSetoid (Hom a b)
@@ -96,7 +100,7 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
 
 -- {-# OVERLAPS isCategoryData.isCategoryData:isSetoid #-}
 
-open isCategoryData {{...}} public
+open isCategoryData {{...}} hiding (isSetoid:Hom) public
 -- hiding (isSetoid:Hom ; isCategoryData:isSetoid) public
 -- open isCategoryData using (isSetoid:Hom) public
 

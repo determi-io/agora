@@ -22,20 +22,28 @@ open import Agora.Category.Std.Morphism.Iso
 --------------------------------------------------------------
 -- Showing that _×_ on universes lifts to categories
 
-module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{_ : isCategory {𝑖₁} 𝒞}} {{_ : isCategory {𝑗₁} 𝒟}} where
+module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{𝒞p : isCategory {𝑖₁} 𝒞}} {{𝒟p : isCategory {𝑗₁} 𝒟}} where
+
+  Hom-×-𝐂𝐚𝐭 : (x y : 𝒞 × 𝒟) -> 𝒰 _
+  Hom-×-𝐂𝐚𝐭 = λ (a , b) (c , d) -> (a ⟶ c) × (b ⟶ d)
+  -- isCategory.Hom isCategory:× = λ (a , b) (c , d) -> (a ⟶ c) × (b ⟶ d)
 
   instance
+    isCategoryData:× : isCategoryData (𝒞 × 𝒟) Hom-×-𝐂𝐚𝐭
+    isCategoryData.isSetoid:Hom isCategoryData:× = isSetoid:× {{isCategoryData:isSetoid2 {{HomData (𝒞p)}}}} {{isCategoryData:isSetoid2 {{HomData (𝒟p)}}}}
+    isCategoryData.id isCategoryData:×         = id , id
+    isCategoryData._◆_ isCategoryData:×        = λ (f₀ , g₀) (f₁ , g₁) -> (f₀ ◆ f₁ , g₀ ◆ g₁)
+    isCategoryData.unit-l-◆ isCategoryData:×   = incl $ unit-l-◆ , unit-l-◆
+    isCategoryData.unit-r-◆ isCategoryData:×   = incl $ unit-r-◆ , unit-r-◆
+    isCategoryData.unit-2-◆ isCategoryData:×   = incl $ unit-2-◆ , unit-2-◆
+    isCategoryData.assoc-l-◆ isCategoryData:×  = incl $ assoc-l-◆ , assoc-l-◆
+    isCategoryData.assoc-r-◆ isCategoryData:×  = incl $ assoc-r-◆ , assoc-r-◆
+    isCategoryData._◈_ isCategoryData:×        = λ (incl (p₀ , q₀)) (incl (p₁ , q₁)) -> incl (p₀ ◈ p₁ , q₀ ◈ q₁)
+
+{-
+
     isCategory:× : isCategory (𝒞 × 𝒟)
     isCategory.Hom isCategory:× = λ (a , b) (c , d) -> (a ⟶ c) × (b ⟶ d)
-    isCategory.isSetoid:Hom isCategory:× = isSetoid:×
-    isCategory.id isCategory:×         = id , id
-    isCategory._◆_ isCategory:×        = λ (f₀ , g₀) (f₁ , g₁) -> (f₀ ◆ f₁ , g₀ ◆ g₁)
-    isCategory.unit-l-◆ isCategory:×   = unit-l-◆ , unit-l-◆
-    isCategory.unit-r-◆ isCategory:×   = unit-r-◆ , unit-r-◆
-    isCategory.unit-2-◆ isCategory:×   = unit-2-◆ , unit-2-◆
-    isCategory.assoc-l-◆ isCategory:×  = assoc-l-◆ , assoc-l-◆
-    isCategory.assoc-r-◆ isCategory:×  = assoc-r-◆ , assoc-r-◆
-    isCategory._◈_ isCategory:×        = λ (p₀ , q₀) (p₁ , q₁) -> (p₀ ◈ p₁ , q₀ ◈ q₁)
 
 
   -- currently special treatment for isomorphisms
@@ -44,8 +52,8 @@ module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{_ : isCategory {𝑖₁} 𝒞}}
     where
       P = record
           { inverse-◆  = (inverse-◆ (of p) , inverse-◆ (of q))
-          ; inv-r-◆    = inv-r-◆ (of p) , inv-r-◆ (of q)
-          ; inv-l-◆    = inv-l-◆ (of p) , inv-l-◆ (of q)
+          ; inv-r-◆    = incl $ inv-r-◆ (of p) , inv-r-◆ (of q)
+          ; inv-l-◆    = incl $ inv-l-◆ (of p) , inv-l-◆ (of q)
           }
 
 _×-𝐂𝐚𝐭_ :(𝒞 : Category 𝑖) (𝒟 : Category 𝑗) -> Category _
@@ -58,8 +66,8 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
       P : isFunctor _ _ fst
       isFunctor.map P              = fst
       isFunctor.isSetoidHom:map P  = record { cong-∼ = fst }
-      isFunctor.functoriality-id P = refl
-      isFunctor.functoriality-◆ P  = refl
+      isFunctor.functoriality-id P = refl-∼
+      isFunctor.functoriality-◆ P  = refl-∼
 
   π₁-𝐂𝐚𝐭 : Functor (𝒞 × 𝒟) 𝒟
   π₁-𝐂𝐚𝐭 = snd since P
@@ -67,8 +75,8 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
       P : isFunctor _ _ snd
       isFunctor.map P              = snd
       isFunctor.isSetoidHom:map P  = record { cong-∼ = snd }
-      isFunctor.functoriality-id P = refl
-      isFunctor.functoriality-◆ P  = refl
+      isFunctor.functoriality-id P = refl-∼
+      isFunctor.functoriality-◆ P  = refl-∼
 
 module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} where
   ⧼_⧽-𝐂𝐚𝐭 : (Functor 𝒳 𝒞) × (Functor 𝒳 𝒟) -> Functor 𝒳 (𝒞 × 𝒟)
@@ -137,6 +145,9 @@ module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} wh
 --------------------------------------------------------------
 -- The 0-ary product, 𝟙
 
+isSet:⊤-𝒰 : ∀{a b : ⊤-𝒰} {p q : a ≡ b} -> p ≡ q
+isSet:⊤-𝒰 = ?
+
 instance
   isCategory:𝟙 : isCategory (⊤-𝒰 {𝑖})
   isCategory:𝟙 = isCategory:byId
@@ -167,5 +178,5 @@ expand-⊤-𝐂𝐚𝐭 {F = F} = α since P
 
 
 
-
+-}
 

@@ -24,20 +24,19 @@ private
     lem-3 refl-≡ refl-≡ = refl-≡
 
 
-{-
 module _ {A : 𝒰 𝑖} where
+
+  isCategoryData:byId : isCategoryData A _≡_
+  isCategoryData.isSetoid:Hom isCategoryData:byId = isSetoid:byId
+  isCategoryData.id isCategoryData:byId           = refl-≡
+  isCategoryData._◆_ isCategoryData:byId          = _∙-≡_
+  isCategoryData.unit-l-◆ isCategoryData:byId     = incl refl-≡
+  isCategoryData.unit-r-◆ isCategoryData:byId     = incl lem-1
+  isCategoryData.unit-2-◆ isCategoryData:byId     = incl refl-≡
+  isCategoryData.assoc-l-◆ isCategoryData:byId {f = p} = incl $ lem-2 {p = p}
+  isCategoryData.assoc-r-◆ isCategoryData:byId {f = p} = incl $ sym-≡ (lem-2 {p = p})
+  isCategoryData._◈_ isCategoryData:byId          = λ p q -> incl $ lem-3 ⟨ p ⟩ ⟨ q ⟩
 
   isCategory:byId : isCategory A
   isCategory.Hom isCategory:byId          = _≡_
-  isCategory.isSetoid:Hom isCategory:byId = isSetoid:byId
-  isCategory.id isCategory:byId           = refl-≡
-  isCategory._◆_ isCategory:byId          = _∙-≡_
-  isCategory.unit-l-◆ isCategory:byId     = refl-≡
-  isCategory.unit-r-◆ isCategory:byId     = lem-1
-  isCategory.unit-2-◆ isCategory:byId     = refl-≡
-  isCategory.assoc-l-◆ isCategory:byId {f = p} = lem-2 {p = p}
-  isCategory.assoc-r-◆ isCategory:byId {f = p} = sym-≡ (lem-2 {p = p})
-  isCategory._◈_ isCategory:byId          = lem-3
-
--}
-
+  HomData isCategory:byId = isCategoryData:byId

@@ -37,8 +37,7 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
 
   instance
     isCategoryData:Functor : isCategoryData (𝐅𝐮𝐧𝐜 𝒞 𝒟) Natural
-    isCategoryData._∼-Hom_ isCategoryData:Functor = _∼-Natural_
-    isCategoryData.isEquivRel:∼-Hom isCategoryData:Functor = cast isEquivRel:∼-Natural
+    isCategoryData.isSetoid:Hom isCategoryData:Functor = isSetoid:Natural
     isCategoryData.id isCategoryData:Functor           = id-𝐅𝐮𝐧𝐜
     isCategoryData._◆_ isCategoryData:Functor          = _◆-𝐅𝐮𝐧𝐜_
     isCategoryData.unit-l-◆ isCategoryData:Functor     = incl $ componentwise $ λ _ -> unit-l-◆
@@ -51,8 +50,8 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
     isCategory:Functor : isCategory (𝐅𝐮𝐧𝐜 𝒞 𝒟)
     isCategory:Functor = record { Hom = Natural ; HomData = isCategoryData:Functor }
 
-  {-# OVERLAPS isCategory:Functor #-}
-  {-# OVERLAPPABLE isCategoryData:Functor #-}
+  -- {-# OVERLAPS isCategory:Functor #-}
+  -- {-# OVERLAPPABLE isCategoryData:Functor #-}
 
   instance
     isSetoid:Functor : isSetoid (𝐅𝐮𝐧𝐜 𝒞 𝒟)
