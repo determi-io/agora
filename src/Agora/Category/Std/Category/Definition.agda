@@ -31,11 +31,26 @@ open Hom-Base public
 
 -- //
 
+module _ {𝑖 𝑗 : 𝔏} {A : 𝒰 𝑖} {Hom : A -> A -> 𝒰 𝑗} {a : A} {b : A} where
 
-record _∼[Category_]_ {𝑖 𝑗 : 𝔏} {A : 𝒰 𝑖} {Hom : A -> A -> 𝒰 𝑗} {a : A} {b : A}
-                        (f : Hom a b) (_≈_ : Hom a b -> Hom a b -> 𝒰 𝑘) (g : Hom a b) : 𝒰 𝑘 where
-  field ⟨_⟩ : f ≈ g
+  module _ (_≈_ : Hom a b -> Hom a b -> 𝒰 𝑘) where
+    record HomRel (f : Hom a b) (g : Hom a b) : 𝒰 𝑘 where
+      constructor incl
+      field ⟨_⟩ : f ≈ g
 
+    open HomRel public
+
+  module _ {_≈_ : Hom a b -> Hom a b -> 𝒰 𝑘} where
+    isEquivRel:HomRel : {{isEquivRel _≈_}} -> isEquivRel (HomRel _≈_)
+    isEquivRel:HomRel = record
+      { refl-∼ = incl refl-∼
+      ; sym = λ p -> incl (sym ⟨ p ⟩)
+      ; _∙_ = λ p q -> incl (⟨ p ⟩ ∙ ⟨ q ⟩)
+      }
+
+    instance
+      Cast:isEquivRel:≈,isEquivRel:HomRel : Cast (isEquivRel _≈_) IAnything (isEquivRel (HomRel _≈_))
+      Cast:isEquivRel:≈,isEquivRel:HomRel = newcast (λ x -> isEquivRel:HomRel {{x}})
 
 ----------------------------------------------------------
 -- Required since currently Agda's instance resolution
@@ -48,7 +63,7 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
 
   field _∼-Hom_ : ∀{a b : 𝒞} -> (f g : Hom a b) -> 𝒰 (𝑗 ⌄ 1)
 
-  field {{isEquivRel:∼-Hom}} : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g)
+  field {{isEquivRel:∼-Hom}} : ∀{a b : 𝒞} -> isEquivRel {A = Hom a b} (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g)
 
   -- Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
   -- Hom a b = Hom-Base Hom' a b
@@ -56,7 +71,7 @@ record isCategoryData {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) (Hom : 
 
   private instance
     isCategoryData:isSetoid : ∀{a b} -> isSetoid (Hom a b)
-    isCategoryData:isSetoid = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
+    isCategoryData:isSetoid = record { _∼_ = (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g) }
 
 
   -- field {{isEquivRel:∼}}
@@ -89,16 +104,15 @@ open isCategoryData {{...}} public
 module _ {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} {𝒞 : 𝒰 𝑖} {Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)} where
   instance
     -- isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{X : 𝒰 (𝑗 ⌄ 0)} -> ∀{a b} -> {{_ : X ≡ Hom a b}} -> isSetoid {𝑗 ⌄ 1} X
-    -- isCategoryData:isSetoid2 {{X}} {{refl-≡}} = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
+    -- isCategoryData:isSetoid2 {{X}} {{refl-≡}} = record { _∼_ = (λ f g -> HomRel {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
 
     isCategoryData:isSetoid2 : {{_ : isCategoryData {𝑗} 𝒞 Hom}} -> ∀{a b} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
-    isCategoryData:isSetoid2 {{X}} = record { _∼_ = (λ f g -> _∼[Category_]_ {A = 𝒞} {Hom = Hom} f _∼-Hom_ g) }
+    isCategoryData:isSetoid2 {{X}} = record { _∼_ = (λ f g -> HomRel {A = 𝒞} {Hom = Hom} _∼-Hom_ f g) }
 
   -- field {{isEquivRel:∼}} : isEquivRel _∼_
 
 {-# OVERLAPPABLE isCategoryData:isSetoid2 #-}
-{-
--}
+
 
 
 
@@ -119,21 +133,21 @@ record isCategory {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) : 𝒰 ((�
   field Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
   -- field {{isSetoid:Hom}} : ∀{a b} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
   -- field _∼-Hom_ : ∀{a b} -> Hom a b -> Hom a b -> 𝒰 (𝑗 ⌄ 1)
-  field isCategoryData:Hom : isCategoryData {𝑗 = 𝑗} 𝒞 Hom -- _∼-Hom_
+  field HomData : isCategoryData {𝑗 = 𝑗} 𝒞 Hom -- _∼-Hom_
 
   -- instance
   --   isSetoid:Hom : ∀{a b} -> isSetoid (Hom a b)
   --   isSetoid:Hom = record { _∼_ = _∼-Hom_ }
 
-open isCategory ⦃...⦄ public hiding (isCategoryData:Hom)
-open isCategory public using (isCategoryData:Hom)
+open isCategory ⦃...⦄ public hiding (HomData)
+open isCategory public using (HomData)
 
 -- //
 
 module _ {𝒞 : 𝒰 𝑖} where
   instance
     isCategoryData:isCategory : {{_ : isCategory {𝑗} 𝒞}} -> isCategoryData 𝒞 Hom
-    isCategoryData:isCategory {{X}} = isCategoryData:Hom X
+    isCategoryData:isCategory {{X}} = HomData X
 
   -- field {{isEquivRel:∼}} : isEquivRel _∼_
 

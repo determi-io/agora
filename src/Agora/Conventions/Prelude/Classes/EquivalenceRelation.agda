@@ -39,7 +39,8 @@ infixl 10 ⟪⟫-syntax
 syntax ⟪⟫-syntax a f = a ⟪ f ⟫
 
 
-module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
+-- module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
+module _ {A : 𝒰 𝑖} {_∼_ : A -> A -> 𝒰 𝑗} {{_ : isEquivRel _∼_}} where
   both : {a b c d : A} -> (a ∼ c) -> (b ∼ d) -> a ∼ b -> c ∼ d
   both p q r = p ⁻¹ ∙ r ∙ q
 

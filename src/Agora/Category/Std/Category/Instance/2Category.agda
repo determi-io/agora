@@ -5,7 +5,8 @@ open import Agora.Conventions
 
 open import Agora.Setoid.Definition
 open import Agora.Data.Universe.Definition
-open import Agora.Data.AllOf.Product
+-- open import Agora.Data.AllOf.Product
+open import Agora.Data.Product.Definition
 open import Agora.Category.Std.Category.Definition
 open import Agora.Category.Std.Functor.Definition
 open import Agora.Category.Std.Functor.Instance.Category
@@ -13,7 +14,7 @@ open import Agora.Category.Std.Natural.Definition
 open import Agora.Category.Std.Natural.Instance.Setoid
 open import Agora.Category.Std.Morphism.Iso
 open import Agora.Category.Std.Category.Instance.CategoryLike
-open import Agora.Category.Std.Category.Construction.Product
+-- open import Agora.Category.Std.Category.Construction.Product
 open import Agora.Category.Std.Category.Notation.Associativity
 
 

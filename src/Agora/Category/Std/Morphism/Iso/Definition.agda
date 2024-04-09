@@ -30,9 +30,13 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
   _≅_ : (a b : 𝒞) -> 𝒰 (𝑖 ､ 𝑗)
   A ≅ B = Hom' A B :& isIso
 
-  instance
-    isSetoid:≅ : ∀{a b : 𝒞} -> isSetoid (a ≅ b)
-    isSetoid:≅ = isSetoid:∼-Base (isSetoid:byDef (λ p q -> ⟨ p ⟩ ∼ ⟨ q ⟩) refl sym _∙_)
+  -- instance
+  --   isEquivRel:≅ : isEquivRel _≅_
+  --   isEquivRel:≅ = record { refl-∼ = refl-∼ ; sym = {!!} ; _∙_ = {!!} }
+
+  --   isSetoid:≅ : ∀{a b : 𝒞} -> isSetoid (a ≅ b)
+  --   isSetoid:≅ = {!!}
+    -- isSetoid:∼-Base (isSetoid:byDef (λ p q -> ⟨ p ⟩ ∼ ⟨ q ⟩) refl sym _∙_)
 
   private
     lem-10 : ∀{A : 𝒞} -> isIso (hom (id {a = A}))
@@ -47,8 +51,8 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
 
     lem-30 : ∀{A : 𝒞} {B : 𝒞} {C : 𝒞} -> {f : A ≅ B} -> {g : B ≅ C} -> isIso (hom (⟨ f ⟩ ◆ ⟨ g ⟩))
     isIso.inverse-◆ (lem-30 {f = f} {g}) = inverse-◆ (of g) ◆ inverse-◆ (of f)
-    isIso.inv-r-◆ (lem-30 {f = f}) = {!!}
-    isIso.inv-l-◆ (lem-30 {f = f}) = {!!}
+    isIso.inv-r-◆ (lem-30 {f = f} {g}) = assoc-l-◆ ∙ ((refl-∼ ◈ assoc-r-◆) ∙ ((refl-∼ ◈ (inv-r-◆ (of g) ◈ refl-∼)) ∙ ((refl-∼ ◈ unit-l-◆) ∙ inv-r-◆ (of f))))
+    isIso.inv-l-◆ (lem-30 {f = f} {g}) = assoc-l-◆ ∙ ((refl-∼ ◈ assoc-r-◆) ∙ ((refl-∼ ◈ (inv-l-◆ (of f) ◈ refl-∼)) ∙ ((refl-∼ ◈ unit-l-◆) ∙ inv-l-◆ (of g))))
 
 
   refl-≅ : ∀{A : 𝒞} -> A ≅ A
@@ -60,9 +64,12 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
   _∙-≅_ : ∀{A B C : 𝒞} -> A ≅ B -> B ≅ C -> A ≅ C
   _∙-≅_ p q = ⟨ p ⟩ ◆ ⟨ q ⟩ since lem-30 {f = p} {g = q}
 
+  instance
+    isEquivRel:≅ : isEquivRel _≅_
+    isEquivRel:≅ = record { refl-∼ = refl-≅ ; sym = sym-≅ ; _∙_ = _∙-≅_ }
 
   isSetoid:byCategory : isSetoid 𝒞
-  isSetoid:byCategory = isSetoid:byDef _≅_ refl-≅ sym-≅ _∙-≅_
+  isSetoid:byCategory = record { _∼_ = _≅_ }
 
   ⟨_⟩⁻¹ : ∀{a b} -> a ≅ b -> b ⟶ a
   ⟨_⟩⁻¹ f = inverse-◆ (of f)

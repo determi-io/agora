@@ -14,9 +14,9 @@ open import Agora.Category.Std.Natural.Instance.Setoid
 -- constant functor
 module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
   isFunctor:const : {x : ⟨ 𝒟 ⟩} -> isFunctor 𝒞 𝒟 (const x)
-  isFunctor.map (isFunctor:const {x})              = const id
-  isFunctor.isSetoidHom:map (isFunctor:const {x})  = record { cong-∼ = const refl }
-  isFunctor.functoriality-id (isFunctor:const {x}) = refl
+  isFunctor.map (isFunctor:const {x})              = const (id {{HomData (of 𝒟)}})
+  isFunctor.isSetoidHom:map (isFunctor:const {x})  = record { cong-∼ = const refl-∼ }
+  isFunctor.functoriality-id (isFunctor:const {x}) = refl-∼
   isFunctor.functoriality-◆ (isFunctor:const {x})  = unit-2-◆ ⁻¹
 
   Const : (x : ⟨ 𝒟 ⟩) -> Functor 𝒞 𝒟
@@ -33,13 +33,14 @@ module _ {C : 𝒰 𝑖} {{_ : isCategory {𝑖₁} C}} {D : 𝒰 𝑗} {{_ : is
   map-Const : ∀{a b : D} -> a ⟶ b -> Const {𝒞 = 𝒞} {𝒟 = 𝒟} a ⟶ Const b
   map-Const f = (λ _ → f) since natural (λ _ -> unit-r-◆ ∙ unit-l-◆ ⁻¹)
 
+{-
   instance
     isFunctor:Const : isFunctor 𝒟 (𝐅𝐮𝐧𝐜 𝒞 𝒟) (Const)
     isFunctor.map isFunctor:Const = map-Const
     isFunctor.isSetoidHom:map isFunctor:Const = {!!}
     isFunctor.functoriality-id isFunctor:Const = {!!}
     isFunctor.functoriality-◆ isFunctor:Const = {!!}
-
+-}
 
 
 

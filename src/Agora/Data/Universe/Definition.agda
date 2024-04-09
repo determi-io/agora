@@ -1,6 +1,3 @@
--- SPDX-FileCopyrightText: 2024 Maxim Urschumzew <mxmurw@determi.io>
---
--- SPDX-License-Identifier: MIT
 
 module Agora.Data.Universe.Definition where
 
@@ -28,10 +25,10 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} where
 
 macro
   𝐓𝐲𝐩𝐞 : ∀(𝑖 : 𝔏) -> SomeStructure
-  𝐓𝐲𝐩𝐞 (𝑖) = #structureOn (𝒰 𝑖)
+  𝐓𝐲𝐩𝐞 (𝑖) = #structureOn (𝒰' 𝑖)
 
   𝐔𝐧𝐢𝐯 : ∀(𝑖 : 𝔏) -> SomeStructure
-  𝐔𝐧𝐢𝐯 (𝑖) = #structureOn (𝒰 𝑖)
+  𝐔𝐧𝐢𝐯 (𝑖) = #structureOn (𝒰' 𝑖)
 
   𝐔𝐧𝐢𝐯₀ : SomeStructure
   𝐔𝐧𝐢𝐯₀ = #structureOn (𝒰₀)
@@ -42,5 +39,15 @@ macro
 
 _↔_ : ∀{𝑖 𝑗} -> 𝒰 𝑖 -> 𝒰 𝑗 -> 𝒰 _
 A ↔ B = (A -> B) ×-𝒰 (B -> A)
+
+
+
+
+
+-- mymap : ∀{A : 𝐓𝐲𝐩𝐞 ℓ₀} -> A -> A
+-- mymap = {!!}
+
+-- mymap2 : ∀{𝑖 : 𝔏} -> (𝐓𝐲𝐩𝐞 𝑖) -> 𝐓𝐲𝐩𝐞 𝑖
+-- mymap2 a = a
 
 

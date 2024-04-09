@@ -28,8 +28,16 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} {F G : Functor 𝒞 𝒟}
     -- isEquivRel._∙_ isEquivRel:∼-Natural (incl p) (incl q) = incl (p ∙ q)
 
   instance
+    isEquivRel:∼-Natural : isEquivRel _∼-Natural_
+    isEquivRel:∼-Natural = record
+      { refl-∼ = (componentwise (λ _ -> refl-∼))
+      ; sym = λ p -> componentwise λ x -> sym (⟨ p ⟩ x)
+      ; _∙_ = λ p q -> componentwise λ x -> ⟨ p ⟩ x ∙ ⟨ q ⟩ x
+      }
+
     isSetoid:Natural : isSetoid (Natural F G)
-    isSetoid:Natural = isSetoid:byDef _∼-Natural_ (componentwise (λ _ -> refl)) {!!} {!!}
+    isSetoid:Natural = record { _∼_ = _∼-Natural_ } 
+    -- isSetoid:byDef _∼-Natural_ (componentwise (λ _ -> refl)) {!!} {!!}
     -- isSetoid._∼'_ isSetoid:Natural a b = ⟨ a ⟩ ∼-Natural ⟨ b ⟩
     -- isSetoid.isEquivRel:∼ isSetoid:Natural = isEquivRel:∼-Natural
 
