@@ -40,11 +40,11 @@ module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{𝒞p : isCategory {𝑖₁} �
     isCategoryData.assoc-r-◆ isCategoryData:×  = incl $ assoc-r-◆ , assoc-r-◆
     isCategoryData._◈_ isCategoryData:×        = λ (incl (p₀ , q₀)) (incl (p₁ , q₁)) -> incl (p₀ ◈ p₁ , q₀ ◈ q₁)
 
-{-
-
     isCategory:× : isCategory (𝒞 × 𝒟)
     isCategory.Hom isCategory:× = λ (a , b) (c , d) -> (a ⟶ c) × (b ⟶ d)
+    HomData isCategory:× = isCategoryData:×
 
+  {-# INCOHERENT isCategory:× #-}
 
   -- currently special treatment for isomorphisms
   into-×-≅ : ∀{a b : 𝒞} {c d : 𝒟} -> (p : a ≅ b) (q : c ≅ d) -> (a , c) ≅ (b , d)
@@ -65,7 +65,7 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
     where
       P : isFunctor _ _ fst
       isFunctor.map P              = fst
-      isFunctor.isSetoidHom:map P  = record { cong-∼ = fst }
+      isFunctor.isSetoidHom:map P  = record { cong-∼ = λ p -> fst ⟨ p ⟩ }
       isFunctor.functoriality-id P = refl-∼
       isFunctor.functoriality-◆ P  = refl-∼
 
@@ -74,7 +74,7 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
     where
       P : isFunctor _ _ snd
       isFunctor.map P              = snd
-      isFunctor.isSetoidHom:map P  = record { cong-∼ = snd }
+      isFunctor.isSetoidHom:map P  = record { cong-∼ = λ p -> snd ⟨ p ⟩ }
       isFunctor.functoriality-id P = refl-∼
       isFunctor.functoriality-◆ P  = refl-∼
 
@@ -87,9 +87,9 @@ module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} wh
 
       P : isFunctor _ _ h
       isFunctor.map P              = λ ϕ -> map ϕ , map ϕ
-      isFunctor.isSetoidHom:map P  = record { cong-∼ = λ p -> cong-∼ p , cong-∼ p }
-      isFunctor.functoriality-id P = functoriality-id , functoriality-id
-      isFunctor.functoriality-◆ P  = functoriality-◆ , functoriality-◆
+      isFunctor.isSetoidHom:map P  = record { cong-∼ = λ p -> incl $ cong-∼ p , cong-∼ p }
+      isFunctor.functoriality-id P = incl $ functoriality-id , functoriality-id
+      isFunctor.functoriality-◆ P  = incl $ functoriality-◆ , functoriality-◆
 
   module _ {F : Functor 𝒳 𝒞} {G : Functor 𝒳 𝒟} where
     reduce-π₀-𝐂𝐚𝐭 : (⧼ F , G ⧽-𝐂𝐚𝐭 ◆-𝐂𝐚𝐭 π₀-𝐂𝐚𝐭) ≅ F
@@ -104,8 +104,8 @@ module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} wh
         P : isIso (hom α)
         P = record
             { inverse-◆  = β
-            ; inv-r-◆    = componentwise $ λ _ -> unit-2-◆
-            ; inv-l-◆    = componentwise $ λ _ -> unit-2-◆
+            ; inv-r-◆    = incl $ componentwise $ λ _ -> unit-2-◆
+            ; inv-l-◆    = incl $ componentwise $ λ _ -> unit-2-◆
             }
 
     reduce-π₁-𝐂𝐚𝐭 : (⧼ F , G ⧽-𝐂𝐚𝐭 ◆-𝐂𝐚𝐭 π₁-𝐂𝐚𝐭) ≅ G
@@ -120,8 +120,8 @@ module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} wh
         P : isIso (hom α)
         P = record
             { inverse-◆  = β
-            ; inv-r-◆    = componentwise $ λ _ -> unit-2-◆
-            ; inv-l-◆    = componentwise $ λ _ -> unit-2-◆
+            ; inv-r-◆    = incl $ componentwise $ λ _ -> unit-2-◆
+            ; inv-l-◆    = incl $ componentwise $ λ _ -> unit-2-◆
             }
 
   module _ {F : Functor 𝒳 (𝒞 × 𝒟)} where
@@ -129,31 +129,37 @@ module _ {𝒳 : Category 𝑖} {𝒞 : Category 𝑗} {𝒟 : Category 𝑘} wh
     expand-⊓-𝐂𝐚𝐭 = α since P
       where
         α : Natural F ⧼ F ◆-𝐂𝐚𝐭 π₀-𝐂𝐚𝐭 , F ◆-𝐂𝐚𝐭 π₁-𝐂𝐚𝐭 ⧽-𝐂𝐚𝐭
-        α = (λ _ -> id , id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹ , unit-l-◆ ∙ unit-r-◆ ⁻¹)
+        α = (λ _ -> id , id) since natural (λ f → incl $ unit-l-◆ ∙ unit-r-◆ ⁻¹ , unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
         β : Natural ⧼ F ◆-𝐂𝐚𝐭 π₀-𝐂𝐚𝐭 , F ◆-𝐂𝐚𝐭 π₁-𝐂𝐚𝐭 ⧽-𝐂𝐚𝐭 F
-        β = (λ _ -> id , id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹ , unit-l-◆ ∙ unit-r-◆ ⁻¹)
+        β = (λ _ -> id , id) since natural (λ f → incl $ unit-l-◆ ∙ unit-r-◆ ⁻¹ , unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
         P : isIso (hom α)
         P = record
             { inverse-◆  = β
-            ; inv-r-◆    = componentwise $ λ _ -> unit-2-◆ , unit-2-◆
-            ; inv-l-◆    = componentwise $ λ _ -> unit-2-◆ , unit-2-◆
+            ; inv-r-◆    = incl $ componentwise $ λ _ -> incl $ unit-2-◆ , unit-2-◆
+            ; inv-l-◆    = incl $ componentwise $ λ _ -> incl $ unit-2-◆ , unit-2-◆
             }
 
 
 --------------------------------------------------------------
 -- The 0-ary product, 𝟙
 
-isSet:⊤-𝒰 : ∀{a b : ⊤-𝒰} {p q : a ≡ b} -> p ≡ q
-isSet:⊤-𝒰 = ?
+hasPt-⊤ : ∀{a : ⊤-𝒰 {𝑖}} -> a ≡ tt
+hasPt-⊤ {a = tt} = refl-≡
+
+isConeSection-⊤ : ∀{a : ⊤-𝒰 {𝑖}} -> (p : a ≡ tt) -> p ≡ hasPt-⊤
+isConeSection-⊤ refl-≡ = refl-≡
+
+isSet:⊤-𝒰 : ∀{a b : ⊤-𝒰 {𝑖}} {p q : a ≡ b} -> p ≡ q
+isSet:⊤-𝒰 {a = a} {tt} {p} {q} = isConeSection-⊤ p ∙-≡ sym-≡ (isConeSection-⊤ q)
 
 instance
-  isCategory:𝟙 : isCategory (⊤-𝒰 {𝑖})
+  isCategory:𝟙 : isCategory (⊤-𝒰 {ℓ₀})
   isCategory:𝟙 = isCategory:byId
 
 ⊤-𝐂𝐚𝐭 : Category 𝑖
-⊤-𝐂𝐚𝐭 = ′(Lift-Cat (𝟙 {ℓ₀}))′
+⊤-𝐂𝐚𝐭 {𝑖 = 𝑖} = (Lift-Cat (⊤-𝒰 {ℓ₀})) since isCategory:Lift
 
 intro-⊤-𝐂𝐚𝐭 : ∀{𝒞 : 𝐂𝐚𝐭 𝑖} -> Functor 𝒞 (⊤-𝐂𝐚𝐭 {𝑗})
 intro-⊤-𝐂𝐚𝐭 = const (lift tt) since isFunctor:const
@@ -162,21 +168,22 @@ expand-⊤-𝐂𝐚𝐭 : ∀{𝒞 : 𝐂𝐚𝐭 𝑖} -> {F : Functor 𝒞 (�
 expand-⊤-𝐂𝐚𝐭 {F = F} = α since P
   where
     α : Natural F intro-⊤-𝐂𝐚𝐭
-    α = (λ _ -> incl isProp:⊤-𝒰) since natural (λ _ → ↥ isSet:⊤-𝒰)
+    α = (λ _ -> incl isProp:⊤-𝒰) since natural (λ _ → incl (incl (incl isSet:⊤-𝒰))) -- ↥ isSet:⊤-𝒰)
 
     β : Natural intro-⊤-𝐂𝐚𝐭 F
-    β = (λ _ -> incl isProp:⊤-𝒰) since natural (λ _ → ↥ isSet:⊤-𝒰)
+    β = (λ _ -> incl isProp:⊤-𝒰) since natural (λ _ → incl (incl (incl isSet:⊤-𝒰))) -- ↥ isSet:⊤-𝒰)
 
     P : isIso (hom α)
     P = record
         { inverse-◆ = β
-        ; inv-r-◆   = componentwise $ λ _ -> ↥ isSet:⊤-𝒰
-        ; inv-l-◆   = componentwise $ λ _ -> ↥ isSet:⊤-𝒰
+        ; inv-r-◆   = incl $ componentwise $ λ _ -> incl (incl (incl isSet:⊤-𝒰)) -- ↥ isSet:⊤-𝒰
+        ; inv-l-◆   = incl $ componentwise $ λ _ -> incl (incl (incl isSet:⊤-𝒰)) -- ↥ isSet:⊤-𝒰
         }
 
 
 
 
 
+{-
 -}
 

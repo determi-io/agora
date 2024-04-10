@@ -50,7 +50,7 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
     isCategory:Functor : isCategory (𝐅𝐮𝐧𝐜 𝒞 𝒟)
     isCategory:Functor = record { Hom = Natural ; HomData = isCategoryData:Functor }
 
-  -- {-# OVERLAPS isCategory:Functor #-}
+  {-# INCOHERENT isCategory:Functor #-}
   -- {-# OVERLAPPABLE isCategoryData:Functor #-}
 
   instance

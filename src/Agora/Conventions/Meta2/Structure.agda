@@ -215,7 +215,7 @@ instance
   _isUniverseOf[_]_:𝒰 : ∀{𝑖 : 𝔏} -> (𝒰 𝑖) isUniverseOf[ _ ] (𝒰 𝑖)
   _isUniverseOf[_]_:𝒰 = _isUniverseOf[_]_:byBase
 
-  _isUniverseOf[_]_:Exp : ∀{A : 𝒰 𝑖} {B : 𝒰 𝑗} -> (A -> B) isUniverseOf[ _ ] (A -> B)
+  _isUniverseOf[_]_:Exp : ∀{A : 𝒰 𝑖} {B : A -> 𝒰 𝑗} -> ((a : A) -> B a) isUniverseOf[ _ ] ((a : A) -> B a)
   _isUniverseOf[_]_:Exp = _isUniverseOf[_]_:byBase
 
   _isUniverseOf[_]_:∏ : ∀{A : 𝒰 𝑖} {B : A -> 𝒰 𝑗} -> (∀{a} -> B a) isUniverseOf[ _ ] _

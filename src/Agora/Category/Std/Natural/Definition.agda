@@ -30,16 +30,18 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
     open isNatural {{...}} public
 --  //
 
-    instance
-      hasU:Natural : (∀(x : ⟨ 𝒞 ⟩) ->  ⟨ F ⟩ x ⟶ ⟨ G ⟩ x) isUniverseOf[ _ ] (∀(x : ⟨ 𝒞 ⟩) -> ⟨ F ⟩ x ⟶ ⟨ G ⟩ x)
-      hasU:Natural = _isUniverseOf[_]_:byBase
+  -- module _ {F G : ⟨ 𝒞 ⟩ -> ⟨ 𝒟 ⟩} where
+  --   instance
+  --     hasU:Natural : (∀(x : ⟨ 𝒞 ⟩) ->  F x ⟶ G x) isUniverseOf[ _ ] (∀(x : ⟨ 𝒞 ⟩) -> F x ⟶ G x)
+  --     hasU:Natural = _isUniverseOf[_]_:byBase
 
     -- instance
     --   hasU:Natural' : hasU (∀{x : ⟨ 𝒞 ⟩} -> ⟨ F ⟩ x ⟶ ⟨ G ⟩ x) _ _
     --   hasU:Natural' = hasU:Base (∀{x : ⟨ 𝒞 ⟩} -> ⟨ F ⟩ x ⟶ ⟨ G ⟩ x)
 
+  module _ (F G : Functor 𝒞 𝒟) where
     Natural : 𝒰 _
-    Natural = _ :& isNatural
+    Natural = (∀ x -> ⟨ F ⟩ x ⟶ ⟨ G ⟩ x) :& isNatural F G
 
 -- unquoteDecl Natural natural = #struct "Nat" (quote isNatural) "α" Natural natural
 

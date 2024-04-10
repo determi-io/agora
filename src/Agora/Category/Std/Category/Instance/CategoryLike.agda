@@ -12,7 +12,6 @@ open import Agora.Category.Std.Natural.Definition
 open import Agora.Category.Std.Natural.Instance.Setoid
 open import Agora.Category.Std.Morphism.Iso
 
-
 macro
   𝐂𝐚𝐭 : ∀ 𝑖 -> SomeStructure
   𝐂𝐚𝐭 𝑖 = #structureOn (Category 𝑖)

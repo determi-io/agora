@@ -1,4 +1,6 @@
 
+{-# OPTIONS --allow-unsolved-metas #-}
+
 module Agora.Category.Std.Functor.Adjoint.Definition where
 
 open import Agora.Conventions
@@ -6,7 +8,9 @@ open import Agora.Conventions
 open import Agora.Setoid.Morphism
 open import Agora.Setoid.Definition
 open import Agora.Category.Std.Category.Definition
-open import Agora.Category.Std.Category.Instance.Category
+-- open import Agora.Category.Std.Category.Instance.Category
+open import Agora.Category.Std.Category.Instance.2Category
+open import Agora.Category.Std.Category.Instance.CategoryLike
 open import Agora.Category.Std.Functor.Definition
 open import Agora.Category.Std.Natural.Definition
 open import Agora.Category.Std.Category.Notation.Associativity
@@ -16,8 +20,8 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
   record isAdjoint (F : Functor 𝒞 𝒟) (G : Functor 𝒟 𝒞) : 𝒰 (𝑖 ､ 𝑗) where
     field adj    : ∀(a : ⟨ 𝒟 ⟩) -> ⟨ F ⟩ (⟨ G ⟩ a) ⟶ a
     field coadj  : ∀(a : ⟨ 𝒞 ⟩) -> a ⟶ ⟨ G ⟩ (⟨ F ⟩ a)
-    field {{isNatural:adj}} : isNatural (G ◆-𝐂𝐚𝐭 F) id adj
-    field {{isNatural:coadj}} : isNatural id (F ◆-𝐂𝐚𝐭 G) coadj
+    field {{isNatural:adj}} : isNatural (G ◆-𝐂𝐚𝐭 F) id-𝐂𝐚𝐭 adj
+    field {{isNatural:coadj}} : isNatural id-𝐂𝐚𝐭 (F ◆-𝐂𝐚𝐭 G) coadj
     field reduce-coadj : ∀{b : ⟨ 𝒟 ⟩}  -> coadj _ ◆ map (adj _) ∼ id {a = ⟨ G ⟩ b}
     field reduce-adj : ∀{a : ⟨ 𝒞 ⟩}    -> map (coadj _) ◆ (adj _) ∼ id {a = ⟨ F ⟩ a}
 
@@ -41,11 +45,11 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
 
       inv-free : ∀{f} -> free (cofree f) ∼ f
       inv-free {f} =
-        map ((coadj _) ◆ (map f)) ◆ adj _      ⟨ functoriality-◆ ◈ refl ⟩-∼
+        map ((coadj _) ◆ (map f)) ◆ adj _      ⟨ functoriality-◆ ◈ refl-∼ ⟩-∼
         map (coadj _) ◆ map (map f) ◆ adj _    ⟨ assoc-l-◆ ⟩-∼
-        map (coadj _) ◆ (map (map f) ◆ adj _)  ⟨ refl ◈ naturality f ⁻¹ ⟩-∼
+        map (coadj _) ◆ (map (map f) ◆ adj _)  ⟨ refl-∼ ◈ naturality f ⁻¹ ⟩-∼
         map (coadj _) ◆ (adj _ ◆ f)            ⟨ assoc-r-◆ ⟩-∼
-        (map (coadj _) ◆ adj _) ◆ f            ⟨ reduce-adj ◈ refl ⟩-∼
+        (map (coadj _) ◆ adj _) ◆ f            ⟨ reduce-adj ◈ refl-∼ ⟩-∼
         id ◆ f                           ⟨ unit-l-◆ ⟩-∼
         f                                ∎
 
@@ -55,12 +59,12 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
       cong-∼-free : ∀{f g} -> f ∼ g -> free f ∼ free g
       cong-∼-free p = p
         ⟪ cong-∼ ⟫
-        ⟪ (_◈ refl) ⟫
+        ⟪ (_◈ refl-∼) ⟫
 
       cong-∼-cofree : ∀{f g} -> f ∼ g -> cofree f ∼ cofree g
       cong-∼-cofree p = p
         ⟪ cong-∼ ⟫
-        ⟪ (refl ◈_) ⟫
+        ⟪ (refl-∼ ◈_) ⟫
 
       cancel-injective-free : ∀{f g} -> free f ∼ free g -> f ∼ g
       cancel-injective-free p = p

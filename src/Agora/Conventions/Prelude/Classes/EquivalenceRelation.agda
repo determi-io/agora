@@ -133,7 +133,7 @@ instance
 --------------------------------------------------------------------------------
 -- === path syntax
 
-module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
+module _ {A : 𝒰 𝑖} {_∼_ : A -> A -> 𝒰 𝑗} {{_ : isEquivRel _∼_}} where
   _≡⟨_⟩_ : (x : A) {y : A} {z : A} → x ∼ y → y ∼ z → x ∼ z
   _ ≡⟨ x≡y ⟩ y≡z = x≡y ∙ y≡z
 
@@ -148,7 +148,7 @@ module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
 
 
 -- new syntax with ∼
-module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
+module _ {A : 𝒰 𝑖} {_∼_ : A -> A -> 𝒰 𝑗} {{_ : isEquivRel _∼_}} where
   _⟨_⟩-∼_ : (x : A) {y : A} {z : A} → x ∼ y → y ∼ z → x ∼ z
   _ ⟨ x≡y ⟩-∼ y≡z = x≡y ∙ y≡z
 
