@@ -190,3 +190,12 @@ syntax instantiate-syntax2 {n = n} (λ i -> A) t = instance[ t , i / n ] A
 infix 1 #idef-impl #idefAs-impl
 syntax #idef-impl name a = #idef name := a
 syntax #idefAs-impl name A a = #idef name ∶ A := a
+
+
+--------------------------------------------------------------
+-- applying instance args at the innermost level
+
+
+
+
+

@@ -60,6 +60,8 @@ module _ {𝒞 : Category 𝑖} {{_ : hasFiniteProducts 𝒞}} where
     ⊓⃨ = #structureOn (λ₋ _⊓_)
 
 
+
+
 module _ {𝒞ᵘ : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞ᵘ}} {{_ : hasProducts ′ 𝒞ᵘ ′ }} where
 
   private macro 𝒞 = #structureOn 𝒞ᵘ

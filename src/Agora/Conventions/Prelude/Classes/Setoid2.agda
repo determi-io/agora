@@ -2,7 +2,12 @@
 --
 -- SPDX-License-Identifier: MIT
 
-module Agora.Conventions.Prelude.Classes.Setoid where
+-- This file is for testing the best architecture for defining structures with additional relations
+-- such as setoids or categories.
+
+
+
+module Agora.Conventions.Prelude.Classes.Setoid2 where
 
 open import Agora.Conventions.Proprelude
 open import Agora.Conventions.Prelude.Classes.Operators.Unary
@@ -37,25 +42,12 @@ module _ {X : 𝒰 𝑖} {_≡_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≡_}} 
     Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym
 
 
--- [Definition]
--- | We call a type |A| a /setoid/ if it is equipped with an
---   equivalence relation.
---   That is, the type [..] is constructed by giving the following data.
 record isSetoid {𝑗 𝑖 : 𝔏} (A : 𝒰 𝑖) : 𝒰 (𝑖 ⊔ 𝑗 ⁺) where
-  -- instance constructor isSetoid:byDef
-
-  field _∼_ : A -> A -> 𝒰 𝑗
-  -- field {{isEquivRel:∼}} : isEquivRel _∼_
+  instance constructor isSetoid:byDef
+  field {_∼_} : A -> A -> 𝒰 𝑗
   field {{isEquivRel:∼}} : isEquivRel _∼_
 
-        -- refl-∼  : ∀ {a : A} -> a ∼ a
-        -- sym   : ∀ {a b : A} -> a ∼ b -> b ∼ a
-        -- _∙_   : ∀ {a b c : A} -> a ∼ b -> b ∼ c -> a ∼ c
-
--- //
 open isSetoid {{...}} public
-
--- {-# OVERLAPPABLE isSetoid:byDef #-}
 
 -- open isSetoid {{...}} public hiding (isEquivRel:∼)
 -- open isSetoid public using (isEquivRel:∼)
@@ -67,7 +59,7 @@ open isSetoid {{...}} public
 
 --   -- field {{isEquivRel:∼}} : isEquivRel _∼_
 
--- {-# OVERLAPS isSetoid:isEquivRel #-}
+{-# OVERLAPPABLE isSetoid:byDef #-}
 
 
 
@@ -116,18 +108,10 @@ module _ {A : 𝒰 𝑖} where
 
 
 
--- [Hide]
-
--- refl-≡ = refl-Path
--- _∙-≡_ = trans-Path
--- _⁻¹-≡_ = sym-Path
 
 module _ {A : 𝒰 𝑖} {{_ : isSetoid {𝑗} A}} where
-  -- ≡→∼ : ∀{a b : A} -> a ≡ b -> a ∼ b
-  -- ≡→∼ {a} p = transport (λ i -> a ∼ p i) refl
+  sym2 : ∀{a b : A} -> a ∼ b -> b ∼ a
+  sym2 = sym
 
--- //
 
-{-
 
--}

@@ -115,7 +115,7 @@ assertType _ x = x
 
 
 
-showImplicit = false
+showImplicit = true
 
 wrapVis : Visibility -> String -> String
 wrapVis visible s = "(" <> s <> ")"
