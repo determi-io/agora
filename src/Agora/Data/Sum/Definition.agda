@@ -24,17 +24,8 @@ macro
 private instance _ = isSetoid:byId
 -- private instance _ = isSetoid:byPath
 
-{-
 
 module _ {A : 𝒰' ℓ} {B : 𝒰' ℓ'} where
-  split-+-Str : (x : A + B) -> (∑ λ (a : A) -> x ≡-Str left a) + (∑ λ b -> x ≡-Str right b)
-  split-+-Str (left x) = left (x , refl)
-  split-+-Str (just x) = right (x , refl)
-
-  split-+ : (x : A + B) -> (∑ λ (a : A) -> x ≡ left a) + (∑ λ b -> x ≡ right b)
-  split-+ (left x) = left (x , refl)
-  split-+ (just x) = right (x , refl)
-
   cancel-right : (b : B) -> (A + B) -> B
   cancel-right b (left x) = b
   cancel-right b (right x) = x
@@ -46,6 +37,17 @@ module _ {A : 𝒰' ℓ} {B : 𝒰' ℓ'} where
   either : {C : 𝒰' 𝑖} -> (A -> C) -> (B -> C) -> (A +-𝒰 B) -> C
   either f g (left x) = f x
   either f g (just x) = g x
+
+
+{-
+  split-+-Str : (x : A + B) -> (∑ λ (a : A) -> x ≡-Str left a) + (∑ λ b -> x ≡-Str right b)
+  split-+-Str (left x) = left (x , refl)
+  split-+-Str (just x) = right (x , refl)
+
+  split-+ : (x : A + B) -> (∑ λ (a : A) -> x ≡ left a) + (∑ λ b -> x ≡ right b)
+  split-+ (left x) = left (x , refl)
+  split-+ (just x) = right (x , refl)
+
 
   rec-+ = either
 
@@ -62,10 +64,12 @@ module _ {A : 𝒰 ℓ} {B : 𝒰 ℓ'} where
   right≢left : ∀{a : A}{b : B} -> right b ≢ left a
   right≢left = λ p -> left≢right (sym p)
 
+-}
 
 module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} {D : 𝒰 𝑙} where
-  map-+ : ∀(f : A -> B) (g : C -> D) -> (A + C) -> (B + D)
-  map-+ f g = either (λ x -> left (f x)) (λ y -> right (g y))
+  map-+-𝒰 : ∀(f : A -> B) (g : C -> D) -> (A + C) -> (B + D)
+  map-+-𝒰 f g = either (λ x -> left (f x)) (λ y -> right (g y))
+
 
 module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} where
   mapLeft : ∀(f : A -> B) -> (A + C) -> (B + C)
@@ -74,6 +78,7 @@ module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} {C : 𝒰 𝑘} where
   mapRight : ∀(f : A -> B) -> (C + A) -> (C + B)
   mapRight f = either left (λ x -> right (f x))
 
+{-
 module _ {A : 𝒰 𝑖} {B : 𝒰 𝑗} where
   instance
     isInjective:left : isInjective-𝒰 (left {A = A} {B = B})

@@ -1,4 +1,6 @@
 
+{-# OPTIONS --allow-unsolved-metas #-}
+
 module Agora.Data.Universe.Instance.Setoid where
 
 open import Agora.Conventions
@@ -6,7 +8,7 @@ open import Agora.Conventions
 -- open import Agora.Setoid.Definition
 open import Agora.Data.Universe.Definition
 open import Agora.Data.Product.Definition
-open import Agora.Data.Universe.Instance.Category using (isSetoid:𝒰) public
+-- open import Agora.Data.Universe.Instance.Category using (isSetoid:𝒰) public
 
 
 record isIso-𝒰 {a : 𝒰 𝑖} {b : 𝒰 𝑗} (f : a -> b) : 𝒰 (𝑖 ､ 𝑗) where

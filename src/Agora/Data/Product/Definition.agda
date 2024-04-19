@@ -25,6 +25,10 @@ record _×~_ (A : 𝒰 𝑖) (B : 𝒰 𝑗) : 𝒰 (𝑖 ､ 𝑗) where
 -- {-# FOREIGN GHC makeProduct a b = (a,b) #-}
 {-# COMPILE GHC _×~_ = data AgdaProduct ((,)) #-}
 
+module _ {A : 𝒰 𝑖} {A' : 𝒰 𝑘} {B : 𝒰 𝑗} {B' : 𝒰 𝑙} where
+  map-×-𝒰 : ((A -> A') ×-𝒰 (B -> B')) -> (A ×-𝒰 B) -> (A' ×-𝒰 B')
+  map-×-𝒰 (f , g) (a , b) = f a , g b
+
 --------------------------------------------------------------
 -- The Instance Product
 
