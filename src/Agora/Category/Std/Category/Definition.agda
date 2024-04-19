@@ -137,21 +137,22 @@ record isCategory {𝑗 : 𝔏 ^ 2} {𝑖 : 𝔏} (𝒞 : 𝒰 𝑖) : 𝒰 ((�
   field Hom : 𝒞 -> 𝒞 -> 𝒰 (𝑗 ⌄ 0)
   -- field {{isSetoid:Hom}} : ∀{a b} -> isSetoid {𝑗 ⌄ 1} (Hom a b)
   -- field _∼-Hom_ : ∀{a b} -> Hom a b -> Hom a b -> 𝒰 (𝑗 ⌄ 1)
-  field HomData : isCategoryData {𝑗 = 𝑗} 𝒞 Hom -- _∼-Hom_
+  field {{HomData}} : isCategoryData {𝑗 = 𝑗} 𝒞 Hom -- _∼-Hom_
 
   -- instance
   --   isSetoid:Hom : ∀{a b} -> isSetoid (Hom a b)
   --   isSetoid:Hom = record { _∼_ = _∼-Hom_ }
 
-open isCategory ⦃...⦄ public hiding (HomData)
-open isCategory public using (HomData)
+open isCategory ⦃...⦄ public
+-- open isCategory ⦃...⦄ public hiding (HomData)
+-- open isCategory public using (HomData)
 
 -- //
 
-module _ {𝒞 : 𝒰 𝑖} where
-  instance
-    isCategoryData:isCategory : {{_ : isCategory {𝑗} 𝒞}} -> isCategoryData 𝒞 Hom
-    isCategoryData:isCategory {{X}} = HomData X
+-- module _ {𝒞 : 𝒰 𝑖} where
+--   instance
+--     isCategoryData:isCategory : {{_ : isCategory {𝑗} 𝒞}} -> isCategoryData 𝒞 Hom
+--     isCategoryData:isCategory {{X}} = HomData X
 
   -- field {{isEquivRel:∼}} : isEquivRel _∼_
 

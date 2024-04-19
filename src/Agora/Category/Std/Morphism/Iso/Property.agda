@@ -27,13 +27,13 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
         P₀ = map ⟨ p ⟩ ◆ map (inverse-◆ (of p))   ⟨ functoriality-◆ ⁻¹ ⟩-∼
              map (⟨ p ⟩ ◆ inverse-◆ (of p))       ⟨ cong-∼ (inv-r-◆ (of p)) ⟩-∼
              map id                               ⟨  functoriality-id ⟩-∼
-             id {{HomData (of 𝒟)}}                         ∎
+             id                         ∎
 
         P₁ : q₁ ◆ q₀ ∼ id
         P₁ = map (inverse-◆ (of p)) ◆ map ⟨ p ⟩   ⟨ functoriality-◆ ⁻¹ ⟩-∼
              map (inverse-◆ (of p) ◆ ⟨ p ⟩)       ⟨ cong-∼ (inv-l-◆ (of p)) ⟩-∼
              map id                               ⟨  functoriality-id ⟩-∼
-             id {{HomData (of 𝒟)}}                         ∎
+             id                         ∎
 
         P : isIso (hom q₀)
         P = record

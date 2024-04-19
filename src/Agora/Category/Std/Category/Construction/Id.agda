@@ -39,4 +39,4 @@ module _ {A : 𝒰 𝑖} where
 
   isCategory:byId : isCategory A
   isCategory.Hom isCategory:byId          = _≡_
-  HomData isCategory:byId = isCategoryData:byId
+  isCategory.HomData isCategory:byId = isCategoryData:byId

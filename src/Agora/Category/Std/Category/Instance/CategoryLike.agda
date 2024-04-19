@@ -45,10 +45,10 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
   unit-l-◆-𝐂𝐚𝐭 {F} = α since P
     where
       α : id-𝐂𝐚𝐭 ◆-𝐂𝐚𝐭 F ⟶ F
-      α = (λ x → (id {{HomData (of 𝒟)}})) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+      α = (λ x → (id)) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
       β : F ⟶ id-𝐂𝐚𝐭 ◆-𝐂𝐚𝐭 F
-      β = (λ x → id {{HomData (of 𝒟)}}) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+      β = (λ x → id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
       P = record
           { inverse-◆ = β
@@ -60,10 +60,10 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} where
   unit-r-◆-𝐂𝐚𝐭 {F} = α since P
     where
       α : F ◆-𝐂𝐚𝐭 id-𝐂𝐚𝐭 ⟶ F
-      α = (λ x → id {{HomData (of 𝒟)}}) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+      α = (λ x → id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
       β : F ⟶ F ◆-𝐂𝐚𝐭 id-𝐂𝐚𝐭
-      β = (λ x → id {{HomData (of 𝒟)}}) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+      β = (λ x → id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
       P = record
           { inverse-◆ = β
@@ -78,10 +78,10 @@ module _ {𝒞 : Category 𝑖} {𝒟 : Category 𝑗} {ℰ : Category 𝑘} {�
     assoc-l-◆-𝐂𝐚𝐭 = α since P
       where
         α : (F ◆-𝐂𝐚𝐭 G ◆-𝐂𝐚𝐭 H) ⟶ F ◆-𝐂𝐚𝐭 (G ◆-𝐂𝐚𝐭 H)
-        α = (λ x → id {{HomData (of ℱ)}}) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+        α = (λ x → id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
         β : F ◆-𝐂𝐚𝐭 (G ◆-𝐂𝐚𝐭 H) ⟶ (F ◆-𝐂𝐚𝐭 G ◆-𝐂𝐚𝐭 H)
-        β = (λ x → id {{HomData (of ℱ)}}) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
+        β = (λ x → id) since natural (λ f → unit-l-◆ ∙ unit-r-◆ ⁻¹)
 
         P = record
             { inverse-◆ = β

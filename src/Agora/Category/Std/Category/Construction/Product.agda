@@ -30,7 +30,7 @@ module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{𝒞p : isCategory {𝑖₁} �
 
   instance
     isCategoryData:× : isCategoryData (𝒞 × 𝒟) Hom-×-𝐂𝐚𝐭
-    isCategoryData.isSetoid:Hom isCategoryData:× = isSetoid:× {{isCategoryData:isSetoid2 {{HomData (𝒞p)}}}} {{isCategoryData:isSetoid2 {{HomData (𝒟p)}}}}
+    isCategoryData.isSetoid:Hom isCategoryData:× = isSetoid:× {{isCategoryData:isSetoid2}} {{isCategoryData:isSetoid2}}
     isCategoryData.id isCategoryData:×         = id , id
     isCategoryData._◆_ isCategoryData:×        = λ (f₀ , g₀) (f₁ , g₁) -> (f₀ ◆ f₁ , g₀ ◆ g₁)
     isCategoryData.unit-l-◆ isCategoryData:×   = incl $ unit-l-◆ , unit-l-◆
@@ -42,7 +42,7 @@ module _ {𝒞 : 𝒰 𝑖} {𝒟 : 𝒰 𝑗} {{𝒞p : isCategory {𝑖₁} �
 
     isCategory:× : isCategory (𝒞 × 𝒟)
     isCategory.Hom isCategory:× = λ (a , b) (c , d) -> (a ⟶ c) × (b ⟶ d)
-    HomData isCategory:× = isCategoryData:×
+    isCategory.HomData isCategory:× = isCategoryData:×
 
   {-# INCOHERENT isCategory:× #-}
 

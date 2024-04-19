@@ -14,9 +14,11 @@ FiniteProductCategory 𝑖 = Category 𝑖 :& hasFiniteProducts
 
 
 module _ {𝒞 : 𝒰 _} {{_ : FiniteProductCategory 𝑖 on 𝒞}} where
-  ⨅-fin : ∀{n} -> (F : Fin n -> 𝒞) -> 𝒞
-  ⨅-fin {zero} F = ⊤
-  ⨅-fin {suc n} F = F zero ⊓ (⨅-fin (λ i -> F (suc i)))
+  ⨅ᶠⁱⁿ : ∀{n} -> (F : Fin n -> 𝒞) -> 𝒞
+  ⨅ᶠⁱⁿ {zero} F = ⊤
+  ⨅ᶠⁱⁿ {suc n} F = F zero ⊓ (⨅ᶠⁱⁿ (λ i -> F (suc i)))
+
+  syntax ⨅ᶠⁱⁿ {n = n} (λ x -> F) = ⨅ᶠⁱⁿ x ∈ n , F
 
 
 
