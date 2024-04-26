@@ -1,4 +1,6 @@
 
+{-# OPTIONS --allow-unsolved-metas #-}
+
 module Agora.Category.Std.Limit.Specific.Coproduct.Variant.Binary where
 
 open import Agora.Conventions hiding (_⊔_)
@@ -10,6 +12,7 @@ open import Agora.Category.Std.Category.Definition
 open import Agora.Category.Std.Morphism.Iso
 open import Agora.Category.Std.Category.Notation.Associativity
 
+{-
 -- [Hide]
 infixr 20 _[_]→2_
 _[_]→2_ : ∀{𝑗} (X : 𝒰 𝑗) -> ∀ (𝑖 : 𝔏 ^ 2) -> (R : 𝒰 𝑙) -> (𝒰 _)
@@ -20,6 +23,7 @@ macro
   _×2_ : ∀{𝑖 𝑗 : 𝔏} {𝑘 𝑙 : 𝔏 ^ 2} -> (𝒰' 𝑖) [ 𝑙 ]→2 (𝒰' 𝑗) [ 𝑘 ]→2 SomeStructure
   _×2_ = λstr A ↦ λstr B ↦ #structureOn (A ×-𝒰 B)
   infixr 40 _×2_
+  -}
 
 -- //
 
@@ -79,12 +83,12 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
       ⦗_⦘' = λ (f , g) → ⟨ sym-≅ p ⟩ ◆ ⦗ f , g ⦘
 
       lem-1 : ∀{z} -> isSetoidHom ′((a ⟶ z) ×-𝒰 (b ⟶ z))′ (y ⟶ z) ⦗_⦘'
-      lem-1 = record { cong-∼ = λ p → refl ◈ cong-∼ p}
+      lem-1 = record { cong-∼ = λ p → refl-∼ ◈ cong-∼ p}
 
       lem-2 : ∀{z} -> {f : (a ⟶ z)} -> {g : (b ⟶ z)} -> ι₀' ◆ ⦗ f , g ⦘' ∼ f
       lem-2 {f = f} {g} = (ι₀ ◆ ⟨ p ⟩) ◆ (⟨ sym-≅ p ⟩ ◆ ⦗ f , g ⦘)   ⟨ assoc-[ab][cd]∼a[bc]d-◆ ⟩-∼
-                          ι₀ ◆ (⟨ p ⟩ ◆ ⟨ sym-≅ p ⟩) ◆ ⦗ f , g ⦘     ⟨ refl ◈ inv-r-◆ (of p) ◈ refl ⟩-∼
-                          ι₀ ◆ id ◆ ⦗ f , g ⦘                        ⟨ unit-r-◆ ◈ refl ⟩-∼
+                          ι₀ ◆ (⟨ p ⟩ ◆ ⟨ sym-≅ p ⟩) ◆ ⦗ f , g ⦘     ⟨ refl-∼ ◈ inv-r-◆ (of p) ◈ refl-∼ ⟩-∼
+                          ι₀ ◆ id ◆ ⦗ f , g ⦘                        ⟨ unit-r-◆ ◈ refl-∼ ⟩-∼
                           ι₀ ◆ ⦗ f , g ⦘                             ⟨ reduce-ι₀ ⟩-∼
                           f                                         ∎
 
@@ -110,7 +114,7 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
         lem-1 : f ◆ g ∼ id
         lem-1 = f ◆ g                           ⟨ expand-ι₀,ι₁ ⟩-∼
                 ⦗ ι₀ ◆ (f ◆ g) , ι₁ ◆ (f ◆ g) ⦘ ⟨ cong-∼ (assoc-r-◆ , assoc-r-◆) ⟩-∼
-                ⦗ (ι₀ ◆ f) ◆ g , (ι₁ ◆ f) ◆ g ⦘ ⟨ cong-∼ (reduce-ι₀ ◈ refl , reduce-ι₁ ◈ refl) ⟩-∼
+                ⦗ (ι₀ ◆ f) ◆ g , (ι₁ ◆ f) ◆ g ⦘ ⟨ cong-∼ (reduce-ι₀ ◈ refl-∼ , reduce-ι₁ ◈ refl-∼) ⟩-∼
                 ⦗ ι₀ ◆ g , ι₁ ◆ g ⦘             ⟨ cong-∼ (reduce-ι₀ , reduce-ι₁) ⟩-∼
                 ⦗ ι₀ , ι₁ ⦘                     ⟨ cong-∼ (unit-r-◆ ⁻¹ , unit-r-◆ ⁻¹) ⟩-∼
                 ⦗ ι₀ ◆ id , ι₁ ◆ id ⦘           ⟨ expand-ι₀,ι₁ ⁻¹ ⟩-∼
@@ -120,7 +124,7 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
         lem-2 : g ◆ f ∼ id
         lem-2 = g ◆ f                           ⟨ expand-ι₀,ι₁ ⟩-∼
                 ⦗ ι₀ ◆ (g ◆ f) , ι₁ ◆ (g ◆ f) ⦘ ⟨ cong-∼ (assoc-r-◆ , assoc-r-◆) ⟩-∼
-                ⦗ (ι₀ ◆ g) ◆ f , (ι₁ ◆ g) ◆ f ⦘ ⟨ cong-∼ (reduce-ι₀ ◈ refl , reduce-ι₁ ◈ refl) ⟩-∼
+                ⦗ (ι₀ ◆ g) ◆ f , (ι₁ ◆ g) ◆ f ⦘ ⟨ cong-∼ (reduce-ι₀ ◈ refl-∼ , reduce-ι₁ ◈ refl-∼) ⟩-∼
                 ⦗ ι₀ ◆ f , ι₁ ◆ f ⦘             ⟨ cong-∼ (reduce-ι₀ , reduce-ι₁) ⟩-∼
                 ⦗ ι₀ , ι₁ ⦘                     ⟨ cong-∼ (unit-r-◆ ⁻¹ , unit-r-◆ ⁻¹) ⟩-∼
                 ⦗ ι₀ ◆ id , ι₁ ◆ id ⦘           ⟨ expand-ι₀,ι₁ ⁻¹ ⟩-∼
@@ -182,8 +186,8 @@ module _ {𝒞ᵘ : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞ᵘ}} {{_ : hasCoprod
             -> ⦗ f , g ⦘ ◆ h ∼ ⦗ f ◆ h , g ◆ h ⦘
   append-⦗⦘ {f = f} {g} {h} =
     ⦗ f , g ⦘ ◆ h                                     ⟨ expand-ι₀,ι₁ ⟩-∼
-    ⦗ ι₀ ◆ (⦗ f , g ⦘ ◆ h) , ι₁ ◆ (⦗ f , g ⦘ ◆ h) ⦘   ⟨ ⦗≀ (assoc-r-◆ ∙ (reduce-ι₀ ◈ refl))
-                                                        , (assoc-r-◆ ∙ (reduce-ι₁ ◈ refl)) ≀⦘ ⟩-∼
+    ⦗ ι₀ ◆ (⦗ f , g ⦘ ◆ h) , ι₁ ◆ (⦗ f , g ⦘ ◆ h) ⦘   ⟨ ⦗≀ (assoc-r-◆ ∙ (reduce-ι₀ ◈ refl-∼))
+                                                        , (assoc-r-◆ ∙ (reduce-ι₁ ◈ refl-∼)) ≀⦘ ⟩-∼
     ⦗ f ◆ h , g ◆ h ⦘                                 ∎
 
 -- //
