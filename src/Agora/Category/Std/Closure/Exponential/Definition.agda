@@ -18,6 +18,7 @@ open import Agora.Category.Std.Category.Structured.FiniteProduct.Definition
 open import Agora.Category.Std.Functor.Adjoint.Definition
 open import Agora.Category.Std.Functor.Constant
 open import Agora.Category.Std.Category.Construction.Product
+open import Agora.Category.Std.Limit.Specific.Product.Instance.Functor
 
 -- module _ {𝒞 : 𝒰 _} {{_ : FiniteProductCategory 𝑖 on 𝒞}} where
 module _ {𝒞 : Category 𝑖} {{_ : hasFiniteProducts 𝒞}} where
@@ -42,5 +43,8 @@ module _ {𝒞 : 𝒰 _} {{_ : CartesianClosedCategory 𝑖 on 𝒞}} where
 
   uncurry : ∀{a b c : 𝒞} -> a ⟶ [ b , c ] -> (a ⊓ b ⟶ c)
   uncurry {b = b} = free {{of Exponential b}}
+
+  [map_,_] : {a b : 𝒞} -> (f : a ⟶ b) -> (x : 𝒞) -> [ b , x ] ⟶ [ a , x ]
+  [map f , Y ] = curry (map-⊓ (id , f) ◆ uncurry id)
 
 

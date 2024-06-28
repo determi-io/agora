@@ -36,9 +36,9 @@ module _ {A : 𝒰 𝑖} where
     ... | right j = map-×-𝒰 ((λ x -> x) , suc) (quotRem {m} n j)
 
     -- a variant of quotRem the type of whose result matches the order of multiplication
-    remQuot : ∀ n → Fin (m *-ℕ n) → Fin m × Fin n
-    remQuot i x = let a , b = (quotRem i x)
-                  in b , a
+  remQuot : ∀ n → Fin (m *-ℕ n) → Fin m × Fin n
+  remQuot i x = let a , b = (quotRem i x)
+                in b , a
 
   caseᶠⁱⁿ_of : Fin (m +-ℕ n) -> (Fin m -> A) -> (Fin n -> A) -> A
   caseᶠⁱⁿ_of x f g = case splitAt _ x of f g

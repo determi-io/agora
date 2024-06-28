@@ -10,6 +10,7 @@ open import Agora.Category.Std.Functor.Faithful
 open import Agora.Category.Std.Functor.Full
 
 
+
 -- [Definition]
 -- | Let [..] [] be a category.
 module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} where
@@ -81,6 +82,32 @@ module _ {𝒞 : Category 𝑖} where
 
 module _ (𝒞 : Category 𝑖) (a b : ⟨ 𝒞 ⟩) where
   IsoOf = a ≅ b
+
+
+module _ {𝒞 : 𝒰 𝑖} {R} {{_ : isCategoryData {𝑗} 𝒞 R}} where
+
+  private instance
+    _ : isCategory 𝒞
+    _ = record { Hom = R }
+
+  -- -- | An arrow |f : a ⟶ b| in |𝒞| is called an /isomorphism/,
+  -- -- | if the following data is given.
+  -- record isIso' {a b : 𝒞} (f : R a b) : 𝒰 (𝑖 ､ 𝑗) where
+  -- -- | 1. An inverse map [..].
+  --   field inverse-◆ : R b a
+  -- -- | 2. Proofs that it really is a left and right sided inverse.
+  --         inv-r-◆ : f ◆ inverse-◆ ∼ id
+  --         inv-l-◆ : inverse-◆ ◆ f ∼ id
+  -- open isIso' public
+
+  _≅'_ : (a b : 𝒞) -> 𝒰 _
+  _≅'_ a b = a ≅ b
+
+  isSetoid:byCategoryData : isSetoid 𝒞
+  isSetoid:byCategoryData = record { _∼_ = _≅_ }
+
+
+
 
 
 
