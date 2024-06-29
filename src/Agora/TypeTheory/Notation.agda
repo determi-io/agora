@@ -63,12 +63,26 @@ ParamSTT 𝑗 = 𝒰 (𝑗 ⌄ 0) :& hasParamSTT {𝑗 ⌄ 1 ⋯ 4}
 
 
 record isReduction (𝔄 : ParamSTT 𝑖) (𝔅 : ParamSTT 𝑗) (F : ⟨ 𝔄 ⟩ -> ⟨ 𝔅 ⟩) : 𝒰 (𝑖 ､ 𝑗) where
-  field ⟦_⟧-Param : ∀{A : ⟨ 𝔄 ⟩} -> Param (F A) -> Param A
-  field reduce : ∀{A : ⟨ 𝔄 ⟩} -> {a : Param (F A)} -> Hom-STT (F A at a) (A at ⟦ a ⟧-Param)
+  field param : ∀(A : ⟨ 𝔄 ⟩) -> Param (F A) -> Param A
+  field runAt : ∀(A : ⟨ 𝔄 ⟩) -> {a : Param (F A)} -> Hom-STT (F A at a) (A at param A a)
   -- field ⟦_⟧-Ctx : ∀{A : ⟨ 𝔄 ⟩} -> {a : Param (F A)} -> Ctx a of (F A) -> Ctx ⟦ a ⟧-Param of A
   -- field ⟦_⟧-Type : ∀{A : ⟨ 𝔄 ⟩} -> {a : Param (F A)} -> Ctx a of (F A) -> Ctx ⟦ a ⟧-Param of A
 
-open isReduction public
+  -- syntax runAt A F = run F at A
+
+open isReduction {{...}} public
+
+module _ (𝔄 : ParamSTT 𝑖) (𝔅 : ParamSTT 𝑗) where
+  Reduction : _
+  Reduction = _ :& isReduction 𝔄 𝔅
+
+
+module _ {𝔄 : ParamSTT 𝑖} {𝔅 : ParamSTT 𝑗} where
+  run_to_ : (F : Reduction 𝔄 𝔅) -> (A : ⟨ 𝔄 ⟩) -> {a : Param (⟨ F ⟩ A)} -> _
+  run_to_ F A {a} = runAt A {a = a}
+
+  par : (F : Reduction 𝔄 𝔅) -> {A : ⟨ 𝔄 ⟩} -> Param (⟨ F ⟩ A) -> Param A
+  par F {A} = param A
 
 
 
