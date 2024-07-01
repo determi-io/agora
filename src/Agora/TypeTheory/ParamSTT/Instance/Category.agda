@@ -14,6 +14,8 @@ module _ {𝔄 : ParamSTT 𝑖} {𝔅 : ParamSTT 𝑗} {𝔇 : ParamSTT 𝑘} wh
   _◆-ParamSTT_ : ParamSTTHom 𝔄 𝔅 -> ParamSTTHom 𝔅 𝔇 -> ParamSTTHom 𝔄 𝔇
   _◆-ParamSTT_ = {!!}
 
+  infixl 30 _◆-ParamSTT_
+
 
 
 instance

@@ -71,7 +71,7 @@ postulate
      `A` <- normalise `A`
 
      let dofirst =
-          do n <- try-all 5 (try-eq-𝔏n `A`)
+          do n <- try-all 6 (try-eq-𝔏n `A`)
              fun <- quoteTC (λ (ls : 𝔏 ^ n) -> (merge ls))
              unify hole fun
 

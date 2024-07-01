@@ -10,13 +10,10 @@ open import Agora.TypeTheory.STT.Definition
 
 
 
-
-
-
-
-record hasParamSTT {𝑗 : 𝔏 ^ 4} {𝑖} (Theory : 𝒰 𝑖) : 𝒰 (𝑖 ､ 𝑗 ⁺) where
+record hasParamSTT {𝑗 : 𝔏 ^ 5} {𝑖} (Theory : 𝒰 𝑖) : 𝒰 (𝑖 ､ 𝑗 ⁺) where
   field Param : Theory -> 𝒰 (𝑗 ⌄ 0)
-  field _at_ : (𝒯 : Theory) -> Param 𝒯 -> STT (𝑗 ⌄ 1 ⋯ 3)
+  field SubParam : (This : Theory) -> Param This -> 𝒰 (𝑗 ⌄ 1)
+  field _at_ : (𝒯 : Theory) -> Param 𝒯 -> STT (𝑗 ⌄ 2 ⋯ 4)
   open STT
 
   CtxOf : (𝒯 : Theory) -> Param 𝒯 -> 𝒰 _
@@ -31,8 +28,8 @@ record hasParamSTT {𝑗 : 𝔏 ^ 4} {𝑖} (Theory : 𝒰 𝑖) : 𝒰 (𝑖 �
 
 open hasParamSTT {{...}} public
 
-ParamSTT : ∀ (𝑗 : 𝔏 ^ 5) -> _
-ParamSTT 𝑗 = 𝒰 (𝑗 ⌄ 0) :& hasParamSTT {𝑗 ⌄ 1 ⋯ 4}
+ParamSTT : ∀ (𝑗 : 𝔏 ^ 6) -> _
+ParamSTT 𝑗 = 𝒰 (𝑗 ⌄ 0) :& hasParamSTT {𝑗 ⌄ 1 ⋯ 5}
 
 
 record isParamSTTHom (𝔄 : ParamSTT 𝑖) (𝔅 : ParamSTT 𝑗) (F : ⟨ 𝔄 ⟩ -> ⟨ 𝔅 ⟩) : 𝒰 (𝑖 ､ 𝑗) where
