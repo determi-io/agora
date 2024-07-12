@@ -22,24 +22,39 @@ open import Agora.Conventions.Prelude.Data.Nat.Literals
 open import Agda.Builtin.List        public renaming (_∷_ to infixr 25 _∷_)
 -- open import Cubical.Core.Everything
 -- open import Cubical.Data.Nat
+open import Data.List public using
+  (
+  )
+  renaming
+  (_++_ to infixr 25 _++_
+  ; _∷ʳ_ to infixr 25 _∷ʳ_
+  )
+
+open import Data.List.Properties public using
+  ()
+  renaming
+  ( ++-assoc to assoc-++-List
+  ; ++-identityʳ to unit-r-++-List
+  ; ++-identityˡ to unit-l-++-List
+  )
 
 module _ {ℓ} {A : Type ℓ} where
 
-  infixr 25 _++_ _∷ʳ_
+  -- infixr 25 _++_ _∷ʳ_
 
   [_] : A → List A
   [ a ] = a ∷ []
 
-  _++_ : List A → List A → List A
-  [] ++ ys = ys
-  (x ∷ xs) ++ ys = x ∷ xs ++ ys
+  -- _++_ : List A → List A → List A
+  -- [] ++ ys = ys
+  -- (x ∷ xs) ++ ys = x ∷ xs ++ ys
 
   rev : List A → List A
   rev [] = []
   rev (x ∷ xs) = rev xs ++ [ x ]
 
-  _∷ʳ_ : List A → A → List A
-  xs ∷ʳ x = xs ++ (x ∷ [])
+  -- _∷ʳ_ : List A → A → List A
+  -- xs ∷ʳ x = xs ++ (x ∷ [])
 
   length : List A → ℕ
   length [] = 0

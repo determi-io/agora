@@ -25,13 +25,16 @@ open import Agora.Category.Std.Morphism.Iso
 
 
 
-record is2Category {𝑗 : 𝔏 ^ 2} {𝑖} (𝒞 : Category 𝑖) : 𝒰 (𝑖 ､ 𝑗 ⁺) where
+record is2Category {𝑗 : 𝔏 ^ 2} {𝑖} (𝒞 : Category 𝑖) : 𝒰 (merge (𝑖 ､ 𝑗 ⁺)) where
   field 2Hom : ∀{a b : ⟨ 𝒞 ⟩} -> (f g : a ⟶ b) -> 𝒰 (𝑗 ⌄ 0)
   field {{2HomData}} : ∀{a b : ⟨ 𝒞 ⟩} -> isCategoryData {𝑗 = 𝑗} (a ⟶ b) 2Hom
 
   private instance
     isCategory:2Hom : ∀{a b : ⟨ 𝒞 ⟩} -> isCategory (a ⟶ b)
     isCategory:2Hom = record { Hom = 2Hom ; HomData = 2HomData }
+
+  HomCategory : (a b : ⟨ 𝒞 ⟩) -> Category _
+  HomCategory a b = a ⟶ b
 
   Comp : ∀{a b c : ⟨ 𝒞 ⟩} -> ((a ⟶ b) × (b ⟶ c)) -> (a ⟶ c)
   Comp = λ (f , g) -> f ◆ g
@@ -55,6 +58,7 @@ module _ {𝒞 : 𝒰 𝑖} {{_ : isCategory {𝑗} 𝒞}} {{_ : is2Category {�
   infixr 40 _⟹ᵘ_ _⟹_
   _⟹ᵘ_ = 2Hom f g
   macro _⟹_ = #structureOn (2Hom f g)
+
 
 -- module _ {𝒞 : 𝒰 _} {{_ : 2Category 𝑖 on 𝒞}} where
 module _ {𝒞 : 𝒰 𝑖} {{𝒞P : isCategory {𝑗} 𝒞}} {{𝒞P2 : is2Category {𝑘} ′ 𝒞 ′}} where

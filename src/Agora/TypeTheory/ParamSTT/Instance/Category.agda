@@ -10,9 +10,13 @@ open import Agora.TypeTheory.ParamSTT.Definition
 open import Agora.Category.Std.Category.Definition
 
 
+
 module _ {𝔄 : ParamSTT 𝑖} {𝔅 : ParamSTT 𝑗} {𝔇 : ParamSTT 𝑘} where
   _◆-ParamSTT_ : ParamSTTHom 𝔄 𝔅 -> ParamSTTHom 𝔅 𝔇 -> ParamSTTHom 𝔄 𝔇
-  _◆-ParamSTT_ = {!!}
+  _◆-ParamSTT_ f g = (λ x -> ⟨ g ⟩ (⟨ f ⟩ x) ) since record
+    { param = λ A p -> param _ (param _ p)
+    ; runAt = {!λ x -> !}
+    }
 
   infixl 30 _◆-ParamSTT_
 

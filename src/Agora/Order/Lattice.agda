@@ -18,7 +18,7 @@ module _ {A : 𝒰 _} {{_ : Preorder 𝑗 on A}} where
   a ≚ b = (a ≤ b) ×-𝒰 (b ≤ a)
 
 module _ {𝑖 : 𝔏 ^ 3} where
-  record hasFiniteJoins (A : Preorder 𝑖) : 𝒰 𝑖 where
+  record hasFiniteJoins (A : Preorder 𝑖) : 𝒰 (merge 𝑖) where
     field ⊥ : ⟨ A ⟩
           initial-⊥ : ∀{a : ⟨ A ⟩} -> ⊥ ≤ a
     field _∨_ : ⟨ A ⟩ -> ⟨ A ⟩ -> ⟨ A ⟩
@@ -31,7 +31,7 @@ module _ {𝑖 : 𝔏 ^ 3} where
 
   {-# DISPLAY hasFiniteJoins._∨_ M a b = a ∨ b #-}
 
-  record hasFiniteMeets (A : Preorder 𝑖) : 𝒰 𝑖 where
+  record hasFiniteMeets (A : Preorder 𝑖) : 𝒰 (merge 𝑖) where
     field ⊤ : ⟨ A ⟩
           terminal-⊤ : ∀{a : ⟨ A ⟩} -> a ≤ ⊤
     field _∧_ : ⟨ A ⟩ -> ⟨ A ⟩ -> ⟨ A ⟩

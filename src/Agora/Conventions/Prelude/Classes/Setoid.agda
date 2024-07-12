@@ -23,8 +23,6 @@ record isEquivRel {A : 𝒰 𝑖} (_∼_ : A -> A -> 𝒰 𝑗) : 𝒰 (𝑖 ⊔
         sym : ∀{x y : A} -> x ∼ y -> y ∼ x
         _∙_ : ∀{x y z : A} -> x ∼ y -> y ∼ z -> x ∼ z
 
-  _≁_ : A -> A -> 𝒰 (𝑗)
-  a ≁ b = ¬ a ∼ b
 
 
   infixl 30 _∙_
@@ -32,6 +30,10 @@ open isEquivRel {{...}} public
 -- //
 
 module _ {X : 𝒰 𝑖} {_≡_ : X -> X -> 𝒰 𝑗} {{_ : isEquivRel _≡_}} where
+
+  _≁_ : X -> X -> 𝒰 (𝑗)
+  a ≁ b = ¬ a ≡ b
+
   instance
     Notation-Inverse:Equiv : {x y : X} -> Notation-Inverse (x ≡ y) (y ≡ x)
     Notation-Inverse:Equiv Notation-Inverse.⁻¹ = sym

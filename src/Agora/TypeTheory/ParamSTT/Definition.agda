@@ -26,6 +26,11 @@ record hasParamSTT {𝑗 : 𝔏 ^ 5} {𝑖} (Theory : 𝒰 𝑖) : 𝒰 (𝑖 �
 
   syntax TypeOf 𝒯 a = Type a of 𝒯
 
+  TermOf : (𝒯 : Theory) -> (a : Param 𝒯) -> Ctx (𝒯 at a) -> Type (𝒯 at a) -> 𝒰 _
+  TermOf 𝒯 a Γ X = Term (𝒯 at a) Γ X
+
+  syntax TermOf 𝒯 a Γ X = Γ ⊢ X at a of 𝒯
+
 open hasParamSTT {{...}} public
 
 ParamSTT : ∀ (𝑗 : 𝔏 ^ 6) -> _
@@ -34,7 +39,8 @@ ParamSTT 𝑗 = 𝒰 (𝑗 ⌄ 0) :& hasParamSTT {𝑗 ⌄ 1 ⋯ 5}
 
 record isParamSTTHom (𝔄 : ParamSTT 𝑖) (𝔅 : ParamSTT 𝑗) (F : ⟨ 𝔄 ⟩ -> ⟨ 𝔅 ⟩) : 𝒰 (𝑖 ､ 𝑗) where
   field param : ∀(A : ⟨ 𝔄 ⟩) -> Param (F A) -> Param A
-  field runAt : ∀(A : ⟨ 𝔄 ⟩) -> {a : Param (F A)} -> Hom-STT (F A at a) (A at param A a)
+  field runAt : ∀(A : ⟨ 𝔄 ⟩) -> {a : Param (F A)} -> (pa : SubParam (F A) a)
+                -> Hom-STT (F A at a) (A at param A a)
 
 open isParamSTTHom {{...}} public
 

@@ -22,7 +22,7 @@ open import Agora.Data.Product.Definition
 --   field ⟨_⟩ : (R a b)
 -- open ≤-Base public
 
-record isPreorderData (A : 𝒰 𝑖 :& isSetoid {𝑗}) (_≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
+record isPreorderData (A : 𝒰 𝑖 :& isSetoid {𝑗}) (_≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘) : 𝒰 (merge (𝑘 ⁺ ､ 𝑗 ､ 𝑖)) where
   field refl-≤ : {a : ⟨ A ⟩} -> a ≤ a
         _⟡_ : {a b c : ⟨ A ⟩} -> a ≤ b -> b ≤ c -> a ≤ c
         transp-≤ : ∀{a₀ a₁ b₀ b₁ : ⟨ A ⟩} -> a₀ ∼ a₁ -> b₀ ∼ b₁ -> a₀ ≤ b₀ -> a₁ ≤ b₁
@@ -34,7 +34,7 @@ open isPreorderData {{...}} public
 {-# DISPLAY isPreorderData._⟡_ M a b = a ⟡ b #-}
 
 
-record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (𝑘 ⁺ ､ 𝑗 ､ 𝑖) where
+record isPreorder 𝑘 (A : 𝒰 𝑖 :& isSetoid {𝑗}) : 𝒰 (merge (𝑘 ⁺ ､ 𝑗 ､ 𝑖)) where
   field _≤_ : ⟨ A ⟩ -> ⟨ A ⟩ -> 𝒰 𝑘
   field {{isPreorderData:≤}} : isPreorderData A _≤_
 
@@ -55,6 +55,15 @@ module _ {𝑖 : 𝔏 ^ 3} {A : 𝒰 _} {{_ : Preorder 𝑖 on A}} where
 
   _⋦_ : A -> A -> 𝒰 _
   a ⋦ b = (a ≤ b) ×-𝒰 (a ≁ b)
+
+  _⟡-≤∼_ : {a b c : A} -> a ≤ b -> b ∼ c -> a ≤ c
+  _⟡-≤∼_ p q = transp-≤ refl-∼ q p
+
+  _⟡-∼≤_ : {a b c : A} -> a ∼ b -> b ≤ c -> a ≤ c
+  _⟡-∼≤_ p q = transp-≤ (sym p) refl-∼ q
+
+  to-≤,from-∼ : {a b : A} -> a ∼ b -> a ≤ b
+  to-≤,from-∼ p = transp-≤ refl-∼ p refl-≤
 
 --------------------------------------------------------------------
 -- == Decidable preorder
