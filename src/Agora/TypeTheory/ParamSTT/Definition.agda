@@ -39,6 +39,7 @@ ParamSTT 𝑗 = 𝒰 (𝑗 ⌄ 0) :& hasParamSTT {𝑗 ⌄ 1 ⋯ 5}
 
 record isParamSTTHom (𝔄 : ParamSTT 𝑖) (𝔅 : ParamSTT 𝑗) (F : ⟨ 𝔄 ⟩ -> ⟨ 𝔅 ⟩) : 𝒰 (𝑖 ､ 𝑗) where
   field param : ∀(A : ⟨ 𝔄 ⟩) -> Param (F A) -> Param A
+  field subparam : ∀(A : ⟨ 𝔄 ⟩) -> {p : Param (F A)} -> SubParam (F A) p -> SubParam A (param A p)
   field runAt : ∀(A : ⟨ 𝔄 ⟩) -> {a : Param (F A)} -> (pa : SubParam (F A) a)
                 -> Hom-STT (F A at a) (A at param A a)
 

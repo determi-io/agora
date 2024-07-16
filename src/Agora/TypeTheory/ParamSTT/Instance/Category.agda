@@ -15,7 +15,8 @@ module _ {𝔄 : ParamSTT 𝑖} {𝔅 : ParamSTT 𝑗} {𝔇 : ParamSTT 𝑘} wh
   _◆-ParamSTT_ : ParamSTTHom 𝔄 𝔅 -> ParamSTTHom 𝔅 𝔇 -> ParamSTTHom 𝔄 𝔇
   _◆-ParamSTT_ f g = (λ x -> ⟨ g ⟩ (⟨ f ⟩ x) ) since record
     { param = λ A p -> param _ (param _ p)
-    ; runAt = {!λ x -> !}
+    ; subparam = λ A p -> subparam _ (subparam _ p)
+    ; runAt = λ A x -> runAt _ x ◆-STT (runAt _ (subparam _ x))
     }
 
   infixl 30 _◆-ParamSTT_

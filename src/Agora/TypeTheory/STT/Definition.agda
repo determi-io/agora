@@ -21,5 +21,15 @@ record Hom-STT (𝔄 : STT 𝑖) (𝔅 : STT 𝑗) : 𝒰 (𝑖 ､ 𝑗) where
 
 open Hom-STT public
 
+STTHom = Hom-STT
+
+module _ {𝔄 : STT 𝑖} {𝔅 : STT 𝑗} {𝔇 : STT 𝑘} where
+  _◆-STT_ : STTHom 𝔄 𝔅 -> STTHom 𝔅 𝔇 -> STTHom 𝔄 𝔇
+  _◆-STT_ f g = record
+    { ⟪_∣_Ctx⟫ = λ a -> ⟪ g ∣ ⟪ f ∣ a Ctx⟫ Ctx⟫
+    ; ⟪_∣_Type⟫ = λ a -> ⟪ g ∣ ⟪ f ∣ a Type⟫ Type⟫
+    ; ⟪_∣_Term⟫ = λ a -> ⟪ g ∣ ⟪ f ∣ a Term⟫ Term⟫
+    }
+
 
 
